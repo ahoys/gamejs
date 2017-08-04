@@ -28,7 +28,6 @@ class Game {
     for (let i = 512; len > i; i++) {
       this.drawBuffer.shift();
     }
-    console.log(this.drawBuffer.length);
   }
 
   /**
