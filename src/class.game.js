@@ -32,17 +32,6 @@ class Game {
   }
 
   /**
-   * Renders the stored logic.
-   * @param {number} tFrame 
-   */
-  render(tFrame) {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.drawBuffer.forEach((t) => {
-      this.drawCube();
-    });
-  }
-
-  /**
    * Buffer for updates.
    * @param {number} numTicks 
    */
@@ -54,17 +43,14 @@ class Game {
   }
 
   /**
-   * Initializes rendering.
+   * Renders the stored logic.
+   * @param {number} tFrame 
    */
-  initRendering() {
-    this.canvas.width = 1280;
-    this.canvas.height = 720;
-    this.ctx = this.canvas.getContext('2d');
-    this.lastTick = performance.now();
-    this.lastRender = this.lastTick;
-    this.tickLength = 50;
-    this.drawBuffer = [];
-    this.main(performance.now());
+  render(tFrame) {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawBuffer.forEach((entity) => {
+      this.drawCube();
+    });
   }
 
   /**
@@ -82,6 +68,20 @@ class Game {
     this.queueUpdates(numTicks);
     this.render(tFrame);
     this.lastRender = tFrame;
+  }
+
+  /**
+   * Initializes rendering.
+   */
+  initRendering() {
+    this.canvas.width = 1280;
+    this.canvas.height = 720;
+    this.ctx = this.canvas.getContext('2d');
+    this.lastTick = performance.now();
+    this.lastRender = this.lastTick;
+    this.tickLength = 50;
+    this.drawBuffer = [];
+    this.main(performance.now());
   }
 
   constructor() {
