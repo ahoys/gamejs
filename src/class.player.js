@@ -1,19 +1,7 @@
 class Player {
-
-  setInput(input) {
-    this.input = input;
-  }
-
-  setNickname(nickname) {
-    this.nickname = nickname;
-  }
-
-  getNickname() {
-    return this.nickname;
-  }
-
-  constructor(nickname) {
-    this.nickname = nickname;
+  
+  constructor(name) {
+    this.name = name;
   }
 }
 
