@@ -1,0 +1,17 @@
+{
+  "name": "gamejs",
+  "version": "0.0.1",
+  "description": "A simple javascript game engine.",
+  "main": "index.js",
+  "author": "Ari Höysniemi",
+  "scripts": {
+    "compile": "babel --presets latest src/engine.js -o build/main.bundle.js"
+  },
+  "dependencies": {
+    "babel-core": "6.25.x",
+    "babel-preset-latest": "6.24.x"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1"
+  }
+}
