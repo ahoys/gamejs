@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Ari Höysniemi",
   "scripts": {
-    "compile": "webpack ./src/engine.js ./build/main.bundle.js"
+    "compile": "webpack ./src/class.game.js ./build/main.bundle.js"
   },
   "devDependencies": {
     "babel-core": "6.25.x",
