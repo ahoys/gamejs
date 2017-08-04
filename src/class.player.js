@@ -1,5 +1,9 @@
 class Player {
 
+  setInput(input) {
+    this.input = input;
+  }
+
   setNickname(nickname) {
     this.nickname = nickname;
   }
