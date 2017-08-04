@@ -53,6 +53,9 @@ class Game {
     }
   }
 
+  /**
+   * Initializes rendering.
+   */
   initRendering() {
     this.canvas.width = 1280;
     this.canvas.height = 720;
