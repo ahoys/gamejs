@@ -10,11 +10,10 @@ class Game {
   }
 
   /**
-   * Sets a new player.
-   * @param {number} id 
+   * Initializes the game logic and the playable game itself.
    */
-  setPlayer(id) {
-    this.players[id] = new Player('John Doe');
+  initGameLogic() {
+    this.players = [new Player('PLAYER 0')];
   }
 
   /**
@@ -88,9 +87,8 @@ class Game {
     this.canvas = document.getElementById('canvas');
     if (this.canvas && this.canvas.getContext) {
       this.initRendering();
-      // Init the player.
-      this.players = [];
-      this.players[0] = new Player('PLAYER 0');
+      // Init game logic.
+      this.initGameLogic();
     }
   }
 }
