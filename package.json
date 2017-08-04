@@ -5,13 +5,12 @@
   "main": "index.js",
   "author": "Ari Höysniemi",
   "scripts": {
-    "compile": "babel --presets latest src/engine.js -o build/main.bundle.js"
-  },
-  "dependencies": {
-    "babel-core": "6.25.x",
-    "babel-preset-latest": "6.24.x"
+    "compile": "webpack ./src/engine.js ./build/main.bundle.js"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1"
+    "babel-core": "6.25.x",
+    "babel-loader": "7.1.x",
+    "babel-preset-latest": "6.24.x",
+    "webpack": "3.0.x"
   }
 }

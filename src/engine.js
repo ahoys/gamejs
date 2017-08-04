@@ -1,3 +1,5 @@
+const Game = require('./class.game');
+
 class Engine {
 
   drawCube() {
