@@ -1,10 +1,20 @@
+const Player = require('./class.player');
+
 class Game {
 
   drawCube() {
-    const x = Math.floor((Math.random() * this._vw) + 1);
-    const y = Math.floor((Math.random() * this._vh) + 1);
-    this._context2d.fillStyle = 'rgb(200, 0, 0)';
-    this._context2d.fillRect(x, y, 5, 5);
+    const x = Math.floor((Math.random() * this.canvas.width) + 1);
+    const y = Math.floor((Math.random() * this.canvas.height) + 1);
+    this.ctx.fillStyle = 'rgb(200, 0, 0)';
+    this.ctx.fillRect(x, y, 5, 5);
+  }
+
+  /**
+   * Sets a new player.
+   * @param {number} id 
+   */
+  setPlayer(id) {
+    this.players[id] = new Player('John Doe');
   }
 
   /**
@@ -12,10 +22,13 @@ class Game {
    * @param {number} lastTick
    */
   update(lastTick) {
-    if (this.mainmenu) {
-      this.drawBuffer.push(this.drawCube);
-      this.mainmenu = false;
+    this.drawBuffer.push(this.drawCube);
+    // Garbage collection
+    const len = this.drawBuffer.length;
+    for (let i = 512; len > i; i++) {
+      this.drawBuffer.shift();
     }
+    console.log(this.drawBuffer.length);
   }
 
   /**
@@ -23,7 +36,7 @@ class Game {
    * @param {number} tFrame 
    */
   render(tFrame) {
-    this._context2d.clearRect(0, 0, this._vw, this._vh);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBuffer.forEach((t) => {
       this.drawCube();
     });
@@ -38,6 +51,17 @@ class Game {
       this.lastTick = this.lastTick + this.tickLength;
       this.update(this.lastTick);
     }
+  }
+
+  initRendering() {
+    this.canvas.width = 1280;
+    this.canvas.height = 720;
+    this.ctx = this.canvas.getContext('2d');
+    this.lastTick = performance.now();
+    this.lastRender = this.lastTick;
+    this.tickLength = 50;
+    this.drawBuffer = [];
+    this.main(performance.now());
   }
 
   /**
@@ -58,21 +82,13 @@ class Game {
   }
 
   constructor() {
-    this._canvas = document.getElementById('canvas');
-    if (this._canvas && this._canvas.getContext) {
-      this._vw = 1280;
-      this._vh = 720;
-      this._canvas.width = this._vw;
-      this._canvas.height = this._vh;
-      this._context2d = canvas.getContext('2d');
-      this.lastTick = performance.now();
-      this.lastRender = this.lastTick;
-      this.tickLength = 50;
-      // Initial logic
-      this.drawBuffer = [];
-      this.mainmenu = true;
-      // Start the main loop.
-      this.main(performance.now());
+    // Init rendering.
+    this.canvas = document.getElementById('canvas');
+    if (this.canvas && this.canvas.getContext) {
+      this.initRendering();
+      // Init the player.
+      this.players = [];
+      this.players[0] = new Player('PLAYER 0');
     }
   }
 }
