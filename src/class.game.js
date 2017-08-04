@@ -3,33 +3,13 @@ const Player = require('./class.player');
 
 class Game {
 
-  drawCube() {
-    const x = Math.floor((Math.random() * this.stage.width) + 1);
-    const y = Math.floor((Math.random() * this.stage.height) + 1);
+  drawCube(x, y) {
     this.ctx.fillStyle = 'rgb(200, 0, 0)';
     this.ctx.fillRect(x, y, 5, 5);
   }
 
-  handleKeyDown(event) {
-    const { keyCode } = event;
-  }
-
-  handleKeyUp(event) {
-    const { keyCode } = event;
-  }
-
-  handleClick(event) {
-    const { clientX, clientY } = event;
-  }
-
-  /**
-   * Initializes the game logic and the playable game itself.
-   */
-  initGameLogic() {
-    const players = [new Player('PLAYER 0')]; // An abstract player object.
-    document.addEventListener("keydown", this.handleKeyDown, false);
-    document.addEventListener("keyup", this.handleKeyUp, false);
-    this.stage.addEventListener("click", this.handleClick, false);
+  setInput(input) {
+    this.input.push(input);
   }
 
   /**
@@ -37,12 +17,19 @@ class Game {
    * @param {number} lastTick
    */
   update(lastTick) {
-    this.drawBuffer.push(this.drawCube);
+    // Read input
+    this.input.forEach((input) => {
+      if (input.type === 'click') {
+        console.log('ye', input);
+        this.drawBuffer.push(['cube', input.xy[0], input.xy[1]]);
+      }
+    });
     // Garbage collection
     const len = this.drawBuffer.length;
     for (let i = 512; len > i; i++) {
       this.drawBuffer.shift();
     }
+    this.input = [];
   }
 
   /**
@@ -63,7 +50,9 @@ class Game {
   render(tFrame) {
     this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
     this.drawBuffer.forEach((entity) => {
-      this.drawCube();
+      if (entity[0] === 'cube') {
+        this.drawCube(entity[1], entity[2]);
+      }
     });
   }
 
@@ -98,8 +87,23 @@ class Game {
     this.main(performance.now());
   }
 
+  /**
+   * Initializes the game logic and the playable game itself.
+   */
+  initGameLogic() {
+    const players = [new Player('PLAYER 0')]; // An abstract player object.
+  }
+
+  /**
+   * Returns the stage.
+   */
+  getStage() {
+    return this.stage;
+  }
+
   constructor() {
     // Init rendering.
+    this.input = [];
     this.stage = document.getElementById('canvas');
     if (this.stage && this.stage.getContext) {
       this.initRendering();
@@ -109,4 +113,46 @@ class Game {
   }
 }
 
-new Game();
+// Create a new Game instance.
+const thisGame = new Game();
+
+/**
+ * Handles keyDown events.
+ * @param {*} event 
+ */
+const handleKeyDown = (event) => {
+  const { keyCode } = event;
+  thisGame.setInput({
+    type: 'keyDown',
+    keyCode,
+  });
+}
+
+/**
+ * Handles keyUp events.
+ * @param {*} event 
+ */
+const handleKeyUp = (event) => {
+  const { keyCode } = event;
+  thisGame.setInput({
+    type: 'keyUp',
+    keyCode,
+  });
+}
+
+/**
+ * Handles click events.
+ * @param {*} event 
+ */
+const handleClick = (event) => {
+  const { clientX, clientY } = event;
+  thisGame.setInput({
+    type: 'click',
+    xy: [clientX, clientY],
+  });
+}
+
+// Register event listeners for input.
+document.addEventListener("keydown", handleKeyDown, false);
+document.addEventListener("keyup", handleKeyUp, false);
+thisGame.getStage().addEventListener("click", handleClick, false);
