@@ -2,16 +2,20 @@ const res = require('./resources/tiles.json');
 
 class Tile {
 
-  get render() {
-    return {
-      type: "tile",
-      material: this.data.material,
-      texture: this.data.texture,
-    };
+  get type() {
+    return this._type;
   }
 
-  constructor(tile) {
-    this.data = res[tile.type];
+  get material() {
+    return res[this._type].material;
+  }
+
+  get texture() {
+    return res[this._type].texture;
+  }
+
+  constructor(type) {
+    this._type = type;
   }
 }
 

@@ -4,17 +4,17 @@
   "h": 32,
   "tiles": [
     {
-      "type": "stone",
+      "type": "f_dirt",
       "x": 4,
       "y": 4
     },
     {
-      "type": "stone",
+      "type": "f_dirt",
       "x": 5,
       "y": 4
     },
     {
-      "type": "stone",
+      "type": "f_dirt",
       "x": 5,
       "y": 3
     }
