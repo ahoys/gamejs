@@ -10,20 +10,25 @@ class Game {
     this.ctx.fillRect(x, y, 5, 5);
   }
 
-  handleInput() {
-    this.input.forEach((input) => {
-      switch (input.type) {
-        case 'mousemove':
-          this.mouse.x = input.x;
-          this.mouse.y = input.y;
-          break;
-        case 'mousedown':
-          this.mouse.drag = true;
-          break;
-        case 'mouseup':
-          this.mouse.drag = false;
-      }
-    });
+  handleInput(player) {
+    switch (this.input.keyState) {
+      case 87:
+        // W
+        this.level.viewport.pos();
+        break;
+      case 68:
+        // D
+        break;
+      case 83:
+        // S
+        break;
+      case 65:
+        // A
+        break;
+    
+      default:
+        break;
+    }
   }
 
   hasMouseMoved() {
@@ -35,6 +40,7 @@ class Game {
    * @param {number} lastTick
    */
   update(lastTick) {
+    this.handleInput(this.player);
     if (this.level) {
       this.drawBuffer = this.drawBuffer.concat(this.level.render);
     }
