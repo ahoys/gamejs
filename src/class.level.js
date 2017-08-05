@@ -1,23 +1,20 @@
 const Viewport = require('./class.viewport');
-const Tile = require('./class.entity.tile');
+const Tile = require('./class.tile');
 
 class Level {
 
-  get size_w() {
-    return this.data.w;
-  }
-
-  get size_h() {
-    return this.data.h;
-  }
-
-  get render() {
-    const payload = this.lvlTiles;
-    return payload;
-  }
-
+  /**
+   * Returns the viewport.
+   */
   get viewport() {
-    return this.vp;
+    return this._vp;
+  }
+
+  /**
+   * Returns tile objects.
+   */
+  get tiles() {
+    return this._tiles;
   }
 
   /**
@@ -31,11 +28,11 @@ class Level {
       // Rows.
       for (let y = 0; y < h; y++) {
         // Columns.
-        this.tiles[x][y] = new Tile('w_stone');
+        this._tiles[x][y] = new Tile('w_stone');
       }
     }
     tiles.forEach((tile) => {
-      this.tiles[x][y] = new Tile(tile.type);
+      this._tiles[x][y] = new Tile(tile.type);
     });
   }
 
@@ -43,10 +40,10 @@ class Level {
     const data = require(`./levels/${name}.json`);
     this._w = data.w;
     this._h = data.h;
-    this.tiles = [];
-    this.entities = [];
+    this._tiles = [];
+    this._entities = [];
     this.initLevel(data.tiles, data.w, data.h);
-    this.vp = new Viewport(0, 0, 8, 6);
+    this._vp = new Viewport(0, 0, 8, 6);
   }
 }
 
