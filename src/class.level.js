@@ -34,7 +34,7 @@ class Level {
     this.data = require(`./levels/${name}.json`);
     this.lvlTiles = [];
     this.setTiles(this.data.tiles);
-    this.vp = new Viewport(0, 0, 100);
+    this.vp = new Viewport(0, 0, 8, 6);
   }
 }
 
