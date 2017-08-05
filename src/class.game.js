@@ -12,23 +12,43 @@ class Game {
     this.input.push(input);
   }
 
+  handleInput() {
+    this.input.forEach((input) => {
+      switch (input.type) {
+        case 'mousemove':
+          this.mouse.x = input.x;
+          this.mouse.y = input.y;
+          break;
+        case 'mousedown':
+          this.mouse.drag = true;
+          break;
+        case 'mouseup':
+          this.mouse.drag = false;
+      }
+    });
+  }
+
+  hasMouseMoved() {
+    return (this.mouse.x !== this.mouse.pX) || (this.mouse.y !== this.mouse.pY);
+  }
+
   /**
    * Updates the game logic.
    * @param {number} lastTick
    */
   update(lastTick) {
     // Read input
-    this.input.forEach((input) => {
-      if (input.type === 'click') {
-        console.log(input);
-        this.drawBuffer.push(['cube', input.x, input.y]);
-      }
-    });
+    this.handleInput();
+    if (this.mouse.drag && this.hasMouseMoved()) {
+      this.drawBuffer.push(['cube', this.mouse.x, this.mouse.y]);
+    }
     // Garbage collection
     const len = this.drawBuffer.length;
     for (let i = 512; len > i; i++) {
       this.drawBuffer.shift();
     }
+    this.mouse.pX = this.mouse.x;
+    this.mouse.pY = this.mouse.y;
     this.input = [];
   }
 
@@ -92,6 +112,13 @@ class Game {
    */
   initGameLogic() {
     const players = [new Player('PLAYER 0')]; // An abstract player object.
+    this.mouse = {
+      x: 0,
+      y: 0,
+      pX: 0,
+      pY: 0,
+      drag: false,
+    }
   }
 
   /**
@@ -143,14 +170,28 @@ const handleKeyUp = (event) => {
   });
 }
 
-/**
- * Handles click events.
- * @param {*} event 
- */
-const handleClick = (event) => {
+const handleMouseDown = (event) => {
   const { clientX, clientY } = event;
   thisGame.setInput({
-    type: 'click',
+    type: 'mousedown',
+    x: clientX - stage.offsetLeft + document.body.scrollLeft,
+    y: clientY - stage.offsetTop + document.body.scrollTop,
+  });
+}
+
+const handleMouseUp = (event) => {
+  const { clientX, clientY } = event;
+  thisGame.setInput({
+    type: 'mouseup',
+    x: clientX - stage.offsetLeft + document.body.scrollLeft,
+    y: clientY - stage.offsetTop + document.body.scrollTop,
+  });
+}
+
+const handleMouseMove = (event) => {
+  const { clientX, clientY } = event;
+  thisGame.setInput({
+    type: 'mousemove',
     x: clientX - stage.offsetLeft + document.body.scrollLeft,
     y: clientY - stage.offsetTop + document.body.scrollTop,
   });
@@ -159,4 +200,6 @@ const handleClick = (event) => {
 // Register event listeners for input.
 document.addEventListener("keydown", handleKeyDown, false);
 document.addEventListener("keyup", handleKeyUp, false);
-thisGame.getStage().addEventListener("click", handleClick, false);
+thisGame.getStage().addEventListener("mousedown", handleMouseDown, false);
+thisGame.getStage().addEventListener("mouseup", handleMouseUp, false);
+thisGame.getStage().addEventListener("mousemove", handleMouseMove, false);
