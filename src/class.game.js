@@ -20,8 +20,8 @@ class Game {
     // Read input
     this.input.forEach((input) => {
       if (input.type === 'click') {
-        console.log('ye', input);
-        this.drawBuffer.push(['cube', input.xy[0], input.xy[1]]);
+        console.log(input);
+        this.drawBuffer.push(['cube', input.x, input.y]);
       }
     });
     // Garbage collection
@@ -101,10 +101,10 @@ class Game {
     return this.stage;
   }
 
-  constructor() {
+  constructor(stage) {
     // Init rendering.
     this.input = [];
-    this.stage = document.getElementById('canvas');
+    this.stage = stage;
     if (this.stage && this.stage.getContext) {
       this.initRendering();
       // Init game logic.
@@ -113,8 +113,11 @@ class Game {
   }
 }
 
+// A usable canvas.
+const stage = document.getElementById('canvas');
+
 // Create a new Game instance.
-const thisGame = new Game();
+const thisGame = new Game(stage);
 
 /**
  * Handles keyDown events.
@@ -148,7 +151,8 @@ const handleClick = (event) => {
   const { clientX, clientY } = event;
   thisGame.setInput({
     type: 'click',
-    xy: [clientX, clientY],
+    x: clientX - stage.offsetLeft + document.body.scrollLeft,
+    y: clientY - stage.offsetTop + document.body.scrollTop,
   });
 }
 
