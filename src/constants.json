@@ -1,0 +1,5 @@
+{
+  "DEFAULT_STAGE_W": 900,
+  "DEFAULT_STAGE_H": 800,
+  "AVAILABLE_WORLDTILES": ["w_bedrock", "w_stone", "f_dirt"]
+}

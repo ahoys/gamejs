@@ -1,7 +1,7 @@
 {
   "title": "Entrance",
-  "w": 32,
-  "h": 32,
+  "width": 16,
+  "height": 16,
   "tiles": [
     {
       "type": "f_dirt",

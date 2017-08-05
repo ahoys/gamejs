@@ -1,52 +1,30 @@
-const c = require('./constants');
+const c = require('./constants.json');
 const Player = require('./class.player');
 const Input = require('./class.input');
 const Level = require('./class.level');
 
 class Game {
 
-  drawCube(x, y) {
-    this.ctx.fillStyle = 'rgb(200, 0, 0)';
-    this.ctx.fillRect(x, y, 5, 5);
-  }
-
-  handleInput(player) {
-    switch (this.input.keyState) {
-      case 87:
-        // W
-        this.level.viewport.pos();
-        break;
-      case 68:
-        // D
-        break;
-      case 83:
-        // S
-        break;
-      case 65:
-        // A
-        break;
-    
-      default:
-        break;
-    }
-  }
-
-  hasMouseMoved() {
-    return (this.mouse.x !== this.mouse.pX) || (this.mouse.y !== this.mouse.pY);
-  }
-
   /**
    * Updates the game logic.
    * @param {number} lastTick
    */
   update(lastTick) {
-    this.handleInput(this.player);
-    if (this.level) {
-      this.drawBuffer = this.drawBuffer.concat(this.level.render);
+    // Refresh level.
+    this.drawBuffer = [];
+    for (let x = 0; x < this.level.width; x++) {
+      for (let y = 0; y < this.level.height; y++) {
+        this.drawBuffer.push({
+          x: x * 100,
+          y: y * 100,
+          renderType: this.level.worldTiles[x][y].renderType,
+          renderColor: this.level.worldTiles[x][y].renderColor,
+        });
+      }
     }
-    // Garbage collection
+    // Garbage collection.
     const len = this.drawBuffer.length;
-    for (let i = 512; len > i; i++) {
+    for (let i = 1024; len > i; i++) {
       this.drawBuffer.shift();
     }
   }
@@ -68,12 +46,15 @@ class Game {
    */
   render(tFrame) {
     this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
-    if (this.level) {
-      this.level.tiles.forEach((tile) => {
-        this.ctx.fillStyle = `rgb(${tile.color})`;
-        this.ctx.fillRect(tile.x, tile.y, 100, 100);
-      });
-    }
+    this.drawBuffer.forEach(item => {
+      if (item.renderType === 'world_tile') {
+        this.ctx.fillStyle = `rgb(${String(item.renderColor)})`;
+        this.ctx.fillRect(item.x, item.y, 100, 100);
+      } else if (item.renderType === 'entity') {
+        this.ctx.fillStyle = `rgb(${item.renderColor})`;
+        this.ctx.fillRect(item.x, item.y, 50, 50);
+      }
+    });
   }
 
   /**
@@ -97,12 +78,12 @@ class Game {
    * Initializes rendering.
    */
   initRendering() {
-    this.stage.width = c.STAGE_W;
-    this.stage.height = c.STAGE_H;
+    this.stage.width = c.DEFAULT_STAGE_W;
+    this.stage.height = c.DEFAULT_STAGE_H;
     this.ctx = this.stage.getContext('2d');
     this.lastTick = performance.now();
     this.lastRender = this.lastTick;
-    this.tickLength = 50;
+    this.tickLength = 10;
     this.drawBuffer = [];
     this.main(performance.now());
   }

@@ -7,8 +7,7 @@
     "damage": 0,
     "speed": 1,
     "material": "bedrock",
-    "texture": "w_bedrock",
-    "color": "95, 93, 92"
+    "color": [95, 93, 92]
   },
   "w_stone": {
     "isWall": true,
@@ -18,8 +17,7 @@
     "damage": 0,
     "speed": 1,
     "material": "stone",
-    "texture": "w_stone",
-    "color": "56, 45, 34"
+    "color": [56, 45, 34]
   },
   "f_dirt": {
     "isWall": false,
@@ -29,7 +27,6 @@
     "damage": 0,
     "speed": 1,
     "material": "dirt",
-    "texture": "f_dirt",
-    "color": "150, 120, 90"
+    "color": [150, 120, 90]
   }
 }

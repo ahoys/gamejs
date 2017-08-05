@@ -1,49 +1,71 @@
+const c = require('./constants.json');
 const Viewport = require('./class.viewport');
 const Tile = require('./class.tile');
 
 class Level {
 
   /**
-   * Returns the viewport.
+   * Returns width of the map in grids.
    */
-  get viewport() {
-    return this._vp;
+  get width() {
+    return this._mapW;
   }
 
   /**
-   * Returns tile objects.
+   * Returns height of the map in grids.
    */
-  get tiles() {
-    return this._tiles;
+  get height() {
+    return this._mapH;
   }
 
   /**
-   * Generate the level.
-   * @param {*} tiles 
-   * @param {*} w 
-   * @param {*} h 
+   * Returns the current world tiles.
    */
-  initLevel(tiles, w, h) {
-    for (let x = 0; x < w; x++) {
-      // Rows.
-      for (let y = 0; y < h; y++) {
-        // Columns.
-        this._tiles.push(new Tile('w_stone', x * 100, y * 100));
+  get worldTiles() {
+    return this._worldTiles;
+  }
+
+  /**
+   * Generates the level.
+   * @param {*} loadedTiles
+   */
+  initWorldTiles(loadedTiles) {
+    // Generate basic tiles.
+    for (let x = 0; x < this._mapW; x++) {
+      for (let y = 0; y < this._mapH; y++) {
+        // Borders should be made of bedrock.
+        // Don't want anyone to get into void, right?
+        const type = x === 0 || y === 0 || x === this._mapW - 1 || y === this._mapH - 1
+          ? 'w_bedrock' : 'w_stone';
+        if (y === 0) {
+          this._worldTiles[x] = [new Tile(type)];
+        } else {
+          this._worldTiles[x][y] = new Tile(type);
+        }
       }
     }
-    tiles.forEach((tile) => {
-      this._tiles.push(new Tile(tile.type, tile.x * 100, tile.y * 100));
+    // Load custom tiles.
+    loadedTiles.forEach(lt => {
+      if (
+        c.AVAILABLE_WORLDTILES.indexOf(lt.type) !== -1 &&
+        lt.x && // Can't override bedrock borders.
+        lt.y &&
+        lt.x < this._mapW - 1 &&
+        lt.y < this._mapH - 1
+      ) {
+        this._worldTiles[lt.x][lt.y] = new Tile(lt.type);
+      }
     });
   }
 
   constructor(name) {
-    const data = require(`./levels/${name}.json`);
-    this._w = data.w;
-    this._h = data.h;
-    this._tiles = [];
+    const Data = require(`./levels/${name}.json`);
+    this._mapW = Data.width;
+    this._mapH = Data.height;
+    this._worldTiles = [];
     this._entities = [];
-    this.initLevel(data.tiles, data.w, data.h);
-    this._vp = new Viewport(0, 0, 8, 6);
+    this.initWorldTiles(Data.tiles);
+    // this._vp = new Viewport(0, 0, 8, 6);
   }
 }
 
