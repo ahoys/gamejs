@@ -1,15 +1,12 @@
 const c = require('./constants');
 const Player = require('./class.player');
+const Input = require('./class.input');
 
 class Game {
 
   drawCube(x, y) {
     this.ctx.fillStyle = 'rgb(200, 0, 0)';
     this.ctx.fillRect(x, y, 5, 5);
-  }
-
-  setInput(input) {
-    this.input.push(input);
   }
 
   handleInput() {
@@ -38,18 +35,18 @@ class Game {
    */
   update(lastTick) {
     // Read input
-    this.handleInput();
-    if (this.mouse.drag && this.hasMouseMoved()) {
-      this.drawBuffer.push(['cube', this.mouse.x, this.mouse.y]);
-    }
+    // this.handleInput();
+    //if (this.mouse.drag && this.hasMouseMoved()) {
+    //  this.drawBuffer.push(['cube', this.mouse.x, this.mouse.y]);
+    //}
+    // Receive input.
+    const keys = this.input.getKeys();
+    const mouse = this.input.getMouse();
     // Garbage collection
     const len = this.drawBuffer.length;
     for (let i = 512; len > i; i++) {
       this.drawBuffer.shift();
     }
-    this.mouse.pX = this.mouse.x;
-    this.mouse.pY = this.mouse.y;
-    this.input = [];
   }
 
   /**
@@ -111,14 +108,8 @@ class Game {
    * Initializes the game logic and the playable game itself.
    */
   initGameLogic() {
-    const players = [new Player('PLAYER 0')]; // An abstract player object.
-    this.mouse = {
-      x: 0,
-      y: 0,
-      pX: 0,
-      pY: 0,
-      drag: false,
-    }
+    this.players = [new Player('PLAYER 0')]; // An abstract player object.
+    this.input = new Input(this.stage); // An input handler.
   }
 
   /**
@@ -128,78 +119,14 @@ class Game {
     return this.stage;
   }
 
-  constructor(stage) {
-    // Init rendering.
-    this.input = [];
-    this.stage = stage;
+  constructor() {
+    this.stage = document.getElementById('canvas');
     if (this.stage && this.stage.getContext) {
       this.initRendering();
-      // Init game logic.
       this.initGameLogic();
     }
   }
 }
 
-// A usable canvas.
-const stage = document.getElementById('canvas');
-
 // Create a new Game instance.
-const thisGame = new Game(stage);
-
-/**
- * Handles keyDown events.
- * @param {*} event 
- */
-const handleKeyDown = (event) => {
-  const { keyCode } = event;
-  thisGame.setInput({
-    type: 'keyDown',
-    keyCode,
-  });
-}
-
-/**
- * Handles keyUp events.
- * @param {*} event 
- */
-const handleKeyUp = (event) => {
-  const { keyCode } = event;
-  thisGame.setInput({
-    type: 'keyUp',
-    keyCode,
-  });
-}
-
-const handleMouseDown = (event) => {
-  const { clientX, clientY } = event;
-  thisGame.setInput({
-    type: 'mousedown',
-    x: clientX - stage.offsetLeft + document.body.scrollLeft,
-    y: clientY - stage.offsetTop + document.body.scrollTop,
-  });
-}
-
-const handleMouseUp = (event) => {
-  const { clientX, clientY } = event;
-  thisGame.setInput({
-    type: 'mouseup',
-    x: clientX - stage.offsetLeft + document.body.scrollLeft,
-    y: clientY - stage.offsetTop + document.body.scrollTop,
-  });
-}
-
-const handleMouseMove = (event) => {
-  const { clientX, clientY } = event;
-  thisGame.setInput({
-    type: 'mousemove',
-    x: clientX - stage.offsetLeft + document.body.scrollLeft,
-    y: clientY - stage.offsetTop + document.body.scrollTop,
-  });
-}
-
-// Register event listeners for input.
-document.addEventListener("keydown", handleKeyDown, false);
-document.addEventListener("keyup", handleKeyUp, false);
-thisGame.getStage().addEventListener("mousedown", handleMouseDown, false);
-thisGame.getStage().addEventListener("mouseup", handleMouseUp, false);
-thisGame.getStage().addEventListener("mousemove", handleMouseMove, false);
+new Game();
