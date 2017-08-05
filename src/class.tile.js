@@ -3,27 +3,24 @@ const res = require('./resources/tiles.json');
 class Tile {
 
   isWall() {
-    return res[this._type].isWall;
+    return this._assets.isWall;
   }
 
   get type() {
     return this._type;
   }
 
-  get material() {
-    return res[this._type].material;
-  }
-
-  get renderType() {
+  getRenderType() {
     return 'world_tile';
   }
 
-  get renderColor() {
-    return res[this._type].color;
+  getRenderColor() {
+    return this._assets.color;
   }
 
-  constructor(type, x, y) {
+  constructor(type) {
     this._type = type;
+    this._assets = res[type];
   }
 }
 

@@ -17,6 +17,8 @@ class Game {
         this.drawBuffer.push({
           x: x * 100,
           y: y * 100,
+          gridX: x,
+          gridY: y,
           entity: this.level.worldTiles[x][y],
         });
       }
@@ -40,17 +42,53 @@ class Game {
   }
 
   /**
+   * Return shaded color.
+   * @param {*} entity 
+   * @param {*} x 
+   * @param {*} y 
+   */
+  shadeColor(entity, x, y) {
+    if (entity.isWall()) {
+      for (let i = -1; i < 2; i++) {
+        for (let r = -1; r < 2; r++) {
+          const gridX = x + i;
+          const gridY = y + r;
+          if (
+            gridX >= 0 &&
+            gridY >= 0 &&
+            gridX < this.level.width &&
+            gridY < this.level.height &&
+            (gridX !== x || gridY !== y) &&
+            !this.level.worldTiles[gridX][gridY].isWall()
+          ) {
+            // We have found floor nearby. Figure out how it
+            // affects us.
+            const rc = entity.getRenderColor();
+            if (i === 0 && r === 1) {
+              // Floor S.
+              return `rgb(${rc[0] + 20}, ${rc[1] + 20}, ${rc[2] + 20})`;
+            } else {
+              return `rgb(${rc[0] + 5}, ${rc[1] + 5}, ${rc[2] + 5})`;
+            }
+          }
+        }
+      }
+    }
+    return `rgb(${entity.getRenderColor()})`;
+  }
+
+  /**
    * Renders the stored logic.
    * @param {number} tFrame 
    */
   render(tFrame) {
     this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
     this.drawBuffer.forEach(item => {
-      if (item.entity.renderType === 'world_tile') {
-        this.ctx.fillStyle = `rgb(${String(item.entity.renderColor)})`;
+      if (item.entity.getRenderType() === 'world_tile') {
+        this.ctx.fillStyle = this.shadeColor(item.entity, item.gridX, item.gridY);
         this.ctx.fillRect(item.x, item.y, 100, 100);
-      } else if (item.entity.renderType === 'entity') {
-        this.ctx.fillStyle = `rgb(${item.entity.renderColor})`;
+      } else if (item.entity.getRenderType() === 'entity') {
+        this.ctx.fillStyle = this.shadeColor(item.entity, item.gridX, item.gridY);
         this.ctx.fillRect(item.x, item.y, 50, 50);
       }
     });
