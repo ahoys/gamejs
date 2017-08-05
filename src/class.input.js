@@ -28,7 +28,11 @@ class Input {
     this.keys = newKeys;
   }
 
-  handleEventMouseDown(event, stage) {
+  /**
+   * Handles mouse button press.
+   * @param {*} event 
+   */
+  handleEventMouseDown(event) {
     const now = performance.now();
     this.mouse.down = {
       time: now,
@@ -41,6 +45,10 @@ class Input {
     };
   }
 
+  /**
+   * Handles mouse button release.
+   * @param {*} event 
+   */
   handleEventMouseUp(event) {
     const now = performance.now();
     this.mouse.up = {
@@ -58,12 +66,13 @@ class Input {
    * Handles mouse movement.
    * Registers the current and the past location of the cursor.
    * @param {*} event 
+   * @param {*} stage 
    */
-  handleEventMouseMove(event) {
+  handleEventMouseMove(event, stage) {
     this.mouse.pX = this.mouse.x;
     this.mouse.pY = this.mouse.y;
-    this.mouse.x = event.clientX - this.stage.offsetLeft + document.body.scrollLeft;
-    this.mouse.y = event.clientY - this.stage.offsetTop + document.body.scrollTop;
+    this.mouse.x = event.clientX - stage.offsetLeft + document.body.scrollLeft;
+    this.mouse.y = event.clientY - stage.offsetTop + document.body.scrollTop;
     this.mouse.distance = this.getDistance(
       this.mouse.x, this.mouse.y, this.mouse.pX, this.mouse.pY);
   }
@@ -85,16 +94,21 @@ class Input {
     return Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
   }
 
-  getKeys() {
+  /**
+   * Returns key state.
+   */
+  get keyState() {
     return this.keys;
   }
 
-  getMouse() {
+  /**
+   * Returns mouse state.
+   */
+  get mouseState() {
     return this.mouse;
   }
 
   constructor(stage) {
-    this.stage = stage;
     this.keys = [];
     this.mouse = {
       x: 0,
@@ -117,11 +131,12 @@ class Input {
       },
       distance: 0,
     };
+    // Register event listeners.
     document.addEventListener("keydown", () => this.handleEventKeyDown(event), false);
     document.addEventListener("keyup", () => this.handleEventKeyUp(event), false);
     stage.addEventListener("mousedown", () => this.handleEventMouseDown(event), false);
     stage.addEventListener("mouseup", () => this.handleEventMouseUp(event), false);
-    stage.addEventListener("mousemove", () => this.handleEventMouseMove(event), false);
+    stage.addEventListener("mousemove", () => this.handleEventMouseMove(event, stage), false);
     stage.addEventListener('contextmenu', event => event.preventDefault());
   }
 }

@@ -39,9 +39,6 @@ class Game {
     //if (this.mouse.drag && this.hasMouseMoved()) {
     //  this.drawBuffer.push(['cube', this.mouse.x, this.mouse.y]);
     //}
-    // Receive input.
-    const keys = this.input.getKeys();
-    const mouse = this.input.getMouse();
     // Garbage collection
     const len = this.drawBuffer.length;
     for (let i = 512; len > i; i++) {
