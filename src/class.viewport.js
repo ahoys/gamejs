@@ -1,17 +1,23 @@
 class Viewport {
 
-  set pos(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  set pos(pos) {
+    this.x = pos.x;
+    this.y = pos.y;
+    this.z = pos.z;
   }
 
-  constructor(w, h, z) {
+  get pos() {
+    return {
+      x: this.x,
+      y: this.x,
+      z: this.z,
+    };
+  }
+
+  constructor() {
     this.x = 0; // Top-left corner.
     this.y = 0; // Top-right corner.
-    this.w = w; // Width of the viewport (px).
-    this.h = h; // Height of the viewport (px).
-    this.z = z; // Height from the ground (px).
+    this.z = 1; // Height of the viewport (px).
   }
 }
 
