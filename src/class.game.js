@@ -34,11 +34,6 @@ class Game {
    * @param {number} lastTick
    */
   update(lastTick) {
-    // Read input
-    // this.handleInput();
-    //if (this.mouse.drag && this.hasMouseMoved()) {
-    //  this.drawBuffer.push(['cube', this.mouse.x, this.mouse.y]);
-    //}
     // Garbage collection
     const len = this.drawBuffer.length;
     for (let i = 512; len > i; i++) {
