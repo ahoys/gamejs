@@ -1,15 +1,4 @@
 {
-  "w_void": {
-    "isWall": true,
-    "isBreakable": false,
-    "isFixable": false,
-    "health": 1,
-    "damage": 0,
-    "speed": 1,
-    "material": "",
-    "texture": "",
-    "color": "0, 0, 0"
-  },
   "w_bedrock": {
     "isWall": true,
     "isBreakable": false,
