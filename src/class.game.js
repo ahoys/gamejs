@@ -17,8 +17,7 @@ class Game {
         this.drawBuffer.push({
           x: x * 100,
           y: y * 100,
-          renderType: this.level.worldTiles[x][y].renderType,
-          renderColor: this.level.worldTiles[x][y].renderColor,
+          entity: this.level.worldTiles[x][y],
         });
       }
     }
@@ -47,11 +46,11 @@ class Game {
   render(tFrame) {
     this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
     this.drawBuffer.forEach(item => {
-      if (item.renderType === 'world_tile') {
-        this.ctx.fillStyle = `rgb(${String(item.renderColor)})`;
+      if (item.entity.renderType === 'world_tile') {
+        this.ctx.fillStyle = `rgb(${String(item.entity.renderColor)})`;
         this.ctx.fillRect(item.x, item.y, 100, 100);
-      } else if (item.renderType === 'entity') {
-        this.ctx.fillStyle = `rgb(${item.renderColor})`;
+      } else if (item.entity.renderType === 'entity') {
+        this.ctx.fillStyle = `rgb(${item.entity.renderColor})`;
         this.ctx.fillRect(item.x, item.y, 50, 50);
       }
     });
