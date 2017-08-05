@@ -1,0 +1,22 @@
+{
+  "title": "Entrance",
+  "w": 32,
+  "h": 32,
+  "tiles": [
+    {
+      "type": "stone",
+      "x": 4,
+      "y": 4
+    },
+    {
+      "type": "stone",
+      "x": 5,
+      "y": 4
+    },
+    {
+      "type": "stone",
+      "x": 5,
+      "y": 3
+    }
+  ]
+}

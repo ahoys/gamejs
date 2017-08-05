@@ -1,6 +1,7 @@
 const c = require('./constants');
 const Player = require('./class.player');
 const Input = require('./class.input');
+const Level = require('./class.level');
 
 class Game {
 
@@ -34,6 +35,9 @@ class Game {
    * @param {number} lastTick
    */
   update(lastTick) {
+    if (this.level) {
+      this.drawBuffer = this.drawBuffer.concat(this.level.render);
+    }
     // Garbage collection
     const len = this.drawBuffer.length;
     for (let i = 512; len > i; i++) {
@@ -59,8 +63,7 @@ class Game {
   render(tFrame) {
     this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
     this.drawBuffer.forEach((entity) => {
-      if (entity[0] === 'cube') {
-        this.drawCube(entity[1], entity[2]);
+      if (entity.render) {
       }
     });
   }
@@ -102,6 +105,7 @@ class Game {
   initGameLogic() {
     this.players = [new Player('PLAYER 0')]; // An abstract player object.
     this.input = new Input(this.stage); // An input handler.
+    this.level = new Level('entrance'); // Initializes the first game level. -1: debug level.
   }
 
   /**

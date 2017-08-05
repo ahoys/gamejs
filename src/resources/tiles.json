@@ -1,0 +1,42 @@
+{
+  "stone": {
+    "material": "stone",
+    "stepSound": "stone",
+    "texture": "t_tile_stone.png",
+    "walkable": true,
+    "flyable": true,
+    "speed": 100,
+    "damage": 0,
+    "damageType": ""
+  },
+  "gravel": {
+    "material": "gravel",
+    "stepSound": "gravel",
+    "texture": "t_tile_gravel.png",
+    "walkable": true,
+    "flyable": true,
+    "speed": 90,
+    "damage": 0,
+    "damageType": ""
+  },
+  "lava": {
+    "material": "lava",
+    "stepSound": "",
+    "texture": "t_tile_lava.png",
+    "walkable": true,
+    "flyable": true,
+    "speed": 50,
+    "damage": 25,
+    "damageType": "fire"
+  },
+  "hole": {
+    "material": "hole",
+    "stepSound": "",
+    "texture": "",
+    "walkable": false,
+    "flyable": true,
+    "speed": 100,
+    "damage": 0,
+    "damageType": ""
+  }
+}
