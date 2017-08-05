@@ -15,8 +15,8 @@ class Game {
     for (let x = 0; x < this.level.width; x++) {
       for (let y = 0; y < this.level.height; y++) {
         this.drawBuffer.push({
-          x: x * 50,
-          y: y * 50,
+          x: x * 100,
+          y: y * 100,
           renderType: this.level.worldTiles[x][y].renderType,
           renderColor: this.level.worldTiles[x][y].renderColor,
         });
