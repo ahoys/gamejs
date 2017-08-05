@@ -1,4 +1,4 @@
 module.exports = {
-  STAGE_W: 640,
-  STAGE_H: 480,
+  STAGE_W: 900,
+  STAGE_H: 800,
 };

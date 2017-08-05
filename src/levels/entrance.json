@@ -17,6 +17,16 @@
       "type": "f_dirt",
       "x": 5,
       "y": 3
+    },
+    {
+      "type": "w_bedrock",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "type": "w_bedrock",
+      "x": 0,
+      "y": 1
     }
   ]
 }
