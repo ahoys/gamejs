@@ -1,3 +1,4 @@
+const Viewport = require('./class.viewport');
 const Tile = require('./class.tile');
 
 class Level {
@@ -25,10 +26,15 @@ class Level {
     return payload;
   }
 
+  get viewport() {
+    return this.vp;
+  }
+
   constructor(name) {
     this.data = require(`./levels/${name}.json`);
     this.lvlTiles = [];
     this.setTiles(this.data.tiles);
+    this.vp = new Viewport(0, 0, 100);
   }
 }
 
