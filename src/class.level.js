@@ -28,11 +28,11 @@ class Level {
       // Rows.
       for (let y = 0; y < h; y++) {
         // Columns.
-        this._tiles[x][y] = new Tile('w_stone');
+        this._tiles.push(new Tile('w_stone', x * 100, y * 100));
       }
     }
     tiles.forEach((tile) => {
-      this._tiles[x][y] = new Tile(tile.type);
+      this._tiles.push(new Tile(tile.type, tile.x * 100, tile.y * 100));
     });
   }
 

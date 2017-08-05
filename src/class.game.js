@@ -68,10 +68,12 @@ class Game {
    */
   render(tFrame) {
     this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
-    this.drawBuffer.forEach((entity) => {
-      if (entity.render) {
-      }
-    });
+    if (this.level) {
+      this.level.tiles.forEach((tile) => {
+        this.ctx.fillStyle = `rgb(${tile.color})`;
+        this.ctx.fillRect(tile.x, tile.y, 100, 100);
+      });
+    }
   }
 
   /**
