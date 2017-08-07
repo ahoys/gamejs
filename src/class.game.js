@@ -1,7 +1,8 @@
 const c = require('./constants.json');
-const Player = require('./class.player');
-const Input = require('./class.input');
+const Renderer = require('./class.renderer');
+const Viewport = require('./class.viewport');
 const Level = require('./class.level');
+const Input = require('./class.input');
 
 class Game {
 
@@ -11,18 +12,15 @@ class Game {
    */
   update(lastTick) {
     // Refresh level.
-    this.drawBuffer = [];
-    for (let x = 0; x < this.level.width; x++) {
-      for (let y = 0; y < this.level.height; y++) {
-        this.drawBuffer.push({
-          x: x * 100,
-          y: y * 100,
-          gridX: x,
-          gridY: y,
-          entity: this.level.worldTiles[x][y],
-        });
-      }
-    }
+    this._time = (this.lastTick + this.tickLength) / 1000;
+    this.drawBuffer = this.level.worldTiles;
+    this.textBuffer = [{
+      x: 16,
+      y: 16,
+      str: '',
+      color: 'white',
+      isFps: true,
+    }];
     // Garbage collection.
     const len = this.drawBuffer.length;
     for (let i = 1024; len > i; i++) {
@@ -78,23 +76,6 @@ class Game {
   }
 
   /**
-   * Renders the stored logic.
-   * @param {number} tFrame 
-   */
-  render(tFrame) {
-    this.ctx.clearRect(0, 0, this.stage.width, this.stage.height);
-    this.drawBuffer.forEach(item => {
-      if (item.entity.getRenderType() === 'world_tile') {
-        this.ctx.fillStyle = this.shadeColor(item.entity, item.gridX, item.gridY);
-        this.ctx.fillRect(item.x, item.y, 100, 100);
-      } else if (item.entity.getRenderType() === 'entity') {
-        this.ctx.fillStyle = this.shadeColor(item.entity, item.gridX, item.gridY);
-        this.ctx.fillRect(item.x, item.y, 50, 50);
-      }
-    });
-  }
-
-  /**
    * The main game loop.
    * @param {number} tFrame 
    */
@@ -107,7 +88,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this.tickLength);
     }
     this.queueUpdates(numTicks);
-    this.render(tFrame);
+    this.renderer.draw(tFrame, this.drawBuffer, this.textBuffer);
     this.lastRender = tFrame;
   }
 
@@ -115,13 +96,15 @@ class Game {
    * Initializes rendering.
    */
   initRendering() {
+    this.renderer = new Renderer(this.stage, c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H, this.viewport);
     this.stage.width = c.DEFAULT_STAGE_W;
     this.stage.height = c.DEFAULT_STAGE_H;
     this.ctx = this.stage.getContext('2d');
     this.lastTick = performance.now();
     this.lastRender = this.lastTick;
-    this.tickLength = 10;
+    this.tickLength = 50;
     this.drawBuffer = [];
+    this.textBuffer = [];
     this.main(performance.now());
   }
 
@@ -129,9 +112,10 @@ class Game {
    * Initializes the game logic and the playable game itself.
    */
   initGameLogic() {
-    this.players = [new Player('PLAYER 0')]; // An abstract player object.
-    this.input = new Input(this.stage); // An input handler.
+    this._time = 0;
+    this.viewport = new Viewport(0, 0, c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
     this.level = new Level('entrance'); // Initializes the first game level. -1: debug level.
+    this.input = new Input(this.stage); // An input handler.
   }
 
   /**
@@ -144,8 +128,8 @@ class Game {
   constructor() {
     this.stage = document.getElementById('canvas');
     if (this.stage && this.stage.getContext) {
-      this.initRendering();
       this.initGameLogic();
+      this.initRendering();
     }
   }
 }

@@ -1,6 +1,5 @@
 const c = require('./constants.json');
-const Viewport = require('./class.viewport');
-const Tile = require('./class.tile');
+const EntityTile = require('./class.entityTile');
 
 class Level {
 
@@ -22,7 +21,13 @@ class Level {
    * Returns the current world tiles.
    */
   get worldTiles() {
-    return this._worldTiles;
+    const payload = [];
+    for (let x = 0; x < this._mapW; x++) {
+      for (let y = 0; y < this._mapH; y++) {
+        payload.push(this._worldTiles[x][y]);
+      }
+    }
+    return payload;
   }
 
   /**
@@ -38,9 +43,9 @@ class Level {
         const type = x === 0 || y === 0 || x === this._mapW - 1 || y === this._mapH - 1
           ? 'w_bedrock' : 'w_stone';
         if (y === 0) {
-          this._worldTiles[x] = [new Tile(type)];
+          this._worldTiles[x] = [new EntityTile(type, x * 100, y * 100, 100, 100)];
         } else {
-          this._worldTiles[x][y] = new Tile(type);
+          this._worldTiles[x][y] = new EntityTile(type, x * 100, y * 100, 100, 100);
         }
       }
     }
@@ -53,7 +58,7 @@ class Level {
         lt.x < this._mapW - 1 &&
         lt.y < this._mapH - 1
       ) {
-        this._worldTiles[lt.x][lt.y] = new Tile(lt.type);
+        this._worldTiles[lt.x][lt.y] = new EntityTile(lt.type, lt.x * 100, lt.y * 100, 100, 100);
       }
     });
   }
@@ -63,9 +68,8 @@ class Level {
     this._mapW = Data.width;
     this._mapH = Data.height;
     this._worldTiles = [];
-    this._entities = [];
+    this._worldEntities = [];
     this.initWorldTiles(Data.tiles);
-    // this._vp = new Viewport(0, 0, 8, 6);
   }
 }
 

@@ -1,42 +1,42 @@
 class Viewport {
 
-  set posX(value) {
-    this.x = value;
+  set x(value) {
+    this._x = value;
   }
 
-  get posX() {
-    return this.x;
+  get x() {
+    return this._x;
   }
 
-  set posY(value) {
-    this.y = value;
+  set y(value) {
+    this._y = value;
   }
 
-  get posY() {
-    return this.y;
+  get y() {
+    return this._y;
   }
 
   set width(value) {
-    this.w = value;
+    this._width = value;
   }
 
   get width() {
-    return this.w;
+    return this._width;
   }
 
   set height(value) {
-    this.h = value;
+    this._height = value;
   }
 
   get height() {
-    return this.h;
+    return this._height;
   }
 
-  constructor(x, y, w, h) {
-    this.x = x; // Top-left corner.
-    this.y = y; // Top-right corner.
-    this.w = w; // How many tiles is the width.
-    this.h = h; // How many tiles is the height.
+  constructor(x, y, width, height) {
+    this._x = x; // Position of the viewport (px).
+    this._y = y;
+    this._width = width; // Size of the viewport (px).
+    this._height = height;
   }
 }
 
