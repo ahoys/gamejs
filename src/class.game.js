@@ -42,8 +42,8 @@ class Game {
     this.textBuffer.push({
       x: 16,
       y: 16,
-      str: `Main delay: ${this._debugPerfM} ms | ` +
-      `Update delay: ${this._debugPerfU} ms | ` +
+      str: `Main delay: ${this._debugPerfM}/16.7 ms | ` +
+      `Update delay: ${this._debugPerfU}/${this.tickLength} ms | ` +
       `Time: ${this._time.toFixed(1)} s.`
     });
   }
