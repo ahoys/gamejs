@@ -16,13 +16,13 @@ class Renderer {
     this._stage.height = px;
   }
 
-  shouldRender(objX, objY, objW, objH, vpX, vpY, vpW, vpH) {
+  shouldRender(objX, objY, objW, objH, sX, sY, vp) {
     // x = 0, y = 0, width = 100, height = 100, vpX = -400, vpY = -300, vpW = 800, vpH = 600.
     return (
-      objX >= vpX && // 0 > -400
-      objX + objW <= vpX + vpW && // 100 <= 400
-      objY >= vpY && // 0 >= -300
-      objY + objH <= vpY + vpH // 100 <= 300
+      objX/2 + vp.x >= vp.x && // 0 >= 800 | 100 >= 800
+      objX/2 + vp.x + objW <= vp.x + vp.width && // 100 <= 800
+      objY/2 + vp.y >= vp.y && // 0 >= 600 | 50 >= 600
+      objY/2 + vp.y + objH <= vp.y + vp.height // 100 <= 300 | -250 <= 300
     );
   }
 
@@ -42,8 +42,10 @@ class Renderer {
     // Time (ms) since the previous draw.
     const spread = tick - this.pTick;
     // Clear the screen.
+    const scaleX = 1.0;
+    const scaleY = 0.5;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
-    this._ctx.setTransform(1,0,0,0.5, this._viewport.origin.x, this._viewport.origin.y);
+    this._ctx.setTransform(scaleX, 0, 0, scaleY, this._viewport.x, this._viewport.y);
     this._ctx.rotate(0.785398);
     // Render entities.
     entityBuffer.forEach(obj => {
@@ -53,10 +55,9 @@ class Renderer {
         y,
         width,
         height,
-        this._viewport.x,
-        this._viewport.y,
-        this._viewport.width,
-        this._viewport.height
+        scaleX,
+        scaleY,
+        this._viewport
       )) {
         // The object origin is inside the viewport.
         this._ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
