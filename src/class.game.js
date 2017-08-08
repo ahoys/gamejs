@@ -58,7 +58,7 @@ class Game {
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.
-    this.drawBuffer = this.level.worldTiles;
+    this.drawBuffer = this._level.worldTiles;
     // Garbage collection.
     const len = this.drawBuffer.length;
     for (let i = 1024; len > i; i++) {
@@ -68,6 +68,8 @@ class Game {
 
   /**
    * Buffer for updates.
+   * The renderer runs free, but the game logic is
+   * restricted to avoid performance decrease.
    * @param {number} numTicks 
    */
   queueUpdates(numTicks) {
@@ -78,42 +80,7 @@ class Game {
   }
 
   /**
-   * Return shaded color.
-   * @param {*} entity 
-   * @param {*} x 
-   * @param {*} y 
-   */
-  shadeColor(entity, x, y) {
-    if (entity.isWall()) {
-      for (let i = -1; i < 2; i++) {
-        for (let r = -1; r < 2; r++) {
-          const gridX = x + i;
-          const gridY = y + r;
-          if (
-            gridX >= 0 &&
-            gridY >= 0 &&
-            gridX < this.level.width &&
-            gridY < this.level.height &&
-            (gridX !== x || gridY !== y) &&
-            !this.level.worldTiles[gridX][gridY].isWall()
-          ) {
-            // We have found floor nearby. Figure out how it
-            // affects us.
-            const rc = entity.getRenderColor();
-            if (i === 0 && r === 1) {
-              // Floor S.
-              return `rgb(${rc[0] + 20}, ${rc[1] + 20}, ${rc[2] + 20})`;
-            } else {
-              return `rgb(${rc[0] + 5}, ${rc[1] + 5}, ${rc[2] + 5})`;
-            }
-          }
-        }
-      }
-    }
-    return `rgb(${entity.getRenderColor()})`;
-  }
-
-  /**
+   * MAIN LOOP --------------------------------
    * The main game loop.
    * @param {number} tFrame 
    */
@@ -133,48 +100,45 @@ class Game {
   }
 
   /**
-   * Initializes rendering.
+   * Initializes the game logic.
+   * @param {number} vpWidth Viewport width in pixels.
+   * @param {number} vpHeight Viewport height in pixels.
    */
-  initRendering() {
-    this.renderer = new Renderer(this.stage, c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H, this.viewport);
-    this.stage.width = c.DEFAULT_STAGE_W;
-    this.stage.height = c.DEFAULT_STAGE_H;
-    this.ctx = this.stage.getContext('2d');
-    this.lastTick = performance.now();
-    this.lastRender = this.lastTick;
-    this.tickLength = 50;
-    this.drawBuffer = [];
-    this.textBuffer = [];
-    this._perf0 = 0;
-    this._perf1 = 0;
-    this.main(performance.now());
-  }
-
-  /**
-   * Initializes the game logic and the playable game itself.
-   */
-  initGameLogic() {
+  initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._repeat = {}; // Repeater for functions.
-    this._performance = 0; // Performance reading for debugging.
-    this.viewport = new Viewport(0, 0, c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
-    this.level = new Level('entrance'); // Initializes the first game level. -1: debug level.
-    this.input = new Input(this.stage); // An input handler.
+    this._viewport = new Viewport(0, 0, vpWidth, vpHeight);
+    this._level = new Level('entrance'); // Initializes the first game level. -1: debug level.
+    this._input = new Input(this.stage); // An input handler.
   }
 
   /**
-   * Returns the stage.
+   * Initializes rendering.
+   * @param {number} stWidth Stage width in pixels.
+   * @param {number} stHeight Stage height in pixels.
    */
-  getStage() {
-    return this.stage;
+  initRendering(stWidth, stHeight) {
+    this.lastTick = performance.now();
+    this.lastRender = this.lastTick;
+    this.tickLength = 50; // Delay of a one tick (affects game logic).
+    this.drawBuffer = [];
+    this.textBuffer = [];
+    this.stage.width = stWidth;
+    this.stage.height = stHeight;
+    this.renderer = new Renderer( // The main renderer.
+      this.stage,
+      this.stage.width,
+      this.stage.height,
+      this._viewport
+    );
+    this.main(performance.now());
   }
 
   constructor() {
     this.stage = document.getElementById('canvas');
     if (this.stage && this.stage.getContext) {
-      this.initGameLogic();
-      this.initRendering();
+      this.initGameLogic(c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
+      this.initRendering(c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
     }
   }
 }
