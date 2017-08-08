@@ -1,0 +1,87 @@
+{
+  "title": "Room",
+  "width": 16,
+  "height": 16,
+  "tiles": [
+    {
+      "type": "f_dirt",
+      "x": 6,
+      "y": 2
+    },
+    {
+      "type": "f_dirt",
+      "x": 7,
+      "y": 2
+    },
+    {
+      "type": "f_dirt",
+      "x": 8,
+      "y": 2
+    },
+    {
+      "type": "f_dirt",
+      "x": 6,
+      "y": 3
+    },
+    {
+      "type": "f_dirt",
+      "x": 7,
+      "y": 3
+    },
+    {
+      "type": "f_dirt",
+      "x": 8,
+      "y": 3
+    },
+    {
+      "type": "f_dirt",
+      "x": 6,
+      "y": 4
+    },
+    {
+      "type": "f_dirt",
+      "x": 7,
+      "y": 4
+    },
+    {
+      "type": "f_dirt",
+      "x": 8,
+      "y": 4
+    },
+    {
+      "type": "f_dirt",
+      "x": 7,
+      "y": 5
+    },
+    {
+      "type": "f_dirt",
+      "x": 7,
+      "y": 6
+    },
+    {
+      "type": "f_dirt",
+      "x": 5,
+      "y": 6
+    },
+    {
+      "type": "f_dirt",
+      "x": 4,
+      "y": 6
+    },
+    {
+      "type": "f_dirt",
+      "x": 4,
+      "y": 5
+    },
+    {
+      "type": "f_dirt",
+      "x": 4,
+      "y": 4
+    },
+    {
+      "type": "f_dirt",
+      "x": 6,
+      "y": 4
+    }
+  ]
+}

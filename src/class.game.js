@@ -114,7 +114,7 @@ class Game {
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
     this._viewport = new Viewport(0, 0, vpWidth, vpHeight);
     this._viewport.origin = { x: 0, y: 0 };
-    this._level = new Level('entrance'); // Initializes the first game level. -1: debug level.
+    this._level = new Level('room'); // Initializes the first game level. -1: debug level.
     this._input = new Input(this.stage); // An input handler.
   }
 
