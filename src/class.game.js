@@ -36,12 +36,15 @@ class Game {
    */
   debug() {
     if (this.waitUntil('performance', 1)) {
-      this._performance = (this._perf0 - this._perf1).toFixed(2);
+      this._debugPerfM = this._perfMain.toFixed(2);
+      this._debugPerfU = this._perfUpdate.toFixed(2);
     }
     this.textBuffer.push({
       x: 16,
       y: 16,
-      str: `Loop Delay: ${this._performance}`
+      str: `Main delay: ${this._debugPerfM} ms | ` +
+      `Update delay: ${this._debugPerfU} ms | ` +
+      `Time: ${this._time.toFixed(1)} s.`
     });
   }
 
@@ -50,6 +53,7 @@ class Game {
    * @param {number} lastTick
    */
   update(lastTick) {
+    const perf = performance.now();
     // Clear buffers.
     this.drawBuffer = [];
     this.textBuffer = [];
@@ -64,6 +68,7 @@ class Game {
     for (let i = 1024; len > i; i++) {
       this.drawBuffer.shift();
     }
+    this._perfUpdate = performance.now() - perf;
   }
 
   /**
@@ -85,7 +90,7 @@ class Game {
    * @param {number} tFrame 
    */
   main(tFrame) {
-    this._perf0 = performance.now();
+    const perf = performance.now();
     this.stopMain = window.requestAnimationFrame(() => this.main(performance.now()));
     const nextTick = this.lastTick + this.tickLength;
     let numTicks = 0;
@@ -96,7 +101,7 @@ class Game {
     this.queueUpdates(numTicks);
     this.renderer.draw(tFrame, this.drawBuffer, this.textBuffer);
     this.lastRender = tFrame;
-    this._perf1 = performance.now();
+    this._perfMain = performance.now() - perf;
   }
 
   /**
