@@ -41,13 +41,10 @@ class Viewport {
     this._y = pos.y - this._height/2;
   }
 
-  /**
-   * Returns the current center position of the viewport.
-   */
   get origin() {
     return {
-      x: this._x + this._width/2,
-      y: this._y + this._height/2,
+      x: this._x + this._width,
+      y: this._y + this._height,
     }
   }
 
@@ -56,6 +53,7 @@ class Viewport {
     this._y = originY - height/2;
     this._width = width; // Size of the viewport (px).
     this._height = height;
+    console.log(this._x, this._y);
   }
 }
 
