@@ -57,6 +57,8 @@ class Renderer {
       )) {
         // The object origin is inside the viewport.
         this._ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+        this._ctx.setTransform(1,0,0,0.5,0,0);
+        this._ctx.rotate(0.785398);
         this._ctx.fillRect(x, y, width, height);
       }
     });

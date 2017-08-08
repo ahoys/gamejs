@@ -32,6 +32,18 @@ class Viewport {
     return this._height;
   }
 
+  set origin(pos) {
+    this._x = pos.x - this._width/2;
+    this._y = pos.y - this._height/2;
+  }
+
+  get origin() {
+    return {
+      x: _x + this._width/2,
+      y: _y + this._height/2,
+    }
+  }
+
   constructor(x, y, width, height) {
     this._x = x; // Position of the viewport (px).
     this._y = y;
