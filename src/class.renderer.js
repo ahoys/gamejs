@@ -62,12 +62,8 @@ class Renderer {
     });
     // Render text.
     textBuffer.forEach(text => {
-      const { x, y, str, color, isFps } = text;
-      if (isFps) {
-        this._ctx.fillStyle = color;
-        this._ctx.fillText(`Spread: ${spread.toFixed(2)} Latency: ${(performance.now() - perf0).toFixed(2)}`, x, y);
-      }
-      this._ctx.fillStyle = color;
+      const { x, y, str, color } = text;
+      this._ctx.fillStyle = color || 'white';
       this._ctx.fillText(str, x, y);
     });
     this.pTick = tick;

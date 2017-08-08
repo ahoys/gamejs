@@ -7,20 +7,58 @@ const Input = require('./class.input');
 class Game {
 
   /**
+   * Waits until time is up.
+   * @param {*} key Identification of the delay handle.
+   * @param {*} delay Time to wait in seconds.
+   */
+  waitUntil(key, delay) {
+    if (this._waitUntil[key] !== undefined) {
+      // An existing delay.
+      const result = this._time >= this._waitUntil[key].time + this._waitUntil[key].delay;
+      if (result) {
+        // Time is up, remove entry.
+        delete this._waitUntil[key];
+      }
+      return result;
+    } else {
+      // A new delay.
+      this._waitUntil[key] = {
+        delay,
+        time: this._time,
+      };
+    }
+    return false;
+  }
+
+  /**
+   * All sort of debugging.
+   * This method will be executed once per update() loop.
+   */
+  debug() {
+    if (this.waitUntil('performance', 1)) {
+      this._performance = (this._perf0 - this._perf1).toFixed(2);
+    }
+    this.textBuffer.push({
+      x: 16,
+      y: 16,
+      str: `Loop Delay: ${this._performance}`
+    });
+  }
+
+  /**
    * Updates the game logic.
    * @param {number} lastTick
    */
   update(lastTick) {
-    // Refresh level.
+    // Clear buffers.
+    this.drawBuffer = [];
+    this.textBuffer = [];
+    // Refresh game time
     this._time = (this.lastTick + this.tickLength) / 1000;
+    // Debug
+    if (c.DEBUG) this.debug();
+    // Refresh level.
     this.drawBuffer = this.level.worldTiles;
-    this.textBuffer = [{
-      x: 16,
-      y: 16,
-      str: '',
-      color: 'white',
-      isFps: true,
-    }];
     // Garbage collection.
     const len = this.drawBuffer.length;
     for (let i = 1024; len > i; i++) {
@@ -80,6 +118,7 @@ class Game {
    * @param {number} tFrame 
    */
   main(tFrame) {
+    this._perf0 = performance.now();
     this.stopMain = window.requestAnimationFrame(() => this.main(performance.now()));
     const nextTick = this.lastTick + this.tickLength;
     let numTicks = 0;
@@ -90,6 +129,7 @@ class Game {
     this.queueUpdates(numTicks);
     this.renderer.draw(tFrame, this.drawBuffer, this.textBuffer);
     this.lastRender = tFrame;
+    this._perf1 = performance.now();
   }
 
   /**
@@ -105,6 +145,8 @@ class Game {
     this.tickLength = 50;
     this.drawBuffer = [];
     this.textBuffer = [];
+    this._perf0 = 0;
+    this._perf1 = 0;
     this.main(performance.now());
   }
 
@@ -112,7 +154,10 @@ class Game {
    * Initializes the game logic and the playable game itself.
    */
   initGameLogic() {
-    this._time = 0;
+    this._time = 0; // In-game time in seconds.
+    this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
+    this._repeat = {}; // Repeater for functions.
+    this._performance = 0; // Performance reading for debugging.
     this.viewport = new Viewport(0, 0, c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
     this.level = new Level('entrance'); // Initializes the first game level. -1: debug level.
     this.input = new Input(this.stage); // An input handler.
