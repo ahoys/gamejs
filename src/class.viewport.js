@@ -37,8 +37,8 @@ class Viewport {
    * @param {object} pos Holds x and y values in pixels.
    */
   set origin(pos) {
-    this._x = pos.x + this._width/2;
-    this._y = pos.y + this._height/2;
+    this._x = pos.x - this._width/2;
+    this._y = pos.y - this._height/2;
   }
 
   get origin() {
@@ -53,7 +53,6 @@ class Viewport {
     this._y = y;
     this._width = width; // Size of the viewport (px).
     this._height = height;
-    console.log(this._x, this._y, this._x + this._width/2, this._y + this._height/2);
   }
 }
 

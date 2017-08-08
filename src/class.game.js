@@ -113,7 +113,7 @@ class Game {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
     this._viewport = new Viewport(0, 0, vpWidth, vpHeight);
-    this._viewport.origin = { x: -200, y: -300 };
+    this._viewport.origin = { x: 300, y: 300 };
     this._level = new Level('room'); // Initializes the first game level. -1: debug level.
     this._input = new Input(this.stage); // An input handler.
   }
