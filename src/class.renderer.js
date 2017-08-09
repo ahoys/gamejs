@@ -65,6 +65,8 @@ class Renderer {
     if (c.DEBUG) {
       this._ctx.fillStyle = `rgb(255, 0, 0)`;
       this._ctx.fillRect(rotationX-10, rotationY-10, 20, 20);
+      this._ctx.fillStyle = 'white';
+      this._ctx.fillText(`${Math.floor(this._viewport.origin.x)}.${Math.floor(this._viewport.origin.y)}`, rotationX-20, rotationY+24);
     }
     // Render text.
     this._ctx.translate(0,0);
