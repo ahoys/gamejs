@@ -44,8 +44,16 @@ class Viewport {
     return this._y;
   }
 
+  set width(value) {
+    this._width = value;
+  }
+
   get width() {
     return this._width;
+  }
+
+  set height(value) {
+    this._height = value;
   }
 
   get height() {

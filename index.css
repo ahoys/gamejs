@@ -3,13 +3,15 @@
   padding: 0;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   background: black;
-  text-align: center;
 }
 
 canvas {
-  border: 1px solid grey;
   background: rgb(45, 74, 84);
-  margin-top: 32px;
 }

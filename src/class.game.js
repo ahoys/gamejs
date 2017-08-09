@@ -171,16 +171,26 @@ class Game {
     this.main(performance.now());
   }
 
+  resize() {
+    console.log(document.body.clientWidth, document.body.clientHeight);
+    this.stage.width = document.body.clientWidth;
+    this.stage.height = document.body.clientHeight;
+    this._viewport.width = document.body.clientWidth;
+    this._viewport.height = document.body.clientHeight;
+  }
+
   constructor() {
     this.stage = document.getElementById('canvas');
     if (this.stage && this.stage.getContext) {
       this._hScale = c.HORIZONTAL_SCALE;
       this._vScale = c.VERTICAL_SCALE;
-      this.initGameLogic(c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
-      this.initRendering(c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
+      this.initGameLogic(document.body.clientWidth, document.body.clientHeight);
+      this.initRendering(document.body.clientWidth, document.body.clientHeight);
     }
   }
 }
 
 // Create a new Game instance.
-new Game();
+const thisGame = new Game();
+
+window.addEventListener("resize", () => thisGame.resize(), false);
