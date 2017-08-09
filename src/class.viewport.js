@@ -83,8 +83,8 @@ class Viewport {
 
   get origin() {
     return {
-      x: this._x + (this._width/2) * this._hScale,
-      y: this._y + (this._height/2) * this._vScale,
+      x: (this._x / this._hScale) + this._width/2,
+      y: (this._y / this._vScale) + this._height/2,
     }
   }
 
