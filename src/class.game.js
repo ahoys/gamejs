@@ -60,8 +60,7 @@ class Game {
     // Refresh game time
     this._time = (this.lastTick + this.tickLength) / 1000;
     // Handle input.
-    const keyState = this._input.keyState;
-    const mouseState = this._input.mouseState;
+    
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.

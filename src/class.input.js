@@ -3,14 +3,39 @@ const keymapJSON = require('./config/keymap.json');
 class Input {
 
   /**
+   * Sets actions binded to a key.
+   * @param {*} key 
+   */
+  setActionsOfKey(key) {
+    const thisKey = key.toLowerCase();
+    if (keymapJSON[thisKey]) {
+      const actions = keymapJSON[thisKey].filter(x => this._active.indexOf(x) === -1);
+      if (actions.length) {
+        this._active = this._active.concat(actions);
+      }
+    }
+  }
+
+  /**
+   * Removes actions binded to a key.
+   * @param {*} key 
+   */
+  removeActionsOfKey(key) {
+    const thisKey = key.toLowerCase();
+    if (keymapJSON[thisKey]) {
+      const actions = keymapJSON[thisKey];
+      this._active = this._active.filter(x => actions.indexOf(x) === -1);
+    }
+  }
+
+  /**
    * Handles key down events.
    * Registers keys that are currently being pressed.
    * @param {*} event 
    */
   handleEventKeyDown(event) {
     event.preventDefault();
-    this.keys.push(event.key);
-    console.log(`handleEventKeyDown: ${event.key}, pressed: ${this.keys}`);
+    this.setActionsOfKey(event.key);
   }
 
   /**
@@ -20,8 +45,7 @@ class Input {
    */
   handleEventKeyUp(event) {
     event.preventDefault();
-    this.keys = this.keys.filter(key => key !== event.key);
-    console.log(`handleEventKeyUp: ${event.key}, left: ${this.keys}`);
+    this.removeActionsOfKey(event.key);
   }
 
   /**
@@ -104,7 +128,12 @@ class Input {
     return this.mouse;
   }
 
+  get active() {
+    return this._active;
+  }
+
   constructor(stage) {
+    this._active = [];
     this.keys = [];
     this.mouse = {
       x: 0,
