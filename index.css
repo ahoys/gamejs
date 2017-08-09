@@ -5,4 +5,11 @@
 
 body {
   background: black;
+  text-align: center;
+}
+
+canvas {
+  border: 1px solid grey;
+  background: rgb(45, 74, 84);
+  margin-top: 32px;
 }

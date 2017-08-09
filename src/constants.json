@@ -1,6 +1,6 @@
 {
   "DEBUG": true,
   "DEFAULT_STAGE_W": 800,
-  "DEFAULT_STAGE_H": 600,
+  "DEFAULT_STAGE_H": 800,
   "AVAILABLE_WORLDTILES": ["w_bedrock", "w_stone", "f_dirt"]
 }

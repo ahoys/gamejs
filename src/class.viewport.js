@@ -74,13 +74,13 @@ class Viewport {
    */
   set origin(pos) {
     this._x = pos.x - this._width/2;
-    this._y = pos.y - this._height/2;
+    this._y = pos.y + this._height/2;
   }
 
   get origin() {
     return {
       x: this._x + this._width/2,
-      y: this._y + this._height/2,
+      y: this._y - this._height/2,
     }
   }
 

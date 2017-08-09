@@ -44,7 +44,9 @@ class Game {
       y: 16,
       str: `Main delay: ${this._debugPerfM}/16.7 ms | ` +
       `Update delay: ${this._debugPerfU}/${this.tickLength} ms | ` +
-      `Time: ${this._time.toFixed(1)} s.`
+      `Time: ${this._time.toFixed(1)} s | ` +
+      `Viewport: xy(${this._viewport.x}.${this._viewport.y}), ` +
+      `o.xy(${this._viewport.origin.x}.${this._viewport.origin.y}).`
     });
   }
 
@@ -141,8 +143,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0.785398);
-    this._viewport.origin = { x: 300, y: 300 };
+    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0);
     this._level = new Level('room'); // Initializes the first game level. -1: debug level.
     this._input = new Input(this.stage); // An input handler.
   }
