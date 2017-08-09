@@ -1,5 +1,37 @@
 class Viewport {
 
+  doMove(dir, amount) {
+    switch (dir) {
+      case 'up':
+        this._y -= amount;
+        break;
+      case 'right':
+        this._x += amount;
+        break;
+      case 'down':
+        this._y += amount;
+        break;
+      case 'left':
+        this._x -= amount;
+        break;
+    }
+  }
+
+  doRotate(dir, amount) {
+    switch (dir) {
+      case 'left':
+        this._rotation -= amount;
+        break;
+      case 'right':
+        this._rotation += amount;
+        break;
+    }
+  }
+
+  doZoom() {
+
+  }
+
   set x(value) {
     this._x = value;
   }
@@ -53,6 +85,8 @@ class Viewport {
     this._y = y;
     this._width = width; // Size of the viewport (px).
     this._height = height;
+    this._rotation = 1.7; // In radians
+    this._distance = 100; // Distance in pixels
   }
 }
 

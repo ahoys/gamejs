@@ -48,6 +48,24 @@ class Game {
     });
   }
 
+  handleControlActions(active) {
+    const actions = {
+      'VP_MOVE_UP': () => this._viewport.doMove('up', 32),
+      'VP_MOVE_RIGHT': () => this._viewport.doMove('right', 32),
+      'VP_MOVE_LEFT': () => this._viewport.doMove('left', 32),
+      'VP_MOVE_DOWN': () => this._viewport.doMove('down', 32),
+      'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', 1),
+      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', 1),
+      'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
+      'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
+    }
+    active.forEach((actionRequest) => {
+      if (actions[actionRequest]) {
+        actions[actionRequest]();
+      }
+    });
+  }
+
   /**
    * Updates the game logic.
    * @param {number} lastTick
@@ -60,7 +78,7 @@ class Game {
     // Refresh game time
     this._time = (this.lastTick + this.tickLength) / 1000;
     // Handle input.
-    
+    this.handleControlActions(this._input.active);
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.
