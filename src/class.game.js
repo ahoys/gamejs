@@ -67,6 +67,7 @@ class Game {
       'VP_MOVE_DOWN': () => this._viewport.doMove('down', this.getRelativeSpeed(300)),
       'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', this.getRelativeSpeed(0.5)),
       'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', this.getRelativeSpeed(0.5)),
+      'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
       'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
       'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
     }
@@ -130,7 +131,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this.tickLength);
     }
     this.queueUpdates(numTicks);
-    this.renderer.draw(tFrame, this._hScale, this._vScale, this.drawBuffer, this.textBuffer);
+    this.renderer.draw(tFrame, this.drawBuffer, this.textBuffer);
     this.lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }

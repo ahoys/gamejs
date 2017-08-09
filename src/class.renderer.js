@@ -36,16 +36,16 @@ class Renderer {
   /**
    * Draw a new scene.
    * @param {number} tick: Current tick.
-   * @param {number} hScale: Horizontal scaling of tiles.
-   * @param {number} vScale: Vertical scaling of tiles.
    * @param {array} entityBuffer: Drawable game objects.
    * @param {array} textBuffer: Drawable text objects.
    */
-  draw(tick, hScale = 1, vScale = 1, entityBuffer = [], textBuffer = []) {
+  draw(tick, entityBuffer = [], textBuffer = []) {
     const perf0 = performance.now();
     // Time (ms) since the previous draw.
     const spread = tick - this.pTick;
     // Clear the screen.
+    const hScale = this._viewport.hScale;
+    const vScale = this._viewport.vScale;
     const rotationX = this._viewport.origin.x;
     const rotationY = this._viewport.origin.y;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);

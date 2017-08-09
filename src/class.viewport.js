@@ -32,6 +32,10 @@ class Viewport {
 
   }
 
+  togglePerspective() {
+    this._vScale = this._vScale < 1 ? 1.0 : 0.5;
+  }
+
   get x() {
     return this._x;
   }
@@ -50,6 +54,14 @@ class Viewport {
 
   get rotation() {
     return this._rotation;
+  }
+
+  get hScale() {
+    return this._hScale;
+  }
+
+  get vScale() {
+    return this._vScale;
   }
 
   /**
