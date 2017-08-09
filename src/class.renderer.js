@@ -46,8 +46,8 @@ class Renderer {
     // Clear the screen.
     const hScale = this._viewport.hScale;
     const vScale = this._viewport.vScale;
-    const rotationX = this._viewport.origin.x;
-    const rotationY = this._viewport.origin.y;
+    const rotationX = this._viewport.x + this._viewport.width/2;
+    const rotationY = this._viewport.y + this._viewport.height;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     this._ctx.setTransform(hScale, 0, 0, vScale, this._viewport.x * -1, this._viewport.y * -1);
     this._ctx.translate(rotationX, rotationY);
@@ -66,7 +66,7 @@ class Renderer {
       this._ctx.fillStyle = `rgb(255, 0, 0)`;
       this._ctx.fillRect(rotationX-10, rotationY-10, 20, 20);
       this._ctx.fillStyle = 'white';
-      this._ctx.fillText(`${Math.floor(this._viewport.origin.x)}.${Math.floor(this._viewport.origin.y)}`, rotationX-20, rotationY+24);
+      this._ctx.fillText(`${Math.floor(rotationX)}.${Math.floor(rotationY)}`, rotationX-20, rotationY+24);
     }
     // Render text.
     this._ctx.translate(0,0);
