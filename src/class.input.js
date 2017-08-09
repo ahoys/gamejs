@@ -7,9 +7,8 @@ class Input {
    */
   handleEventKeyDown(event) {
     event.preventDefault();
-    if (this.keys.indexOf(event.keyCode) === -1) {
-      this.keys.push(event.keyCode);
-    }
+    this.keys.push(event.key);
+    console.log(`handleEventKeyDown: ${event.key}, pressed: ${this.keys}`);
   }
 
   /**
@@ -19,13 +18,8 @@ class Input {
    */
   handleEventKeyUp(event) {
     event.preventDefault();
-    const newKeys = [];
-    this.keys.forEach((key) => {
-      if (key !== event.keyCode) {
-        newKeys.push(key);
-      }
-    });
-    this.keys = newKeys;
+    this.keys = this.keys.filter(key => key !== event.key);
+    console.log(`handleEventKeyUp: ${event.key}, left: ${this.keys}`);
   }
 
   /**
