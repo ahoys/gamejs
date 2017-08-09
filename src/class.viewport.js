@@ -3,16 +3,16 @@ class Viewport {
   doMove(dir, amount) {
     switch (dir) {
       case 'up':
-        this._y -= amount;
+        this._y -= amount * this._vScale;
         break;
       case 'right':
-        this._x += amount;
+        this._x += amount * this._hScale;
         break;
       case 'down':
-        this._y += amount;
+        this._y += amount * this._vScale;
         break;
       case 'left':
-        this._x -= amount;
+        this._x -= amount * this._hScale;
         break;
     }
   }
