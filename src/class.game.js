@@ -48,12 +48,21 @@ class Game {
     });
   }
 
+  /**
+   * Returns a relative pixels in second speed.
+   * Changing tickLength won't affect speeds set with this.
+   * @param {number} pxInSecond 
+   */
+  getRelativeSpeed(pxInSecond) {
+    return (this.tickLength / 1000) * pxInSecond;
+  }
+
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_UP': () => this._viewport.doMove('up', 32),
-      'VP_MOVE_RIGHT': () => this._viewport.doMove('right', 32),
-      'VP_MOVE_LEFT': () => this._viewport.doMove('left', 32),
-      'VP_MOVE_DOWN': () => this._viewport.doMove('down', 32),
+      'VP_MOVE_UP': () => this._viewport.doMove('up', this.getRelativeSpeed(300)),
+      'VP_MOVE_RIGHT': () => this._viewport.doMove('right', this.getRelativeSpeed(300)),
+      'VP_MOVE_LEFT': () => this._viewport.doMove('left', this.getRelativeSpeed(300)),
+      'VP_MOVE_DOWN': () => this._viewport.doMove('down', this.getRelativeSpeed(300)),
       'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', 1),
       'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', 1),
       'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
