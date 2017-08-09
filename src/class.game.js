@@ -49,12 +49,12 @@ class Game {
   }
 
   /**
-   * Returns a relative pixels in second speed.
+   * Returns a relative speed in seconds.
    * Changing tickLength won't affect speeds set with this.
-   * @param {number} pxInSecond 
+   * @param {number} target 
    */
-  getRelativeSpeed(pxInSecond) {
-    return (this.tickLength / 1000) * pxInSecond;
+  getRelativeSpeed(target) {
+    return (this.tickLength / 1000) * target;
   }
 
   handleControlActions(active) {
@@ -63,8 +63,8 @@ class Game {
       'VP_MOVE_RIGHT': () => this._viewport.doMove('right', this.getRelativeSpeed(300)),
       'VP_MOVE_LEFT': () => this._viewport.doMove('left', this.getRelativeSpeed(300)),
       'VP_MOVE_DOWN': () => this._viewport.doMove('down', this.getRelativeSpeed(300)),
-      'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', 1),
-      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', 1),
+      'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', this.getRelativeSpeed(0.1)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', this.getRelativeSpeed(0.1)),
       'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
       'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
     }
@@ -141,7 +141,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, vpWidth, vpHeight);
+    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0.785398);
     this._viewport.origin = { x: 300, y: 300 };
     this._level = new Level('room'); // Initializes the first game level. -1: debug level.
     this._input = new Input(this.stage); // An input handler.

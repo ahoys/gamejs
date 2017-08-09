@@ -64,6 +64,10 @@ class Viewport {
     return this._height;
   }
 
+  get rotation() {
+    return this._rotation;
+  }
+
   /**
    * Set the center of the viewport.
    * @param {object} pos Holds x and y values in pixels.
@@ -80,12 +84,12 @@ class Viewport {
     }
   }
 
-  constructor(x = 0, y = 0, width = 640, height = 480) {
+  constructor(x = 0, y = 0, width = 640, height = 480, rotation = 0.785398) {
     this._x = x;
     this._y = y;
     this._width = width; // Size of the viewport (px).
     this._height = height;
-    this._rotation = 1.7; // In radians
+    this._rotation = rotation; // In radians
     this._distance = 100; // Distance in pixels
   }
 }

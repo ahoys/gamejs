@@ -46,7 +46,7 @@ class Renderer {
     const scaleY = 0.5;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     this._ctx.setTransform(scaleX, 0, 0, scaleY, this._viewport.x * -1, this._viewport.y * -1);
-    this._ctx.rotate(0.785398);
+    this._ctx.rotate(this._viewport.rotation);
     // Render entities.
     entityBuffer.forEach(obj => {
       const { type, x, y, width, height, color } = obj.renderPayload;
