@@ -2,5 +2,7 @@
   "DEBUG": true,
   "DEFAULT_STAGE_W": 800,
   "DEFAULT_STAGE_H": 800,
+  "VERTICAL_SCALE": 0.5,
+  "HORIZONTAL_SCALE": 1.0,
   "AVAILABLE_WORLDTILES": ["w_bedrock", "w_stone", "f_dirt"]
 }

@@ -1,3 +1,5 @@
+const c = require('./constants.json');
+
 class Renderer {
 
   /**
@@ -34,38 +36,36 @@ class Renderer {
   /**
    * Draw a new scene.
    * @param {number} tick: Current tick.
+   * @param {number} hScale: Horizontal scaling of tiles.
+   * @param {number} vScale: Vertical scaling of tiles.
    * @param {array} entityBuffer: Drawable game objects.
    * @param {array} textBuffer: Drawable text objects.
    */
-  draw(tick, entityBuffer = [], textBuffer = []) {
+  draw(tick, hScale = 1, vScale = 1, entityBuffer = [], textBuffer = []) {
     const perf0 = performance.now();
     // Time (ms) since the previous draw.
     const spread = tick - this.pTick;
     // Clear the screen.
-    const scaleX = 1.0;
-    const scaleY = 0.5;
+    const rotationX = this._viewport.origin.x;
+    const rotationY = this._viewport.origin.y;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
-    this._ctx.setTransform(scaleX, 0, 0, scaleY, this._viewport.x * -1, this._viewport.y * -1);
-    this._ctx.translate(this._viewport.origin.x, this._viewport.origin.y);
+    this._ctx.setTransform(hScale, 0, 0, vScale, this._viewport.x * -1, this._viewport.y * -1);
+    this._ctx.translate(rotationX, rotationY);
     this._ctx.rotate(this._viewport.rotation);
-    this._ctx.translate(-this._viewport.origin.x, -this._viewport.origin.y);
+    this._ctx.translate(-rotationX, -rotationY);
     // Render entities.
     entityBuffer.forEach(obj => {
       const { type, x, y, width, height, color } = obj.renderPayload;
-      if (this.shouldRender(
-        x,
-        y,
-        width,
-        height,
-        scaleX,
-        scaleY,
-        this._viewport
-      )) {
+      if (true) {
         // The object origin is inside the viewport.
         this._ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
         this._ctx.fillRect(x, y, width, height);
       }
     });
+    if (c.DEBUG) {
+      this._ctx.fillStyle = `rgb(255, 0, 0)`;
+      this._ctx.fillRect(rotationX-10, rotationY-10, 20, 20);
+    }
     // Render text.
     this._ctx.translate(0,0);
     this._ctx.setTransform(1,0,0,1,0,0);

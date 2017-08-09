@@ -65,8 +65,8 @@ class Game {
       'VP_MOVE_RIGHT': () => this._viewport.doMove('right', this.getRelativeSpeed(300)),
       'VP_MOVE_LEFT': () => this._viewport.doMove('left', this.getRelativeSpeed(300)),
       'VP_MOVE_DOWN': () => this._viewport.doMove('down', this.getRelativeSpeed(300)),
-      'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', this.getRelativeSpeed(0.1)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', this.getRelativeSpeed(0.1)),
+      'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', this.getRelativeSpeed(0.5)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', this.getRelativeSpeed(0.5)),
       'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
       'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
     }
@@ -130,7 +130,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this.tickLength);
     }
     this.queueUpdates(numTicks);
-    this.renderer.draw(tFrame, this.drawBuffer, this.textBuffer);
+    this.renderer.draw(tFrame, this._hScale, this._vScale, this.drawBuffer, this.textBuffer);
     this.lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -143,7 +143,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0);
+    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0, this._hScale, this._vScale);
     this._level = new Level('room'); // Initializes the first game level. -1: debug level.
     this._input = new Input(this.stage); // An input handler.
   }
@@ -173,6 +173,8 @@ class Game {
   constructor() {
     this.stage = document.getElementById('canvas');
     if (this.stage && this.stage.getContext) {
+      this._hScale = c.HORIZONTAL_SCALE;
+      this._vScale = c.VERTICAL_SCALE;
       this.initGameLogic(c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
       this.initRendering(c.DEFAULT_STAGE_W, c.DEFAULT_STAGE_H);
     }
