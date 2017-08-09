@@ -144,7 +144,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0, this._hScale, this._vScale);
+    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0.785398, this._hScale, this._vScale);
     this._level = new Level('room'); // Initializes the first game level. -1: debug level.
     this._input = new Input(this.stage); // An input handler.
   }
