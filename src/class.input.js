@@ -1,3 +1,5 @@
+const keymapJSON = require('./config/keymap.json');
+
 class Input {
 
   /**
