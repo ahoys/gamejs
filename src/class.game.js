@@ -94,7 +94,7 @@ class Game {
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.
-    this.drawBuffer = this._level.worldTiles;
+    this.drawBuffer = this._level.world;
     // Garbage collection.
     const len = this.drawBuffer.length;
     for (let i = 1024; len > i; i++) {
@@ -131,7 +131,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this.tickLength);
     }
     this.queueUpdates(numTicks);
-    this.renderer.draw(tFrame, this.drawBuffer, this.textBuffer);
+    this.renderer.draw(tFrame, this._worldScale, this.drawBuffer, this.textBuffer);
     this.lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -145,7 +145,7 @@ class Game {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
     this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0.785398, this._hScale, this._vScale);
-    this._level = new Level('room'); // Initializes the first game level. -1: debug level.
+    this._level = new Level('room', this._worldScale); // Initializes the first game level.
     this._input = new Input(this.stage); // An input handler.
   }
 
@@ -184,6 +184,7 @@ class Game {
     if (this.stage && this.stage.getContext) {
       this._hScale = c.HORIZONTAL_SCALE;
       this._vScale = c.VERTICAL_SCALE;
+      this._worldScale = c.WORLD_SCALE;
       this.initGameLogic(document.body.clientWidth, document.body.clientHeight);
       this.initRendering(document.body.clientWidth, document.body.clientHeight);
     }

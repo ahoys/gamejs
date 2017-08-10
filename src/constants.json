@@ -4,5 +4,6 @@
   "DEFAULT_STAGE_H": 800,
   "VERTICAL_SCALE": 0.5,
   "HORIZONTAL_SCALE": 1.0,
+  "WORLD_SCALE": 100,
   "AVAILABLE_WORLDTILES": ["w_bedrock", "w_stone", "f_dirt"]
 }

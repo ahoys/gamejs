@@ -1,0 +1,59 @@
+{
+  "w_bedrock": {
+    "dimensions": {"w": 1, "l": 1, "h": 1},
+    "attributes": {
+      "isWalkable": false,
+      "isBreakable": false,
+      "health": 1,
+      "damage": 0
+    },
+    "sfx": {
+      "hit": "",
+      "walk": "",
+      "break": ""
+    },
+    "graphics": {
+      "texture": "",
+      "baseColor": {"r": 95, "g": 93, "b": 92},
+      "shading": "sh_rock"
+    }
+  },
+  "w_stone": {
+    "dimensions": {"w": 1, "l": 1, "h": 1},
+    "attributes": {
+      "isWalkable": false,
+      "isBreakable": true,
+      "health": 1,
+      "damage": 0
+    },
+    "sfx": {
+      "hit": "",
+      "walk": "",
+      "break": ""
+    },
+    "graphics": {
+      "texture": "",
+      "baseColor": {"r": 56, "g": 45, "b": 34},
+      "shading": "sh_rock"
+    }
+  },
+  "f_dirt": {
+    "dimensions": {"w": 1, "l": 1, "h": 0},
+    "attributes": {
+      "isWalkable": true,
+      "isBreakable": false,
+      "health": 1,
+      "damage": 0
+    },
+    "sfx": {
+      "hit": "",
+      "walk": "",
+      "break": ""
+    },
+    "graphics": {
+      "texture": "",
+      "baseColor": {"r": 150, "g": 120, "b": 90},
+      "shading": "sh_dirt"
+    }
+  }
+}

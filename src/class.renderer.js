@@ -36,10 +36,11 @@ class Renderer {
   /**
    * Draw a new scene.
    * @param {number} tick: Current tick.
-   * @param {array} entityBuffer: Drawable game objects.
+   * @param {array} worldScale: Scale of the world.
+   * @param {array} worldBuffer: Drawable game objects.
    * @param {array} textBuffer: Drawable text objects.
    */
-  draw(tick, entityBuffer = [], textBuffer = []) {
+  draw(tick, worldScale, worldBuffer = [], textBuffer = []) {
     const perf0 = performance.now();
     // Time (ms) since the previous draw.
     const spread = tick - this.pTick;
@@ -54,12 +55,13 @@ class Renderer {
     this._ctx.rotate(this._viewport.rotation);
     this._ctx.translate(-rotationX, -rotationY);
     // Render entities.
-    entityBuffer.forEach(obj => {
-      const { type, x, y, width, height, color } = obj.renderPayload;
+    worldBuffer.forEach(wObject => {
       if (true) {
         // The object origin is inside the viewport.
-        this._ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
-        this._ctx.fillRect(x, y, width, height);
+        this._ctx.fillStyle = `rgb(${wObject.baseColor.r}, ` +
+        `${wObject.baseColor.g}, ` +
+        `${wObject.baseColor.b})`;
+        this._ctx.fillRect(wObject.x, wObject.y, wObject.width * worldScale, wObject.length * worldScale);
       }
     });
     if (c.DEBUG) {

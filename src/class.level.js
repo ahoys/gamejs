@@ -1,5 +1,6 @@
 const c = require('./constants.json');
-const EntityTile = require('./class.entityTile');
+const Floor = require('./components/world/entities/class.Floor');
+const Wall = require('./components/world/entities/class.Wall');
 
 class Level {
 
@@ -7,69 +8,103 @@ class Level {
    * Returns width of the map in grids.
    */
   get width() {
-    return this._mapW;
+    return this._gridW;
+  }
+
+  /**
+   * Returns length of the map in grids.
+   */
+  get length() {
+    return this._gridL;
   }
 
   /**
    * Returns height of the map in grids.
    */
   get height() {
-    return this._mapH;
+    return this._gridH;
   }
 
   /**
-   * Returns the current world tiles.
+   * Returns the world matrix.
+   * This includes the entire level.
    */
-  get worldTiles() {
+  get world() {
     const payload = [];
-    for (let x = 0; x < this._mapW; x++) {
-      for (let y = 0; y < this._mapH; y++) {
-        payload.push(this._worldTiles[x][y]);
+    for (let x = 0; x < this._gridW; x++) {
+      for (let y = 0; y < this._gridL; y++) {
+        for (let z = 0; z < this._gridH; z++) {
+          if (this._3Dmatrix[x][y][z] !== void 0) {
+            payload.push(this._3Dmatrix[x][y][z]);
+          }
+        }
       }
     }
     return payload;
   }
 
   /**
-   * Generates the level.
-   * @param {*} loadedTiles
+   * Returns a world component based on dataType.
+   * @param {*} dataType 
+   * @param {*} type 
+   * @param {*} x 
+   * @param {*} y 
+   * @param {*} z 
    */
-  initWorldTiles(loadedTiles) {
-    // Generate basic tiles.
-    for (let x = 0; x < this._mapW; x++) {
-      for (let y = 0; y < this._mapH; y++) {
-        // Borders should be made of bedrock.
-        // Don't want anyone to get into void, right?
-        const type = x === 0 || y === 0 || x === this._mapW - 1 || y === this._mapH - 1
-          ? 'w_bedrock' : 'w_stone';
-        if (y === 0) {
-          this._worldTiles[x] = [new EntityTile(type, x * 100, y * 100, 100, 100)];
-        } else {
-          this._worldTiles[x][y] = new EntityTile(type, x * 100, y * 100, 100, 100);
-        }
+  getWorldComponent(dataType, type, x, y, z) {
+    const types = {
+      "dt_wall": Wall,
+      "dt_floor": Floor,
+    }
+    return new types[dataType](type, x, y, z);
+  }
+
+  /**
+   * Initializes the entire level.
+   * Should be ran only once.
+   * @param {object} data
+   */
+  initLevel(data) {
+    // Structure: [[x[y[z]]], [x[y[z]]], [x[y[z]]]].
+    for (let x = 0; x < this._gridW; x++) {
+      // Width.
+      for (let y = 0; y < this._gridL; y++) {
+        // Length.
+        if (y === 0) this._3Dmatrix[x] = [];
+        for (let z = 0; z < this._gridH; z++) {
+          // Height.
+          if (z === 0) {
+            this._3Dmatrix[x][y] = [this.getWorldComponent(
+              'dt_wall',
+              'w_bedrock',
+              x * this._worldScale,
+              y * this._worldScale,
+              z * this._worldScale
+            )];
+          }
+        } 
       }
     }
-    // Load custom tiles.
-    loadedTiles.forEach(lt => {
-      if (
-        c.AVAILABLE_WORLDTILES.indexOf(lt.type) !== -1 &&
-        lt.x && // Can't override bedrock borders.
-        lt.y &&
-        lt.x < this._mapW - 1 &&
-        lt.y < this._mapH - 1
-      ) {
-        this._worldTiles[lt.x][lt.y] = new EntityTile(lt.type, lt.x * 100, lt.y * 100, 100, 100);
-      }
+    // Level specific items.
+    data.forEach((item) => {
+      this._3Dmatrix[item.x][item.y][item.x] = this.getWorldComponent(
+        item.dataType,
+        item.type,
+        item.x * this._worldScale,
+        item.y * this._worldScale,
+        item.z * this._worldScale
+      );
     });
   }
 
-  constructor(name) {
-    const Data = require(`./levels/${name}.json`);
-    this._mapW = Data.width;
-    this._mapH = Data.height;
-    this._worldTiles = [];
-    this._worldEntities = [];
-    this.initWorldTiles(Data.tiles);
+  constructor(name, worldScale) {
+    const res = require(`./levels/${name}.json`);
+    this._gridW = res.dimensions.w;
+    this._gridL = res.dimensions.l;
+    this._gridH = res.dimensions.h;
+    this._3Dmatrix = [];
+    this._worldScale = worldScale;
+    this.initLevel(res.data);
   }
 }
 
