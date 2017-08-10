@@ -47,6 +47,8 @@ class Renderer {
     // Clear the screen.
     const hScale = this._viewport.hScale;
     const vScale = this._viewport.vScale;
+    const hSkew = 0;
+    const vSkew = -0.5;
     const rotationX = this._viewport.origin.x;
     const rotationY = this._viewport.origin.y;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
@@ -62,6 +64,13 @@ class Renderer {
         `${wObject.baseColor.g}, ` +
         `${wObject.baseColor.b})`;
         this._ctx.fillRect(wObject.x, wObject.y, wObject.width * worldScale, wObject.length * worldScale);
+        if (wObject.height) {
+          // const h = 100;
+          // this._ctx.fillStyle = `rgb(${wObject.baseColor.r + 25}, ` +
+          // `${wObject.baseColor.g + 25}, ` +
+          // `${wObject.baseColor.b + 25})`;
+          // this._ctx.fillRect(wObject.x - h, wObject.y - h, wObject.width * worldScale, wObject.length * worldScale);
+        }
       }
     });
     if (c.DEBUG) {

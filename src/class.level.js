@@ -87,7 +87,7 @@ class Level {
     }
     // Level specific items.
     data.forEach((item) => {
-      this._3Dmatrix[item.x][item.y][item.x] = this.getWorldComponent(
+      this._3Dmatrix[item.x][item.y][item.z] = this.getWorldComponent(
         item.dataType,
         item.type,
         item.x * this._worldScale,
