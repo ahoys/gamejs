@@ -1,0 +1,73 @@
+{
+  "title": "cubedebug",
+  "dimensions": {
+    "w": 3,
+    "l": 3,
+    "h": 1
+  },
+  "data": [
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 0,
+      "y": 1,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 0,
+      "y": 2,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 1,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "type": "w_bedrock",
+      "dataType": "dt_wall",
+      "x": 1,
+      "y": 1,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 1,
+      "y": 2,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 2,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 2,
+      "y": 1,
+      "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 2,
+      "y": 2,
+      "z": 0
+    }
+  ]
+}
