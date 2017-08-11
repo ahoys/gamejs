@@ -41,15 +41,15 @@ class Viewport {
     switch (dir) {
       case 'forward':
         break;
-      case 'right':
-        break;
       case 'backward':
-        break;
-      case 'left':
         break;
       case 'up':
         break;
       case 'down':
+        break;
+      case 'left':
+        break;
+      case 'right':
         break;
     }
   }
