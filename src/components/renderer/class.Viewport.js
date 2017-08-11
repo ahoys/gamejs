@@ -96,31 +96,31 @@ class Viewport {
     return this._roll;
   }
 
-  set sizeX(n) {
-    this._sizeX = n;
+  set width(n) {
+    this._width = n;
   }
 
-  get sizeX() {
-    return this._sizeX;
+  get width() {
+    return this._width;
   }
 
-  set sizeY(n) {
-    this._sizeY = n;
+  set height(n) {
+    this._height = n;
   }
 
-  get sizeY() {
-    return this._sizeY;
+  get height() {
+    return this._height;
   }
 
-  constructor(x = 0, y = 0, z = 0, yaw = 0, pitch = 0, roll = 0, sizeX, sizeY) {
+  constructor(x = 0, y = 0, z = 0, yaw = 0, pitch = 0, roll = 0, width, height) {
     this._x = x;
     this._y = y;
     this._z = z;
     this._yaw = yaw; // Axis of rotation: x.
     this._pitch = pitch; // Axis of rotation: y.
     this._roll = roll; // Axis of rotation: z.
-    this._sizeX = sizeX;
-    this._sizeY = sizeY;
+    this._width = width;
+    this._height = height;
   }
 }
 
