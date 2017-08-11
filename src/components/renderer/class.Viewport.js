@@ -43,13 +43,13 @@ class Viewport {
         break;
       case 'backward':
         break;
-      case 'up':
-        break;
-      case 'down':
-        break;
       case 'left':
         break;
       case 'right':
+        break;
+      case 'up':
+        break;
+      case 'down':
         break;
     }
   }
