@@ -48,8 +48,10 @@ class Viewport {
       case 'right':
         break;
       case 'up':
+        this._z += amount;
         break;
       case 'down':
+        this._z -= amount;
         break;
     }
   }
