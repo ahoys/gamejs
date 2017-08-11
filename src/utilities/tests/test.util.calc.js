@@ -57,29 +57,3 @@ exports.getAngle_135 = (test) => {
   test.equal(result, -2.356194490192345, result);
   test.done();
 };
-
-exports.getTurnedPos_1unit45deg = (test) => {
-  const Calc = require('../util.calc');
-  // Same as 45 deg.
-  const result = Calc.getTurnedPos(0, 0, 1, 0.7853981633974483);
-  // It wont be 1.1 as the diagonal distance is longer.
-  const target = {
-    x: 0.7071067811865475,
-    y: 0.7071067811865476
-  };
-  test.deepEqual(result, target, result);
-  test.done();
-};
-
-exports.getTurnedPos_1unit135deg = (test) => {
-  const Calc = require('../util.calc');
-  // Same as -135 deg.
-  const result = Calc.getTurnedPos(0, 0, 1, -2.356194490192345);
-  // It wont be -1.-1 as the diagonal distance is longer.
-  const target = {
-    x: -0.7071067811865476,
-    y: -0.7071067811865475
-  };
-  test.deepEqual(result, target, result);
-  test.done();
-};

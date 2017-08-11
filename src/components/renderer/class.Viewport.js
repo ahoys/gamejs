@@ -2,23 +2,23 @@ const Calc = require('../../utilities/util.calc');
 
 class Viewport {
 
-  doMove2D(dir, distance) {
+  doMove2D(dir, amount) {
     switch (dir) {
       case 'up':
-        this._x -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
-        this._y -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
+        this._x -= amount * Math.sin(this._yaw);
+        this._y -= amount * Math.cos(this._yaw);
         break;
       case 'right':
-        this._x += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
-        this._y -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
+        this._x += amount * Math.cos(this._yaw);
+        this._y -= amount * Math.sin(this._yaw);
         break;
       case 'down':
-        this._x += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
-        this._y += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
+        this._x += amount * Math.sin(this._yaw);
+        this._y += amount * Math.cos(this._yaw);
         break;
       case 'left':
-        this._x -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
-        this._y += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
+        this._x -= amount * Math.cos(this._yaw);
+        this._y += amount * Math.sin(this._yaw);
         break;
     }
   }
