@@ -1,14 +1,38 @@
+const Calc = require('../../utilities/util.calc');
+
 class Viewport {
 
   doMove2D(dir, distance) {
     switch (dir) {
       case 'up':
+        this._x -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
+        this._y -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
         break;
       case 'right':
+        this._x += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
+        this._y -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
         break;
       case 'down':
+        this._x += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
+        this._y += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
         break;
       case 'left':
+        this._x -= Calc.getTurnedPos(this._x, this._y, distance, this._yaw).x;
+        this._y += Calc.getTurnedPos(this._x, this._y, distance, this._yaw).y;
+        break;
+    }
+  }
+
+  doTurn(axel, amount) {
+    switch (axel) {
+      case 'roll':
+        this._roll += amount;
+        break;
+      case 'pitch':
+        this._pitch += amount;
+        break;
+      case 'yaw':
+        this._yaw += amount;
         break;
     }
   }

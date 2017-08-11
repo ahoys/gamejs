@@ -45,16 +45,16 @@ class Renderer {
     // Time (ms) since the previous draw.
     const spread = tick - this.pTick;
     // Clear the screen.
-    const hScale = this._viewport.hScale;
-    const vScale = this._viewport.vScale;
+    const hScale = 1;
+    const vScale = 0.5;
     const hSkew = 0;
     const vSkew = -0.5;
-    const rotationX = this._viewport.origin.x;
-    const rotationY = this._viewport.origin.y;
+    const rotationX = this._viewport.x + this._viewport.width/2;
+    const rotationY = this._viewport.y + this._viewport.height/2;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     this._ctx.setTransform(hScale, 0, 0, vScale, this._viewport.x * -1, this._viewport.y * -1);
     this._ctx.translate(rotationX, rotationY);
-    this._ctx.rotate(this._viewport.rotation);
+    this._ctx.rotate(this._viewport.yaw);
     this._ctx.translate(-rotationX, -rotationY);
     // Render entities.
     worldBuffer.forEach(wObject => {

@@ -1,6 +1,6 @@
 const c = require('./constants.json');
 const Renderer = require('./class.renderer');
-const Viewport = require('./class.viewport');
+const Viewport = require('./components/renderer/class.Viewport');
 const Level = require('./class.level');
 const Input = require('./class.input');
 
@@ -45,8 +45,9 @@ class Game {
       str: `Main delay: ${this._debugPerfM}/16.7 ms | ` +
       `Update delay: ${this._debugPerfU}/${this.tickLength} ms | ` +
       `Time: ${this._time.toFixed(1)} s | ` +
-      `Viewport: xy(${this._viewport.x}.${this._viewport.y}), ` +
-      `o.xy(${this._viewport.origin.x}.${this._viewport.origin.y}).`
+      `Viewport: x(${this._viewport.x}) y(${this._viewport.y}) z(${this._viewport.z}) ` +
+      `roll(${this._viewport.roll}) pitch(${this._viewport.pitch}) ` +
+      `yaw(${this._viewport.yaw})`
     });
   }
 
@@ -61,15 +62,15 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_UP': () => this._viewport.doMove('up', this.getRelativeSpeed(300)),
-      'VP_MOVE_RIGHT': () => this._viewport.doMove('right', this.getRelativeSpeed(300)),
-      'VP_MOVE_LEFT': () => this._viewport.doMove('left', this.getRelativeSpeed(300)),
-      'VP_MOVE_DOWN': () => this._viewport.doMove('down', this.getRelativeSpeed(300)),
-      'VP_ROTATE_LEFT': () => this._viewport.doRotate('left', this.getRelativeSpeed(0.8)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('right', this.getRelativeSpeed(0.8)),
-      'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
-      'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
-      'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
+      'VP_MOVE_UP': () => this._viewport.doMove2D('up', this.getRelativeSpeed(300)),
+      'VP_MOVE_RIGHT': () => this._viewport.doMove2D('right', this.getRelativeSpeed(300)),
+      'VP_MOVE_LEFT': () => this._viewport.doMove2D('left', this.getRelativeSpeed(300)),
+      'VP_MOVE_DOWN': () => this._viewport.doMove2D('down', this.getRelativeSpeed(300)),
+      'VP_ROTATE_LEFT': () => this._viewport.doTurn('yaw', this.getRelativeSpeed(0.8)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doTurn('yaw', -this.getRelativeSpeed(0.8)),
+      //'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
+      //'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
+      //'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {
@@ -144,7 +145,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, vpWidth, vpHeight, 0, this._hScale, this._vScale);
+    this._viewport = new Viewport(0, 0, 0, 0, 0, 0, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
     this._input = new Input(this.stage); // An input handler.
   }
