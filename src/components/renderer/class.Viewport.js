@@ -51,24 +51,6 @@ class Viewport {
         break;
       case 'down':
         break;
-      case 'roll-left':
-        this._roll -= amount;
-        break;
-      case 'roll-right':
-        this._roll += amount;
-        break;
-      case 'pitch-forward':
-        this._pitch += amount;
-        break;
-      case 'pitch-backward':
-        this._pitch -= amount;
-        break;
-      case 'yaw-left':
-        this._yaw -= amount;
-        break;
-      case 'yaw-right':
-        this._yaw += amount;
-        break;
     }
   }
 
