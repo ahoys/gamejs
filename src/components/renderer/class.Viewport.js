@@ -25,14 +25,14 @@ class Viewport {
 
   doTurn(axel, amount) {
     switch (axel) {
-      case 'yaw':
-        this._yaw += amount;
+      case 'roll':
+        this._roll += amount;
         break;
       case 'pitch':
         this._pitch += amount;
         break;
-      case 'roll':
-        this._roll += amount;
+      case 'yaw':
+        this._yaw += amount;
         break;
     }
   }
@@ -80,12 +80,12 @@ class Viewport {
     return this._z;
   }
 
-  set yaw(n) {
-    this._yaw = n;
+  set roll(n) {
+    this._roll = n;
   }
 
-  get yaw() {
-    return this._yaw;
+  get roll() {
+    return this._roll;
   }
 
   set pitch(n) {
@@ -96,12 +96,12 @@ class Viewport {
     return this._pitch;
   }
 
-  set roll(n) {
-    this._roll = n;
+  set yaw(n) {
+    this._yaw = n;
   }
 
-  get roll() {
-    return this._roll;
+  get yaw() {
+    return this._yaw;
   }
 
   set width(n) {
@@ -120,13 +120,13 @@ class Viewport {
     return this._height;
   }
 
-  constructor(x = 0, y = 0, z = 0, yaw = 0, pitch = 0, roll = 0, width, height) {
+  constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, height) {
     this._x = x;
     this._y = y;
     this._z = z;
-    this._yaw = yaw; // Axis of rotation: x.
+    this._roll = roll; // Axis of rotation: x.
+    this._yaw = yaw; // Axis of rotation: z.
     this._pitch = pitch; // Axis of rotation: y.
-    this._roll = roll; // Axis of rotation: z.
     this._width = width;
     this._height = height;
   }
