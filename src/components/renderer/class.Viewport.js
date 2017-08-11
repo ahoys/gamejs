@@ -1,5 +1,53 @@
 class Viewport {
 
+  doMove2D(dir, distance) {
+    switch (dir) {
+      case 'up':
+        break;
+      case 'right':
+        break;
+      case 'down':
+        break;
+      case 'left':
+        break;
+    }
+  }
+
+  doMove3D(dir, amount) {
+    switch (dir) {
+      case 'forward':
+        break;
+      case 'right':
+        break;
+      case 'backward':
+        break;
+      case 'left':
+        break;
+      case 'up':
+        break;
+      case 'down':
+        break;
+      case 'roll-left':
+        this._roll -= amount;
+        break;
+      case 'roll-right':
+        this._roll += amount;
+        break;
+      case 'pitch-forward':
+        this._pitch += amount;
+        break;
+      case 'pitch-backward':
+        this._pitch -= amount;
+        break;
+      case 'yaw-left':
+        this._yaw -= amount;
+        break;
+      case 'yaw-right':
+        this._yaw += amount;
+        break;
+    }
+  }
+
   set x(n) {
     this._x = n;
   }
