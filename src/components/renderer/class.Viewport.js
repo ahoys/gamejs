@@ -25,14 +25,14 @@ class Viewport {
 
   doTurn(axel, amount) {
     switch (axel) {
-      case 'roll':
-        this._roll += amount;
+      case 'yaw':
+        this._yaw += amount;
         break;
       case 'pitch':
         this._pitch += amount;
         break;
-      case 'yaw':
-        this._yaw += amount;
+      case 'roll':
+        this._roll += amount;
         break;
     }
   }
