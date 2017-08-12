@@ -40,7 +40,7 @@ class Renderer {
     lines.forEach(l => {
       this._ctx.lineTo(l[0], l[1]);
     });
-    this._ctx.globalCompositeOperation = 'lighten';
+    // this._ctx.globalCompositeOperation = 'lighten';
     // this._ctx.globalCompositeOperation = 'multiply';
     // this._ctx.globalCompositeOperation = 'difference';
     // this._ctx.globalCompositeOperation = 'lighter';
@@ -54,6 +54,19 @@ class Renderer {
     this._ctx.fill();
   }
 
+  drawMask0(planeBuffer, vp) {
+    this._ctx.globalCompositeOperation = 'lighten';
+    planeBuffer.forEach(data => {
+      const cVal = Math.floor(255 * vp.z / data[0]);
+      this._ctx.fillStyle = `rgb(${cVal},${cVal},${cVal})`;
+      this._ctx.beginPath();
+      data[1].forEach(l => {
+        this._ctx.lineTo(l[0], l[1]);
+        this._ctx.fill();
+      });
+    });
+  }
+
   /**
    * Builds a three dimensional scene
    * of the world.
@@ -64,7 +77,7 @@ class Renderer {
 
     // Initialize the viewport.
     const vp = this._viewport;
-    const vpo = [[vp.x + vp.width/2], [vp.y + vp.height/2], [vp.z]];
+    const vpo = [[vp.x + vp.width/2], [vp.y + vp.length/2], [vp.z]];
 
     // Calculate matrices.
     const tMatrix = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z);
@@ -76,21 +89,20 @@ class Renderer {
     // Clear the rect as delayed as possible.
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
 
+    const planeBuffer = [];
+
     objectMatrix.forEach(x => {
       x.forEach(y => {
         y.forEach(obj => {
           const rot = Matrix.multiply(Matrix.multiply(rMatrixRoll, rMatrixPitch), rMatrixYaw);
           const M = Matrix.multiply(Matrix.multiply(tMatrix, rot), sMatrix);
 
-          // First color mask for depth.
-          const colorMask0 = {r: obj.z + obj.height * 100, g: obj.z + obj.height * 100, b: obj.z + obj.height * 100};
-
           if (obj.height) {
             const distances = [-1, -1 -1];
             const side0 = true, side1 = true, side2 = false, side3 = false, top = true;
 
             // top
-            const tmid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z + obj.height], [1]]);
+            const tmid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z * obj.height], [1]]);
             const std = this.getDistance3D(tmid, vpo);
             const t = [
               Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
@@ -100,7 +112,7 @@ class Renderer {
             ];
 
             // front
-            const s0mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y], [obj.z + obj.height/2], [1]]);
+            const s0mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y], [obj.z * obj.height/2], [1]]);
             const s0d = this.getDistance3D(s0mid, vpo);
             const s0 = [
               Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
@@ -110,7 +122,7 @@ class Renderer {
             ];
 
             // right
-            const s1mid = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]);
+            const s1mid = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length/2], [obj.z * obj.height/2], [1]]);
             const s1d = this.getDistance3D(s1mid, vpo);
             const s1 = [
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
@@ -120,7 +132,7 @@ class Renderer {
             ];
 
             // back
-            const s2mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length], [obj.z + obj.height/2], [1]]);
+            const s2mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length], [obj.z * obj.height/2], [1]]);
             const s2d = this.getDistance3D(s2mid, vpo);
             const s2 = [
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
@@ -130,7 +142,7 @@ class Renderer {
             ];
 
             // left
-            const s3mid = Matrix.multiply(M, [[obj.x], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]);
+            const s3mid = Matrix.multiply(M, [[obj.x], [obj.y + obj.length/2], [obj.z * obj.height/2], [1]]);
             const s3d = this.getDistance3D(s3mid, vpo);
             const s3 = [
               Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
@@ -140,32 +152,35 @@ class Renderer {
             ];
 
             if (this.isFacing(tmid, [s0mid, s1mid, s2mid, s3mid])) {
-              this.draw3D(t, colorMask0, false);
+              planeBuffer.push([std, t, obj.baseColor]);
             }
 
             if (this.isFacing(s0mid, [tmid, s1mid, s2mid, s3mid])) {
-              this.draw3D(s0, colorMask0, false);
+              planeBuffer.push([s0d, s0, obj.baseColor]);
             }
 
             if (this.isFacing(s1mid, [tmid, s0mid, s2mid, s3mid])) {
-              this.draw3D(s1, colorMask0, false);
+              planeBuffer.push([s1d, s1, obj.baseColor]);
             }
 
             if (this.isFacing(s2mid, [tmid, s0mid, s1mid, s3mid])) {
-              this.draw3D(s2, colorMask0, false);
+              planeBuffer.push([s2d, s2, obj.baseColor]);
             }
 
             if (this.isFacing(s3mid, [tmid, s0mid, s1mid, s2mid])) {
-              this.draw3D(s3, colorMask0, false);
+              planeBuffer.push([s3d, s3, obj.baseColor]);
             }
           } else {
-            this.draw3D([
-              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
-            ], colorMask0, false);
+            const mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z * obj.height/2], [1]]);
+            planeBuffer.push([this.getDistance3D(mid, vpo),
+              [
+                Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+                Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+                Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+                Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+              ], obj.baseColor]);
           }
+          const mask0 = this.drawMask0(planeBuffer, vp);
         });
       });
     });
