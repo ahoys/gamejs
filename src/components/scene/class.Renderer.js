@@ -89,6 +89,20 @@ class Renderer {
   }
 
   /**
+   * Draws a rectangle.
+   * @param {*} lines [[x0,y0] [x1,y1], [x2,y2], [x3,y3]]
+   * @param {*} color {r:n,g:n,b:n}
+   */
+  draw3D(lines, color) {
+    this._ctx.beginPath();
+    lines.forEach(l => {
+      this._ctx.lineTo(l[0], l[1]);
+    });
+    this._ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
+    this._ctx.fill();
+  }
+
+  /**
    * Builds a three dimensional scene
    * of the world.
    */
@@ -162,53 +176,23 @@ class Renderer {
             ];
 
             if (this.isFacing(tmid, [s0mid, s1mid, s2mid, s3mid])) {
-              this._ctx.beginPath();
-              this._ctx.lineTo(t[0][0], t[0][1]);
-              this._ctx.lineTo(t[1][0], t[1][1]);
-              this._ctx.lineTo(t[2][0], t[2][1]);
-              this._ctx.lineTo(t[3][0], t[3][1]);
-              this._ctx.fillStyle = `rgb(100,100,100)`;
-              this._ctx.fill();
+              this.draw3D(t, obj.baseColor);
             }
 
             if (this.isFacing(s0mid, [tmid, s1mid, s2mid, s3mid])) {
-              this._ctx.beginPath();
-              this._ctx.moveTo(s0[0][0], s0[0][1]);
-              this._ctx.lineTo(s0[1][0], s0[1][1]);
-              this._ctx.lineTo(s0[2][0], s0[2][1]);
-              this._ctx.lineTo(s0[3][0], s0[3][1]);
-              this._ctx.fillStyle = `rgb(75,75,75)`;
-              this._ctx.fill();
+              this.draw3D(s0, obj.baseColor);
             }
 
             if (this.isFacing(s1mid, [tmid, s0mid, s2mid, s3mid])) {
-              this._ctx.beginPath();
-              this._ctx.moveTo(s1[0][0], s1[0][1]);
-              this._ctx.lineTo(s1[1][0], s1[1][1]);
-              this._ctx.lineTo(s1[2][0], s1[2][1]);
-              this._ctx.lineTo(s1[3][0], s1[3][1]);
-              this._ctx.fillStyle = `rgb(75,75,75)`;
-              this._ctx.fill();
+              this.draw3D(s1, obj.baseColor);
             }
 
             if (this.isFacing(s2mid, [tmid, s0mid, s1mid, s3mid])) {
-              this._ctx.beginPath();
-              this._ctx.moveTo(s2[0][0], s2[0][1]);
-              this._ctx.lineTo(s2[1][0], s2[1][1]);
-              this._ctx.lineTo(s2[2][0], s2[2][1]);
-              this._ctx.lineTo(s2[3][0], s2[3][1]);
-              this._ctx.fillStyle = `rgb(75,75,75)`;
-              this._ctx.fill();
+              this.draw3D(s2, obj.baseColor);
             }
 
             if (this.isFacing(s3mid, [tmid, s0mid, s1mid, s2mid])) {
-              this._ctx.beginPath();
-              this._ctx.moveTo(s3[0][0], s3[0][1]);
-              this._ctx.lineTo(s3[1][0], s3[1][1]);
-              this._ctx.lineTo(s3[2][0], s3[2][1]);
-              this._ctx.lineTo(s3[3][0], s3[3][1]);
-              this._ctx.fillStyle = `rgb(75,75,75)`;
-              this._ctx.fill();
+              this.draw3D(s3, obj.baseColor);
             }
           } else {
             const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
