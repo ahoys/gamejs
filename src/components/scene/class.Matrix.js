@@ -10,26 +10,29 @@ module.exports = {
 
   getRotationMatrix(axel, rad) {
     switch (axel) {
-      case 'x':
-        return new Matrix(
-          1, 0, 0,
-          0, cos(rad), -sin(rad),
-          0, sin(rad), cos(rad)
-        );
+      case 'roll':
+        return [
+          [1, 0, 0, 1],
+          [0, Math.cos(rad), -Math.sin(rad), 1],
+          [0, Math.sin(rad), Math.cos(rad), 1],
+          [0, 0, 0, 1],
+        ];
         break;
-      case 'y':
-        return new Matrix(
-          cos(rad), 0, sin(rad),
-          0, 1, 0,
-          -sin(rad), 0, cos(rad)
-        );
+      case 'pitch':
+        return [
+          [Math.cos(rad), 0, Math.sin(rad), 1],
+          [0, 1, 0, 1],
+          [-Math.sin(rad), 0, Math.cos(rad), 1],
+          [0, 0, 0, 1],
+        ];
         break;
-      case 'z':
-        return new Matrix(
-          Math.cos(rad), -Math.sin(rad), 0,
-          Math.sin(rad), Math.cos(rad), 0,
-          0, 0, 1
-        );
+      case 'yaw':
+        return [
+          [Math.cos(rad), -Math.sin(rad), 0, 1],
+          [Math.sin(rad), Math.cos(rad), 0, 1],
+          [0, 0, 1, 1],
+          [0, 0, 0, 1],
+        ];
         break;
     }
   },

@@ -66,11 +66,18 @@ class Game {
       'VP_MOVE_RIGHT': () => this._viewport.doMove2D('right', this.getRelativeSpeed(300)),
       'VP_MOVE_LEFT': () => this._viewport.doMove2D('left', this.getRelativeSpeed(300)),
       'VP_MOVE_DOWN': () => this._viewport.doMove2D('down', this.getRelativeSpeed(300)),
-      'VP_ROTATE_LEFT': () => this._viewport.doTurn('yaw', this.getRelativeSpeed(0.8)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doTurn('yaw', -this.getRelativeSpeed(0.8)),
+      'VP_ROTATE_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(0.8)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(0.8)),
       //'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
       'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(10)),
       'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(10)),
+
+      'VP_ROLL_LEFT': () => this._viewport.doRotate('roll', this.getRelativeSpeed(5)),
+      'VP_ROLL_RIGHT': () => this._viewport.doRotate('roll', -this.getRelativeSpeed(5)),
+      'VP_PITCH_FORWARD': () => this._viewport.doRotate('pitch', this.getRelativeSpeed(5)),
+      'VP_PITCH_BACKWARD': () => this._viewport.doRotate('pitch', -this.getRelativeSpeed(5)),
+      'VP_YAW_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(5)),
+      'VP_YAW_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(5)),
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {
@@ -146,7 +153,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, 10, 0, 0, 0, vpWidth, vpHeight);
+    this._viewport = new Viewport(0, 0, 100, 0, 0, 0, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
     this._input = new Input(this._stage); // An input handler.
   }

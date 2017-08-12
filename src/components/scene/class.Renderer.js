@@ -84,25 +84,27 @@ class Renderer {
     //const rMatrix = Matrix.getRotation(vp.x, vp.y, vp.z);
     //const rMatrix = Matrix.getRotation();
     const sMatrix = Matrix.getScalingMatrix(vp.z, vp.z, vp.z);
+    const rMatrixRoll = Matrix.getRotationMatrix('roll', vp.roll);
+    const rMatrixPitch = Matrix.getRotationMatrix('pitch', vp.pitch);
+    const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
     //const pMatrix = Matrix.getProjection();
     objectMatrix.forEach(x => {
       x.forEach(y => {
         y.forEach(obj => {
+          const rot = Matrix.multiply(Matrix.multiply(rMatrixRoll, rMatrixPitch), rMatrixYaw);
+          const M = Matrix.multiply(Matrix.multiply(tMatrix, rot), sMatrix);
+          // Bottom
+          const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
+          const vA1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]);
+          const vA2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]);
+          const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]);
           if (obj.height) {
-            const M = Matrix.multiply(tMatrix, sMatrix);
-
-            // Bottom
-            const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
-            const vA1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]);
-            const vA2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]);
-            const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]);
-
             // Top
             const vB0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]);
             const vB1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]);
             const vB2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]);
             const vB3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]);
-
+            // Draw
             this._ctx.beginPath();
             this._ctx.moveTo(vA0[0], vA0[1]);
             this._ctx.lineTo(vA1[0], vA1[1]);
@@ -112,13 +114,13 @@ class Renderer {
             this._ctx.fill();
             str0 = `vA0[${vA0}], vA1[${vA1}], vA2[${vA2}], vA3[${vA3}]`;
           } else {
-            // this._ctx.fillStyle = `rgb(75,75,75)`;
-            // this._ctx.beginPath();
-            // this._ctx.moveTo(1, -1);
-            // this._ctx.lineTo(2, -1);
-            // this._ctx.lineTo(1, -2);
-            // this._ctx.lineTo(2, -2);
-            // this._ctx.fill();
+            this._ctx.beginPath();
+            this._ctx.moveTo(vA0[0], vA0[1]);
+            this._ctx.lineTo(vA1[0], vA1[1]);
+            this._ctx.lineTo(vA2[0], vA2[1]);
+            this._ctx.lineTo(vA3[0], vA3[1]);
+            this._ctx.fillStyle = `rgb(100,100,100)`;
+            this._ctx.fill();
           }
         });
       });

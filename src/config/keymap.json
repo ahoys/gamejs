@@ -17,5 +17,11 @@
   "home": ["VP_ZOOM_IN"],
   "end": ["VP_ZOOM_OUT"],
   "+": ["VP_ZOOM_IN"],
-  "-": ["VP_ZOOM_OUT"]
+  "-": ["VP_ZOOM_OUT"],
+  "1": ["VP_ROLL_LEFT"],
+  "2": ["VP_ROLL_RIGHT"],
+  "3": ["VP_PITCH_FORWARD"],
+  "4": ["VP_PITCH_BACKWARD"],
+  "5": ["VP_YAW_LEFT"],
+  "6": ["VP_YAW_RIGHT"]
 }

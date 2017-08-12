@@ -23,7 +23,7 @@ class Viewport {
     }
   }
 
-  doTurn(axel, amount) {
+  doRotate(axel, amount) {
     switch (axel) {
       case 'roll':
         this._roll += amount;
