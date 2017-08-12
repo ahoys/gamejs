@@ -78,6 +78,8 @@ class Game {
       'VP_PITCH_BACKWARD': () => this._viewport.doRotate('pitch', -this.getRelativeSpeed(5)),
       'VP_YAW_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(5)),
       'VP_YAW_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(5)),
+
+      'VP_RESET': () => this._viewport.doReset(),
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {
@@ -153,7 +155,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, 100, 0, 0, 0, vpWidth, vpHeight);
+    this._viewport = new Viewport(200, 300, 100, -5.5, 0, -0.78, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
     this._input = new Input(this._stage); // An input handler.
   }

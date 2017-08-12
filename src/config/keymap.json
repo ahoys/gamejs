@@ -8,6 +8,7 @@
   "z": ["VP_ZOOM_OUT"],
   "c": ["VP_ZOOM_IN"],
   "p": ["VP_TOGGLE_PERSPECTIVE"],
+  "r": ["VP_RESET"],
   "arrowup": ["VP_MOVE_UP"],
   "arrowright": ["VP_MOVE_RIGHT"],
   "arrowdown": ["VP_MOVE_DOWN"],

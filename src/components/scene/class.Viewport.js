@@ -56,6 +56,15 @@ class Viewport {
     }
   }
 
+  doReset() {
+    this._x = this._resetValues.x;
+    this._y = this._resetValues.y;
+    this._z = this._resetValues.z;
+    this._roll = this._resetValues.roll;
+    this._pitch = this._resetValues.pitch;
+    this._yaw = this._resetValues.yaw;
+  }
+
   set x(n) {
     this._x = n;
   }
@@ -129,6 +138,7 @@ class Viewport {
     this._pitch = pitch; // Axis of rotation: y.
     this._width = width;
     this._length = length;
+    this._resetValues = {x, y, z, roll, pitch, yaw};
   }
 }
 
