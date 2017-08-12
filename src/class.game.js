@@ -1,6 +1,6 @@
 const c = require('./constants.json');
-const Renderer = require('./class.renderer');
-const Viewport = require('./components/renderer/class.Viewport');
+const Renderer = require('./components/scene/class.Renderer');
+const Viewport = require('./components/scene/class.Viewport');
 const Level = require('./class.level');
 const Input = require('./class.input');
 
@@ -86,7 +86,7 @@ class Game {
   update(lastTick) {
     const perf = performance.now();
     // Clear buffers.
-    this.drawBuffer = [];
+    this._drawBuffer = [];
     this.textBuffer = [];
     // Refresh game time
     this._time = (this.lastTick + this.tickLength) / 1000;
@@ -95,12 +95,7 @@ class Game {
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.
-    this.drawBuffer = this._level.world;
-    // Garbage collection.
-    const len = this.drawBuffer.length;
-    for (let i = 1024; len > i; i++) {
-      this.drawBuffer.shift();
-    }
+    this._drawBuffer = this._level.world;
     this._perfUpdate = performance.now() - perf;
   }
 
@@ -132,7 +127,13 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this.tickLength);
     }
     this.queueUpdates(numTicks);
-    this.renderer.draw(tFrame, this._worldScale, this.drawBuffer, this.textBuffer);
+    // this.renderer.draw(tFrame, this._worldScale, this.drawBuffer, this.textBuffer);
+    this._renderer.build3Dscene(
+      this._drawBuffer,
+      this._level.width,
+      this._level.length,
+      this._level.height,
+    );
     this.lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -145,9 +146,9 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, 0, 0, 0, 0, vpWidth, vpHeight);
+    this._viewport = new Viewport(0, 0, 10, 0, 0, 0, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
-    this._input = new Input(this.stage); // An input handler.
+    this._input = new Input(this._stage); // An input handler.
   }
 
   /**
@@ -159,14 +160,12 @@ class Game {
     this.lastTick = performance.now();
     this.lastRender = this.lastTick;
     this.tickLength = 50; // Delay of a one tick (affects game logic).
-    this.drawBuffer = [];
+    this._drawBuffer = [];
     this.textBuffer = [];
-    this.stage.width = stWidth;
-    this.stage.height = stHeight;
-    this.renderer = new Renderer( // The main renderer.
-      this.stage,
-      this.stage.width,
-      this.stage.height,
+    this._stage.width = stWidth;
+    this._stage.height = stHeight;
+    this._renderer = new Renderer( // The main renderer.
+      this._stage,
       this._viewport
     );
     this.main(performance.now());
@@ -174,15 +173,15 @@ class Game {
 
   resize() {
     console.log(document.body.clientWidth, document.body.clientHeight);
-    this.stage.width = document.body.clientWidth;
-    this.stage.height = document.body.clientHeight;
+    this._stage.width = document.body.clientWidth;
+    this._stage.height = document.body.clientHeight;
     this._viewport.width = document.body.clientWidth;
     this._viewport.height = document.body.clientHeight;
   }
 
   constructor() {
-    this.stage = document.getElementById('canvas');
-    if (this.stage && this.stage.getContext) {
+    this._stage = document.getElementById('canvas');
+    if (this._stage && this._stage.getContext) {
       this._hScale = c.HORIZONTAL_SCALE;
       this._vScale = c.VERTICAL_SCALE;
       this._worldScale = c.WORLD_SCALE;

@@ -5,20 +5,20 @@ class Viewport {
   doMove2D(dir, amount) {
     switch (dir) {
       case 'up':
-        this._x -= amount * Math.sin(this._yaw);
-        this._y -= amount * Math.cos(this._yaw);
-        break;
-      case 'right':
-        this._x += amount * Math.cos(this._yaw);
-        this._y -= amount * Math.sin(this._yaw);
-        break;
-      case 'down':
         this._x += amount * Math.sin(this._yaw);
         this._y += amount * Math.cos(this._yaw);
         break;
-      case 'left':
+      case 'right':
         this._x -= amount * Math.cos(this._yaw);
         this._y += amount * Math.sin(this._yaw);
+        break;
+      case 'down':
+        this._x -= amount * Math.sin(this._yaw);
+        this._y -= amount * Math.cos(this._yaw);
+        break;
+      case 'left':
+        this._x += amount * Math.cos(this._yaw);
+        this._y -= amount * Math.sin(this._yaw);
         break;
     }
   }
@@ -112,15 +112,15 @@ class Viewport {
     return this._width;
   }
 
-  set height(n) {
-    this._height = n;
+  set length(n) {
+    this._length = n;
   }
 
-  get height() {
-    return this._height;
+  get length() {
+    return this._length;
   }
 
-  constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, height) {
+  constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length) {
     this._x = x;
     this._y = y;
     this._z = z;
@@ -128,7 +128,7 @@ class Viewport {
     this._yaw = yaw; // Axis of rotation: z.
     this._pitch = pitch; // Axis of rotation: y.
     this._width = width;
-    this._height = height;
+    this._length = length;
   }
 }
 

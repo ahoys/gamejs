@@ -21,6 +21,18 @@ class StaticEntity {
     return this._z;
   }
 
+  get roll() {
+    return 0;
+  }
+
+  get pitch() {
+    return 0;
+  }
+
+  get yaw() {
+    return 0;
+  }
+
   get width() {
     return this._dimensions.w;
   }

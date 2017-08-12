@@ -30,17 +30,7 @@ class Level {
    * This includes the entire level.
    */
   get world() {
-    const payload = [];
-    for (let x = 0; x < this._gridW; x++) {
-      for (let y = 0; y < this._gridL; y++) {
-        for (let z = 0; z < this._gridH; z++) {
-          if (this._3Dmatrix[x][y][z] !== void 0) {
-            payload.push(this._3Dmatrix[x][y][z]);
-          }
-        }
-      }
-    }
-    return payload;
+    return this._3Dmatrix;
   }
 
   /**
@@ -77,9 +67,9 @@ class Level {
             this._3Dmatrix[x][y] = [this.getWorldComponent(
               'dt_wall',
               'w_bedrock',
-              x * this._worldScale,
-              y * this._worldScale,
-              z * this._worldScale
+              x,
+              y,
+              z
             )];
           }
         } 
@@ -90,9 +80,9 @@ class Level {
       this._3Dmatrix[item.x][item.y][item.z] = this.getWorldComponent(
         item.dataType,
         item.type,
-        item.x * this._worldScale,
-        item.y * this._worldScale,
-        item.z * this._worldScale
+        item.x,
+        item.y,
+        item.z
       );
     });
   }
