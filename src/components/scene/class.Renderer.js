@@ -55,15 +55,15 @@ class Renderer {
   }
 
   drawMask0(planeBuffer, vp) {
-    this._ctx.globalCompositeOperation = 'lighten';
+    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     planeBuffer.forEach(data => {
-      const cVal = Math.floor(255 * vp.z / data[0]);
-      this._ctx.fillStyle = `rgb(${cVal},${cVal},${cVal})`;
+      const cVal = (255 * vp.z / data[0]).toFixed(0);
       this._ctx.beginPath();
       data[1].forEach(l => {
         this._ctx.lineTo(l[0], l[1]);
-        this._ctx.fill();
       });
+      this._ctx.fillStyle = `rgb(${cVal},${cVal},${cVal})`;
+      this._ctx.fill();
     });
   }
 
@@ -87,8 +87,6 @@ class Renderer {
     const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
 
     // Clear the rect as delayed as possible.
-    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
-
     const planeBuffer = [];
 
     objectMatrix.forEach(x => {
