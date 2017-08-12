@@ -158,11 +158,6 @@ class Renderer {
     this._ctx.fillText(str0, 16, 16);
     this._ctx.fillText(str1, 16, 32);
   }
-
-  set stage(stage) {
-    this._stage = stage;
-    this._ctx = stage.getContext('2d');
-  }
   
   constructor(stage, viewport) {
     this._stage = stage;
