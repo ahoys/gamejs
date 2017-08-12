@@ -69,15 +69,15 @@ class Game {
       'VP_ROTATE_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(0.8)),
       'VP_ROTATE_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(0.8)),
       //'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
-      'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(10)),
-      'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(10)),
+      'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(50)),
+      'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(50)),
 
-      'VP_ROLL_LEFT': () => this._viewport.doRotate('roll', this.getRelativeSpeed(5)),
-      'VP_ROLL_RIGHT': () => this._viewport.doRotate('roll', -this.getRelativeSpeed(5)),
-      'VP_PITCH_FORWARD': () => this._viewport.doRotate('pitch', this.getRelativeSpeed(5)),
-      'VP_PITCH_BACKWARD': () => this._viewport.doRotate('pitch', -this.getRelativeSpeed(5)),
-      'VP_YAW_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(5)),
-      'VP_YAW_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(5)),
+      'VP_ROLL_LEFT': () => this._viewport.doRotate('roll', this.getRelativeSpeed(1)),
+      'VP_ROLL_RIGHT': () => this._viewport.doRotate('roll', -this.getRelativeSpeed(1)),
+      // 'VP_PITCH_FORWARD': () => this._viewport.doRotate('pitch', this.getRelativeSpeed(1)),
+      // 'VP_PITCH_BACKWARD': () => this._viewport.doRotate('pitch', -this.getRelativeSpeed(1)),
+      'VP_YAW_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(1)),
+      'VP_YAW_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(1)),
 
       'VP_RESET': () => this._viewport.doReset(),
     }

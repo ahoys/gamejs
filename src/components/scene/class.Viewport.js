@@ -27,6 +27,8 @@ class Viewport {
     switch (axel) {
       case 'roll':
         this._roll += amount;
+        if (this._roll > -4.8) this._roll = -4.8;
+        if (this._roll < -6) this._roll = -6;
         break;
       case 'pitch':
         this._pitch += amount;
