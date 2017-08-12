@@ -2,11 +2,30 @@ const Matrix = require('./class.Matrix');
 
 class Renderer {
 
-  get2Dscale() {
-    return {
-      h: 1,
-      v: 0.5,
-    }
+  /**
+   * Returns middle point of two points.
+   * @param {*} a [x1, y1]
+   * @param {*} c [x2, y2]
+   */
+  getMidPoint(a, c) {
+    return [((a[0] + c[0]) / 2), ((a[1] + c[1]) / 2)];
+  }
+
+  getDistance3D(v1, v2) {
+    const dx = v1[0][0] - v2[0][0];
+    const dy = v1[1][0] - v2[1][0];
+    const dz = v1[2][0] - v2[2][0];
+    return Math.sqrt( dx * dx + dy * dy + dz * dz );
+  }
+
+  isFacing(target, arr) {
+    let c = 0;
+    arr.forEach(d => {
+      if (target < d) {
+        c++;
+      }
+    });
+    return c >= 2;
   }
 
   /**
@@ -77,50 +96,133 @@ class Renderer {
     let str0 = '';
     const vp = this._viewport;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
+    // Calculate matrices.
     const tMatrix = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z);
-    // const rMatrixRoll = Matrix.getRotationMatrix('roll', vp.roll);
-    // const rMatrixPitch = Matrix.getRotationMatrix('pitch', vp.pitch);
-    // const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
-    //const rMatrix = Matrix.getRotation(vp.x, vp.y, vp.z);
-    //const rMatrix = Matrix.getRotation();
     const sMatrix = Matrix.getScalingMatrix(vp.z, vp.z, vp.z);
     const rMatrixRoll = Matrix.getRotationMatrix('roll', vp.roll);
     const rMatrixPitch = Matrix.getRotationMatrix('pitch', vp.pitch);
     const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
-    //const pMatrix = Matrix.getProjection();
     objectMatrix.forEach(x => {
       x.forEach(y => {
         y.forEach(obj => {
           const rot = Matrix.multiply(Matrix.multiply(rMatrixRoll, rMatrixPitch), rMatrixYaw);
           const M = Matrix.multiply(Matrix.multiply(tMatrix, rot), sMatrix);
-          // Bottom
-          const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
-          const vA1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]);
-          const vA2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]);
-          const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]);
           if (obj.height) {
-            // Top
-            const vB0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]);
-            const vB1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]);
-            const vB2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]);
-            const vB3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]);
-            // Draw
+            const distances = [-1, -1 -1];
+            const side0 = true, side1 = true, side2 = false, side3 = false, top = true;
+
+            // top
+            const tmid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z + obj.height], [1]]);
+            const std = this.getDistance3D(tmid, [[vp.x], [vp.y], [vp.z]]);
+            const t = [
+              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+            ];
+
+            // front
+            const s0mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y], [obj.z + obj.height/2], [1]]);
+            const s0d = this.getDistance3D(s0mid, [[vp.x], [vp.y], [vp.z]]);
+            const s0 = [
+              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+            ];
+
+            // right
+            const s1mid = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]);
+            const s1d = this.getDistance3D(s1mid, [[vp.x], [vp.y], [vp.z]]);
+            const s1 = [
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+            ];
+
+            // back
+            const s2mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length], [obj.z + obj.height/2], [1]]);
+            const s2d = this.getDistance3D(s2mid, [[vp.x], [vp.y], [vp.z]]);
+            const s2 = [
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+            ];
+
+            // left
+            const s3mid = Matrix.multiply(M, [[obj.x], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]);
+            const s3d = this.getDistance3D(s3mid, [[vp.x], [vp.y], [vp.z]]);
+            const s3 = [
+              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+            ];
+
+            if (this.isFacing(tmid, [s0mid, s1mid, s2mid, s3mid])) {
+              this._ctx.beginPath();
+              this._ctx.lineTo(t[0][0], t[0][1]);
+              this._ctx.lineTo(t[1][0], t[1][1]);
+              this._ctx.lineTo(t[2][0], t[2][1]);
+              this._ctx.lineTo(t[3][0], t[3][1]);
+              this._ctx.fillStyle = `rgb(100,100,100)`;
+              this._ctx.fill();
+            }
+
+            if (this.isFacing(s0mid, [tmid, s1mid, s2mid, s3mid])) {
+              this._ctx.beginPath();
+              this._ctx.moveTo(s0[0][0], s0[0][1]);
+              this._ctx.lineTo(s0[1][0], s0[1][1]);
+              this._ctx.lineTo(s0[2][0], s0[2][1]);
+              this._ctx.lineTo(s0[3][0], s0[3][1]);
+              this._ctx.fillStyle = `rgb(75,75,75)`;
+              this._ctx.fill();
+            }
+
+            if (this.isFacing(s1mid, [tmid, s0mid, s2mid, s3mid])) {
+              this._ctx.beginPath();
+              this._ctx.moveTo(s1[0][0], s1[0][1]);
+              this._ctx.lineTo(s1[1][0], s1[1][1]);
+              this._ctx.lineTo(s1[2][0], s1[2][1]);
+              this._ctx.lineTo(s1[3][0], s1[3][1]);
+              this._ctx.fillStyle = `rgb(75,75,75)`;
+              this._ctx.fill();
+            }
+
+            if (this.isFacing(s2mid, [tmid, s0mid, s1mid, s3mid])) {
+              this._ctx.beginPath();
+              this._ctx.moveTo(s2[0][0], s2[0][1]);
+              this._ctx.lineTo(s2[1][0], s2[1][1]);
+              this._ctx.lineTo(s2[2][0], s2[2][1]);
+              this._ctx.lineTo(s2[3][0], s2[3][1]);
+              this._ctx.fillStyle = `rgb(75,75,75)`;
+              this._ctx.fill();
+            }
+
+            if (this.isFacing(s3mid, [tmid, s0mid, s1mid, s2mid])) {
+              this._ctx.beginPath();
+              this._ctx.moveTo(s3[0][0], s3[0][1]);
+              this._ctx.lineTo(s3[1][0], s3[1][1]);
+              this._ctx.lineTo(s3[2][0], s3[2][1]);
+              this._ctx.lineTo(s3[3][0], s3[3][1]);
+              this._ctx.fillStyle = `rgb(75,75,75)`;
+              this._ctx.fill();
+            }
+          } else {
+            const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
+            const vA1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]);
+            const vA2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]);
+            const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]);
             this._ctx.beginPath();
             this._ctx.moveTo(vA0[0], vA0[1]);
             this._ctx.lineTo(vA1[0], vA1[1]);
             this._ctx.lineTo(vA2[0], vA2[1]);
             this._ctx.lineTo(vA3[0], vA3[1]);
-            this._ctx.fillStyle = `rgb(75,75,75)`;
+            this._ctx.fillStyle = `rgb(50,50,50)`;
             this._ctx.fill();
             str0 = `vA0[${vA0}], vA1[${vA1}], vA2[${vA2}], vA3[${vA3}]`;
-          } else {
-            this._ctx.beginPath();
-            this._ctx.moveTo(vA0[0], vA0[1]);
-            this._ctx.lineTo(vA1[0], vA1[1]);
-            this._ctx.lineTo(vA2[0], vA2[1]);
-            this._ctx.lineTo(vA3[0], vA3[1]);
-            this._ctx.fillStyle = `rgb(100,100,100)`;
-            this._ctx.fill();
           }
         });
       });
