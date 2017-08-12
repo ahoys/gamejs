@@ -19,27 +19,27 @@ class Renderer {
   }
 
   isFacing(target, arr) {
-    let c = 0;
-    arr.forEach(d => {
-      if (target < d) {
-        c++;
-      }
-    });
-    return c >= 2;
+    return true;
   }
 
   /**
    * Draws a rectangle.
    * @param {*} lines [[x0,y0] [x1,y1], [x2,y2], [x3,y3]]
    * @param {*} color {r:n,g:n,b:n}
+   * @param {boolean} wireframe
    */
-  draw3D(lines, color) {
+  draw3D(lines, color = 'rgb(0,0,0)', wf = false) {
     this._ctx.beginPath();
     lines.forEach(l => {
       this._ctx.lineTo(l[0], l[1]);
     });
-    this._ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
-    this._ctx.fill();
+    if (wf) {
+      this._ctx.strokeStyle = `rgb(${color.r},${color.g},${color.b})`;
+      this._ctx.stroke();
+    } else {
+      this._ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
+      this._ctx.fill();
+    }
   }
 
   /**
@@ -116,23 +116,23 @@ class Renderer {
             ];
 
             if (this.isFacing(tmid, [s0mid, s1mid, s2mid, s3mid])) {
-              this.draw3D(t, obj.baseColor);
+              this.draw3D(t, obj.baseColor, true);
             }
 
             if (this.isFacing(s0mid, [tmid, s1mid, s2mid, s3mid])) {
-              this.draw3D(s0, obj.baseColor);
+              this.draw3D(s0, obj.baseColor, true);
             }
 
             if (this.isFacing(s1mid, [tmid, s0mid, s2mid, s3mid])) {
-              this.draw3D(s1, obj.baseColor);
+              this.draw3D(s1, obj.baseColor, true);
             }
 
             if (this.isFacing(s2mid, [tmid, s0mid, s1mid, s3mid])) {
-              this.draw3D(s2, obj.baseColor);
+              this.draw3D(s2, obj.baseColor, true);
             }
 
             if (this.isFacing(s3mid, [tmid, s0mid, s1mid, s2mid])) {
-              this.draw3D(s3, obj.baseColor);
+              this.draw3D(s3, obj.baseColor, true);
             }
           } else {
             const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
