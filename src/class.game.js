@@ -69,8 +69,8 @@ class Game {
       'VP_ROTATE_LEFT': () => this._viewport.doTurn('yaw', this.getRelativeSpeed(0.8)),
       'VP_ROTATE_RIGHT': () => this._viewport.doTurn('yaw', -this.getRelativeSpeed(0.8)),
       //'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
-      //'VP_ZOOM_OUT': () => this._viewport.doZoom('out', 1),
-      //'VP_ZOOM_IN': () => this._viewport.doZoom('in', 1),
+      'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(10)),
+      'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(10)),
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {

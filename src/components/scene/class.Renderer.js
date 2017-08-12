@@ -74,7 +74,7 @@ class Renderer {
    * of the world.
    */
   build3Dscene(objectMatrix, w, l, h) {
-    let str = '';
+    let str0 = '';
     const vp = this._viewport;
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     const tMatrix = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z);
@@ -83,24 +83,19 @@ class Renderer {
     // const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
     //const rMatrix = Matrix.getRotation(vp.x, vp.y, vp.z);
     //const rMatrix = Matrix.getRotation();
-    const sMatrix = Matrix.getScalingMatrix(vp.width, vp.length, 1);
+    const sMatrix = Matrix.getScalingMatrix(vp.z, vp.z, vp.z);
     //const pMatrix = Matrix.getProjection();
-    let counter = 0;
     objectMatrix.forEach(x => {
       x.forEach(y => {
         y.forEach(obj => {
-          if (obj.height && counter === 0) {
-            counter++;
-            //const M = new Matrix.Matrix(Matrix.multiply(tMatrix.matrix, sMatrix.matrix));
-            //const V1 = Matrix.multiply(sMatrix.getMultipication([obj.x, obj.y, obj.z, 1]), tMatrix.getMultipication([obj.x, obj.y, obj.z, 1]));
-            //const tPos = tMatrix.getMultipication([obj.x, obj.y, obj.z, 1]);
-            const M = tMatrix;
+          if (obj.height) {
+            const M = Matrix.multiply(tMatrix, sMatrix);
 
             // Bottom
             const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
-            const vA1 = Matrix.multiply(M, [[obj.x + 100], [obj.y], [obj.z], [1]]);
-            const vA2 = Matrix.multiply(M, [[obj.x + 100], [obj.y + 100], [obj.z], [1]]);
-            const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + 100], [obj.z], [1]]);
+            const vA1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]);
+            const vA2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]);
+            const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]);
 
             // Top
             const vB0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]);
@@ -115,14 +110,7 @@ class Renderer {
             this._ctx.lineTo(vA3[0], vA3[1]);
             this._ctx.fillStyle = `rgb(75,75,75)`;
             this._ctx.fill();
-            // this._ctx.beginPath();
-            // this._ctx.moveTo(0, 0);
-            // this._ctx.lineTo(100, 0);
-            // this._ctx.lineTo(100, 100);
-            // this._ctx.lineTo(0, 100);
-            // this._ctx.fill();
-            str = `vA0[${vA0}], vA1[${vA1}], vA2[${vA2}], vA3[${vA3}]`;
-            //this._ctx.fillRect(tPos[0], tPos[1], obj.width * 100, obj.length * 100);
+            str0 = `vA0[${vA0}], vA1[${vA1}], vA2[${vA2}], vA3[${vA3}]`;
           } else {
             // this._ctx.fillStyle = `rgb(75,75,75)`;
             // this._ctx.beginPath();
@@ -135,10 +123,12 @@ class Renderer {
         });
       });
     });
+    const str1 = `[VIEWPORT] POS[${vp.x}.${vp.y}.${vp.z}] ROLL[${vp.roll}] PITCH[${vp.pitch}] YAW[${vp.yaw}]`;
     this._ctx.translate(0,0);
     this._ctx.setTransform(1,0,0,1,0,0);
     this._ctx.fillStyle = 'white';
-    this._ctx.fillText(str, 16, 16);
+    this._ctx.fillText(str0, 16, 16);
+    this._ctx.fillText(str1, 16, 32);
   }
 
   set stage(stage) {
