@@ -53,7 +53,7 @@ class Renderer {
    * Builds a three dimensional scene
    * of the world.
    */
-  build3Dscene(objectMatrix, w, l, h) {
+  build3Dscene(objectMatrix) {
     const perf0 = performance.now();
     let str0 = '';
 
