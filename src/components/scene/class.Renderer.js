@@ -40,13 +40,18 @@ class Renderer {
     lines.forEach(l => {
       this._ctx.lineTo(l[0], l[1]);
     });
+    this._ctx.globalCompositeOperation = 'lighten';
+    // this._ctx.globalCompositeOperation = 'multiply';
+    // this._ctx.globalCompositeOperation = 'difference';
+    // this._ctx.globalCompositeOperation = 'lighter';
+    // this._ctx.globalCompositeOperation = 'color-dodge';
     if (wf) {
-      this._ctx.strokeStyle = `rgb(${color.r},${color.g},${color.b})`;
+      // Wireframe enabled.
+      this._ctx.strokeStyle = 'rgb(200,200,200)';
       this._ctx.stroke();
-    } else {
-      this._ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
-      this._ctx.fill();
     }
+    this._ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
+    this._ctx.fill();
   }
 
   /**
@@ -76,6 +81,10 @@ class Renderer {
         y.forEach(obj => {
           const rot = Matrix.multiply(Matrix.multiply(rMatrixRoll, rMatrixPitch), rMatrixYaw);
           const M = Matrix.multiply(Matrix.multiply(tMatrix, rot), sMatrix);
+
+          // First color mask for depth.
+          const colorMask0 = {r: obj.z + obj.height * 100, g: obj.z + obj.height * 100, b: obj.z + obj.height * 100};
+
           if (obj.height) {
             const distances = [-1, -1 -1];
             const side0 = true, side1 = true, side2 = false, side3 = false, top = true;
@@ -131,37 +140,31 @@ class Renderer {
             ];
 
             if (this.isFacing(tmid, [s0mid, s1mid, s2mid, s3mid])) {
-              this.draw3D(t, obj.baseColor, true);
+              this.draw3D(t, colorMask0, false);
             }
 
             if (this.isFacing(s0mid, [tmid, s1mid, s2mid, s3mid])) {
-              this.draw3D(s0, obj.baseColor, true);
+              this.draw3D(s0, colorMask0, false);
             }
 
             if (this.isFacing(s1mid, [tmid, s0mid, s2mid, s3mid])) {
-              this.draw3D(s1, obj.baseColor, true);
+              this.draw3D(s1, colorMask0, false);
             }
 
             if (this.isFacing(s2mid, [tmid, s0mid, s1mid, s3mid])) {
-              this.draw3D(s2, obj.baseColor, true);
+              this.draw3D(s2, colorMask0, false);
             }
 
             if (this.isFacing(s3mid, [tmid, s0mid, s1mid, s2mid])) {
-              this.draw3D(s3, obj.baseColor, true);
+              this.draw3D(s3, colorMask0, false);
             }
           } else {
-            const vA0 = Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]);
-            const vA1 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]);
-            const vA2 = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]);
-            const vA3 = Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]);
-            this._ctx.beginPath();
-            this._ctx.moveTo(vA0[0], vA0[1]);
-            this._ctx.lineTo(vA1[0], vA1[1]);
-            this._ctx.lineTo(vA2[0], vA2[1]);
-            this._ctx.lineTo(vA3[0], vA3[1]);
-            this._ctx.fillStyle = `rgb(50,50,50)`;
-            this._ctx.fill();
-            str0 = `vA0[${vA0}], vA1[${vA1}], vA2[${vA2}], vA3[${vA3}]`;
+            this.draw3D([
+              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+            ], colorMask0, false);
           }
         });
       });

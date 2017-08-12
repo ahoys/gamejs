@@ -7,8 +7,8 @@
   },
   "data": [
     {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
+      "type": "w_bedrock",
+      "dataType": "dt_wall",
       "x": 0,
       "y": 0,
       "z": 0
@@ -40,6 +40,13 @@
       "x": 1,
       "y": 1,
       "z": 0
+    },
+    {
+      "type": "w_bedrock",
+      "dataType": "dt_wall",
+      "x": 1,
+      "y": 1,
+      "z": 1
     },
     {
       "type": "f_dirt",
