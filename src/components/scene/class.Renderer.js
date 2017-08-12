@@ -29,66 +29,6 @@ class Renderer {
   }
 
   /**
-   * Builds a two dimensional scene
-   * of the world.
-   */
-  build2Dscene(matrix, w, l, h) {
-    const vp = this._viewport;
-    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
-    const vpo = {
-      x: vp.x + vp.width/2,
-      y: vp.y + vp.length/2,
-    };
-    const scale = this.get2Dscale();
-    // Top
-    this._ctx.setTransform(scale.h, 0, 0, scale.v, vp.x * -1, vp.y * -1);
-    this._ctx.translate(vpo.x, vpo.y);
-    this._ctx.rotate(vp.yaw);
-    this._ctx.translate(-vpo.x, -vpo.y);
-    matrix.forEach(x => {
-      x.forEach(y => {
-        y.forEach(obj => {
-          if (!obj.height) {
-            this._ctx.fillStyle = `rgb(100,100,100)`;
-            this._ctx.fillRect(obj.x * 100, obj.y * 100, obj.width * 100, obj.length * 100);
-          }
-        });
-      });
-    });
-    // Voisikohan nämä laskea sillä matrixillä, pointteja käyttäen?
-    // Left
-    this._ctx.setTransform(scale.v,0.5,0,scale.h,vp.x * -1, (vp.y + 200) * -1);
-    this._ctx.translate(vpo.x, vpo.y);
-    this._ctx.rotate(vp.yaw);
-    this._ctx.translate(-vpo.x, -vpo.y);
-    matrix.forEach(x => {
-      x.forEach(y => {
-        y.forEach(obj => {
-          if (obj.height) {
-            this._ctx.fillStyle = `rgb(75,75,75)`;
-            this._ctx.fillRect(obj.x * 100, obj.y * 100, obj.width * 100, obj.length * 100);
-          }
-        });
-      });
-    });
-    // Right
-    this._ctx.setTransform(scale.h,0,0,scale.h,vp.x * -1, (vp.y + 100) * -1);
-    this._ctx.translate(vpo.x, vpo.y);
-    this._ctx.rotate(vp.yaw);
-    this._ctx.translate(-vpo.x, -vpo.y);
-    matrix.forEach(x => {
-      x.forEach(y => {
-        y.forEach(obj => {
-          if (obj.height) {
-            this._ctx.fillStyle = `rgb(75,75,75)`;
-            this._ctx.fillRect(obj.x * 100, obj.y * 100, obj.width * 100, obj.length * 100);
-          }
-        });
-      });
-    });
-  }
-
-  /**
    * Draws a rectangle.
    * @param {*} lines [[x0,y0] [x1,y1], [x2,y2], [x3,y3]]
    * @param {*} color {r:n,g:n,b:n}
