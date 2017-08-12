@@ -18,8 +18,15 @@ class Renderer {
     return Math.sqrt( dx * dx + dy * dy + dz * dz );
   }
 
-  isFacing(target, arr) {
+  isFacing(targetDistance, arr) {
     return true;
+    // let c = 0;
+    // arr.forEach(d => {
+    //   if (targetDistance < d) {
+    //     c++;
+    //   }
+    // });
+    // return c > 0;
   }
 
   /**
