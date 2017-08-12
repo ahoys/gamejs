@@ -49,14 +49,21 @@ class Renderer {
   build3Dscene(objectMatrix, w, l, h) {
     const perf0 = performance.now();
     let str0 = '';
+
+    // Initialize the viewport.
     const vp = this._viewport;
-    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
+    const vpo = [[vp.x + vp.width/2], [vp.y + vp.height/2], [vp.z]];
+
     // Calculate matrices.
     const tMatrix = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z);
     const sMatrix = Matrix.getScalingMatrix(vp.z, vp.z, vp.z);
     const rMatrixRoll = Matrix.getRotationMatrix('roll', vp.roll);
     const rMatrixPitch = Matrix.getRotationMatrix('pitch', vp.pitch);
     const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
+
+    // Clear the rect as delayed as possible.
+    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
+
     objectMatrix.forEach(x => {
       x.forEach(y => {
         y.forEach(obj => {
@@ -68,7 +75,7 @@ class Renderer {
 
             // top
             const tmid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z + obj.height], [1]]);
-            const std = this.getDistance3D(tmid, [[vp.x], [vp.y], [vp.z]]);
+            const std = this.getDistance3D(tmid, vpo);
             const t = [
               Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
@@ -78,7 +85,7 @@ class Renderer {
 
             // front
             const s0mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y], [obj.z + obj.height/2], [1]]);
-            const s0d = this.getDistance3D(s0mid, [[vp.x], [vp.y], [vp.z]]);
+            const s0d = this.getDistance3D(s0mid, vpo);
             const s0 = [
               Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
@@ -88,7 +95,7 @@ class Renderer {
 
             // right
             const s1mid = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]);
-            const s1d = this.getDistance3D(s1mid, [[vp.x], [vp.y], [vp.z]]);
+            const s1d = this.getDistance3D(s1mid, vpo);
             const s1 = [
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
@@ -98,7 +105,7 @@ class Renderer {
 
             // back
             const s2mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length], [obj.z + obj.height/2], [1]]);
-            const s2d = this.getDistance3D(s2mid, [[vp.x], [vp.y], [vp.z]]);
+            const s2d = this.getDistance3D(s2mid, vpo);
             const s2 = [
               Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
               Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
@@ -108,7 +115,7 @@ class Renderer {
 
             // left
             const s3mid = Matrix.multiply(M, [[obj.x], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]);
-            const s3d = this.getDistance3D(s3mid, [[vp.x], [vp.y], [vp.z]]);
+            const s3d = this.getDistance3D(s3mid, vpo);
             const s3 = [
               Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
               Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
