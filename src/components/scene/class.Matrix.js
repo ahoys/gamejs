@@ -8,33 +8,31 @@ module.exports = {
     ];
   },
 
-  getRotationMatrix(axel, rad) {
-    switch (axel) {
-      case 'roll':
-        return [
-          [1, 0, 0, 1],
-          [0, Math.cos(rad), -Math.sin(rad), 1],
-          [0, Math.sin(rad), Math.cos(rad), 1],
-          [0, 0, 0, 1],
-        ];
-        break;
-      case 'pitch':
-        return [
-          [Math.cos(rad), 0, Math.sin(rad), 1],
-          [0, 1, 0, 1],
-          [-Math.sin(rad), 0, Math.cos(rad), 1],
-          [0, 0, 0, 1],
-        ];
-        break;
-      case 'yaw':
-        return [
-          [Math.cos(rad), -Math.sin(rad), 0, 1],
-          [Math.sin(rad), Math.cos(rad), 0, 1],
-          [0, 0, 1, 1],
-          [0, 0, 0, 1],
-        ];
-        break;
-    }
+  getRotationMatrixRoll(rad) {
+    return [
+      [1, 0, 0, 1],
+      [0, Math.cos(rad), -Math.sin(rad), 1],
+      [0, Math.sin(rad), Math.cos(rad), 1],
+      [0, 0, 0, 1],
+    ];
+  },
+
+  getRotationMatrixPitch(rad) {
+    return [
+      [Math.cos(rad), 0, Math.sin(rad), 1],
+      [0, 1, 0, 1],
+      [-Math.sin(rad), 0, Math.cos(rad), 1],
+      [0, 0, 0, 1],
+    ];
+  },
+
+  getRotationMatrixYaw(rad) {
+    return [
+      [Math.cos(rad), -Math.sin(rad), 0, 1],
+      [Math.sin(rad), Math.cos(rad), 0, 1],
+      [0, 0, 1, 1],
+      [0, 0, 0, 1],
+    ];
   },
 
   getScalingMatrix(x, y, z) {

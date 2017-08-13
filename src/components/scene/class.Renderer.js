@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Matrix = require('./class.Matrix');
 
 class Renderer {
@@ -29,29 +30,61 @@ class Renderer {
     // return c > 0;
   }
 
-  /**
-   * Draws a rectangle.
-   * @param {*} lines [[x0,y0] [x1,y1], [x2,y2], [x3,y3]]
-   * @param {*} color {r:n,g:n,b:n}
-   * @param {boolean} wireframe
-   */
-  draw3D(lines, color = 'rgb(0,0,0)', wf = false) {
-    this._ctx.beginPath();
-    lines.forEach(l => {
-      this._ctx.lineTo(l[0], l[1]);
-    });
-    // this._ctx.globalCompositeOperation = 'lighten';
-    // this._ctx.globalCompositeOperation = 'multiply';
-    // this._ctx.globalCompositeOperation = 'difference';
-    // this._ctx.globalCompositeOperation = 'lighter';
-    // this._ctx.globalCompositeOperation = 'color-dodge';
-    if (wf) {
-      // Wireframe enabled.
-      this._ctx.strokeStyle = 'rgb(200,200,200)';
-      this._ctx.stroke();
+  getNormal(p) {
+    const normal = [0,0,0];
+    for (let i = 0; i < p.length; i++) {
+      const j = (i + 1) % p.length;
+      normal[0] += (p[i][1] - p[j][1]) * (p[i][2] + p[j][2]);
+      normal[1] += (p[i][2] - p[j][2]) * (p[i][2] + p[j][2]);
+      normal[2] += (p[i][1] - p[j][1]) * (p[i][1] + p[j][1]);
     }
-    this._ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
+    return normal;
+  }
+
+  /**
+   * Draws a plane.
+   * @param {*} pV 
+   * @param {*} r 
+   * @param {*} g 
+   * @param {*} b 
+   * @param {*} a 
+   */
+  drawPlane2D(pV, r, g, b, a = 1) {
+    this._ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+    pV.forEach(v => {
+      this._ctx.lineTo(v[0], v[1]);
+    });
     this._ctx.fill();
+  }
+
+  /**
+   * Draws a text string to the canvas.
+   * @param {string} str 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {string} color 
+   */
+  drawText2D(str, x, y, color) {
+    this._ctx.fillStyle = color;
+    this._ctx.fillText(str, x, y);
+  }
+
+  /**
+   * Draws a scene.
+   * @param {*} buffer 
+   */
+  drawScene(buffer, debug = true, wireframe = false) {
+    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
+    buffer.forEach(obj => {
+      // Draw all planes.
+      this._ctx.beginPath();
+      obj[0].forEach(plane => this.drawPlane2D(plane, obj[4].r, obj[4].g, obj[4].b));
+      if (debug) {
+        obj[1].forEach((origin, i) => {
+          this.drawText2D(obj[2][i], origin[0][0], origin[1][0], 'black');
+        });
+      }
+    });
   }
 
   drawMask0(planeBuffer, vp) {
@@ -65,6 +98,117 @@ class Renderer {
       this._ctx.fillStyle = `rgb(${cVal},${cVal},${cVal})`;
       this._ctx.fill();
     });
+  }
+
+  /**
+   * Builds a scene for scene drawing.
+   * @param {*} objects 
+   */
+  buildScene(objects) {
+    const d_performance = performance.now();
+    let d_string = '';
+
+    // Initialize the viewport.
+    const vp = this._viewport;
+    const vpo = [[vp.x + vp.width/2], [vp.y + vp.length/2], [vp.z]];
+
+    // Calculate matrices.
+    const tM = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z); // Translation matrix.
+    const sM = Matrix.getScalingMatrix(vp.z, vp.z, vp.z); // Scaling matrix.
+    const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
+    const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.
+    const rMY = Matrix.getRotationMatrixYaw(vp.yaw); // Rotation yaw matrix.
+
+    // Initialize buffers.
+    const pBuffer = []; // All vertices for constructing planes.
+    const tBuffer = []; // Textual strings.
+    let draw = false;
+
+    // Objects are in a 3D space.
+    objects.forEach(obj => {
+      draw = true;
+      const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
+      const M = Matrix.multiply(Matrix.multiply(tM, Rm), sM); // Final matrix.
+      const planeObject = [[], [], [], 0, obj.baseColor]; // 0: vertices, 1: origins, 2: distances, 3, closest, 4: color.
+
+      // Calculate primary (top) plane. Every object (2D/3D) has one.
+      planeObject[1].push(Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z + obj.height], [1]]));
+      planeObject[2].push(this.getDistance3D(planeObject[1][0], vpo));
+      planeObject[0].push(
+        [
+          Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
+          Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
+          Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+          Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+        ]
+      );
+      planeObject[3] = planeObject[2][0];
+      if (obj.height) {
+        // 3-dimensional object.
+        // Front.
+        planeObject[1].push(Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y], [obj.z + obj.height/2], [1]]));
+        planeObject[2].push(this.getDistance3D(planeObject[1][1], vpo));
+        planeObject[0].push(
+          [
+            Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+          ]
+        );
+        // Right.
+        planeObject[1].push(Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]));
+        planeObject[2].push(this.getDistance3D(planeObject[1][2], vpo));
+        planeObject[0].push(
+          [
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+          ]
+        );
+        // Back.
+        planeObject[1].push(Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length], [obj.z + obj.height/2], [1]]));
+        planeObject[2].push(this.getDistance3D(planeObject[1][3], vpo));
+        planeObject[0].push(
+          [
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+          ]
+        );
+        // Left.
+        planeObject[1].push(Matrix.multiply(M, [[obj.x], [obj.y + obj.length/2], [obj.z + obj.height/2], [1]]));
+        planeObject[2].push(this.getDistance3D(planeObject[1][4], vpo));
+        planeObject[0].push(
+          [
+            Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+          ]
+        );
+        // Bottom.
+        planeObject[1].push(Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z], [1]]));
+        planeObject[2].push(this.getDistance3D(planeObject[1][5], vpo));
+        planeObject[0].push(
+          [
+            Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
+            Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
+          ]
+        );
+        planeObject[3] = Math.min(planeObject[2][0], planeObject[2][1], planeObject[2][2], planeObject[2][3], planeObject[2][4], planeObject[2][5]);
+      }
+      pBuffer.push(planeObject);
+    });
+
+    // The next step is to re-order the planes based on distance between plane origo and the viewport.
+    // TODO: calculate surface normals.
+    pBuffer.sort((a, b) => b[3] - a[3]);
+    if (draw) this.drawScene(pBuffer);
   }
 
   /**

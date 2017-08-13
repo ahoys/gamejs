@@ -137,7 +137,7 @@ class Game {
     }
     this.queueUpdates(numTicks);
     // this.renderer.draw(tFrame, this._worldScale, this.drawBuffer, this.textBuffer);
-    this._renderer.build3Dscene(this._drawBuffer);
+    this._renderer.buildScene(this._drawBuffer);
     this.lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }

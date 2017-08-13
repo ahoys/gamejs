@@ -30,7 +30,15 @@ class Level {
    * This includes the entire level.
    */
   get world() {
-    return this._3Dmatrix;
+    const payload = [];
+    this._3Dmatrix.forEach(x => {
+      x.forEach(y => {
+        y.forEach(obj => {
+          payload.push(obj);
+        });
+      });
+    });
+    return payload;
   }
 
   /**
