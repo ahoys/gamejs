@@ -47,7 +47,7 @@ class Renderer {
    */
   drawObjDebug2D(obj) {
     obj[1].forEach((origin, i) => {
-      if (obj[2][i] < 100) {
+      if (true) {
         this.drawText2D((obj[2][i]).toFixed(2), origin[0][0], origin[1][0], 'black');
         this.drawText2D(
           `${(obj[1][i][0][0]).toFixed(0)}.` +
@@ -64,7 +64,7 @@ class Renderer {
   drawViewportDebug2D(x = 16, y = 16, color = 'white') {
     const vp = this._viewport;
     this.drawText2D(`${vp.x}, ${vp.y}, ${vp.z}, ${vp.roll}, ${vp.pitch}, ${vp.yaw}`, x, y, color);
-    this.drawText2D(`VP`, vp.x, vp.y, 'red');
+    this.drawText2D(`ORIGIN`, vp.x, vp.y, 'red');
   }
 
   /**
@@ -136,7 +136,7 @@ class Renderer {
     const vpX = vp.x;
     const vpY = vp.y;
     const vpZ = vp.z;
-    const vpo = [vpX, vpY, vpZ];
+    const vpo = [[0], [0], [0]];
 
     // Calculate matrices.
     const tM = Matrix.getTransformationMatrix(vpX, vpY, vpZ); // Translation matrix.

@@ -11,7 +11,7 @@ class Viewport {
     const rMY = Matrix.getRotationMatrixYaw(this._yaw); // Rotation yaw matrix.
     const Rm = Matrix.multiply(rMR, rMY); // Rotation.
     const M = tM;
-    return Matrix.multiply(M, [[this._x], [this._y], [this._z], [1]]);
+    return Matrix.multiply(M, [[this._x], [this._y], [this._z], [this._w]]);
   }
 
   /**
@@ -127,6 +127,7 @@ class Viewport {
     this._x = x;
     this._y = y;
     this._z = z;
+    this._w = 1;
     this._roll = roll; // Axis of rotation: x.
     this._yaw = yaw; // Axis of rotation: z.
     this._pitch = pitch; // Axis of rotation: y.
