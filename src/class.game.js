@@ -62,26 +62,16 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_UP': () => this._viewport.doMove3D('up', this.getRelativeSpeed(300)),
-      'VP_MOVE_RIGHT': () => this._viewport.doMove3D('right', this.getRelativeSpeed(300)),
-      'VP_MOVE_LEFT': () => this._viewport.doMove3D('left', this.getRelativeSpeed(300)),
-      'VP_MOVE_DOWN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(300)),
-      'VP_ROTATE_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(0.8)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(0.8)),
-      'VP_MOVE_FORWARD': () => this._viewport.doMove3D('forward', this.getRelativeSpeed(1)),
-      'VP_MOVE_BACKWARD': () => this._viewport.doMove3D('backward', this.getRelativeSpeed(1)),
-
-      //'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
-      'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(1)),
-      'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(1)),
-
-      'VP_ROLL_LEFT': () => this._viewport.doRotate('roll', this.getRelativeSpeed(1)),
-      'VP_ROLL_RIGHT': () => this._viewport.doRotate('roll', -this.getRelativeSpeed(1)),
-      // 'VP_PITCH_FORWARD': () => this._viewport.doRotate('pitch', this.getRelativeSpeed(1)),
-      // 'VP_PITCH_BACKWARD': () => this._viewport.doRotate('pitch', -this.getRelativeSpeed(1)),
-      'VP_YAW_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(1)),
-      'VP_YAW_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(1)),
-
+      'VP_MOVE_FORWARD': () => this._viewport.doMoveXYZ(this.getRelativeSpeed(1)),
+      'VP_MOVE_BACKWARD': () => this._viewport.doMoveXYZ(-this.getRelativeSpeed(1)),
+      'VP_MOVE_LEFT': () => this._viewport.doMoveX(this.getRelativeSpeed(100)),
+      'VP_MOVE_RIGHT': () => this._viewport.doMoveX(-this.getRelativeSpeed(100)),
+      'VP_MOVE_UP': () => this._viewport.doMoveY(this.getRelativeSpeed(100)),
+      'VP_MOVE_DOWN': () => this._viewport.doMoveY(-this.getRelativeSpeed(100)),
+      'VP_ROTATE_LEFT': () => this._viewport.doYaw(this.getRelativeSpeed(0.8)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doYaw(-this.getRelativeSpeed(0.8)),
+      'VP_ROLL_LEFT': () => this._viewport.doRoll(this.getRelativeSpeed(1)),
+      'VP_ROLL_RIGHT': () => this._viewport.doRoll(-this.getRelativeSpeed(1)),
       'VP_RESET': () => this._viewport.doReset(),
     }
     active.forEach((actionRequest) => {
