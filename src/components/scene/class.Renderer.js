@@ -74,7 +74,7 @@ class Renderer {
    * @param {*} buffer 
    */
   drawScene(buffer, debug = true, wireframe = false) {
-    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
+    // this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     buffer.forEach(obj => {
       // Draw all planes.
       this._ctx.beginPath();
@@ -104,13 +104,15 @@ class Renderer {
    * Builds a scene for scene drawing.
    * @param {*} objects 
    */
-  buildScene(objects) {
+  buildScene(objects, debug) {
     const d_performance = performance.now();
     let d_string = '';
 
     // Initialize the viewport.
     const vp = this._viewport;
-    const vpo = [[vp.x + vp.width/2], [vp.y + vp.length/2], [vp.z]];
+    const vpo = [[vp.width/2], [vp.length/2], [100]];
+    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
+    this.drawText2D(`${vpo[0]}, ${vpo[1]}, ${vpo[2]}`, vpo[0], vpo[1], 'red');
 
     // Calculate matrices.
     const tM = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z); // Translation matrix.
@@ -118,6 +120,8 @@ class Renderer {
     const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
     const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.
     const rMY = Matrix.getRotationMatrixYaw(vp.yaw); // Rotation yaw matrix.
+    const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
+    const M = Matrix.multiply(Matrix.multiply(tM, Rm), sM); // Final matrix.
 
     // Initialize buffers.
     const pBuffer = []; // All vertices for constructing planes.
@@ -127,8 +131,6 @@ class Renderer {
     // Objects are in a 3D space.
     objects.forEach(obj => {
       draw = true;
-      const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
-      const M = Matrix.multiply(Matrix.multiply(tM, Rm), sM); // Final matrix.
       const planeObject = [[], [], [], 0, obj.baseColor]; // 0: vertices, 1: origins, 2: distances, 3, closest, 4: color.
 
       // Calculate primary (top) plane. Every object (2D/3D) has one.
