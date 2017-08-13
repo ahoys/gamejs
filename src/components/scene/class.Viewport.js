@@ -1,4 +1,3 @@
-const Calc = require('../../utilities/util.calc');
 const Matrix = require('./class.Matrix');
 
 class Viewport {
