@@ -7,9 +7,6 @@
   "scripts": {
     "compile": "webpack ./src/class.game.js ./build/main.bundle.js"
   },
-  "dependencies": {
-    "lodash": "4.17.x"
-  },
   "devDependencies": {
     "babel-core": "6.25.x",
     "babel-loader": "7.1.x",

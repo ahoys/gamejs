@@ -1,17 +1,12 @@
-const _ = require('lodash');
 const Matrix = require('./class.Matrix');
 
 class Renderer {
 
   /**
-   * Returns middle point of two points.
-   * @param {*} a [x1, y1]
-   * @param {*} c [x2, y2]
+   * Returns a distance of two points in a 3D-space.
+   * @param {*} v1 
+   * @param {*} v2 
    */
-  getMidPoint(a, c) {
-    return [((a[0] + c[0]) / 2), ((a[1] + c[1]) / 2)];
-  }
-
   getDistance3D(v1, v2) {
     const dx = v1[0][0] - v2[0][0];
     const dy = v1[1][0] - v2[1][0];
@@ -19,18 +14,11 @@ class Renderer {
     return Math.sqrt( dx * dx + dy * dy + dz * dz );
   }
 
-  isFacing(targetDistance, arr) {
-    return true;
-    // let c = 0;
-    // arr.forEach(d => {
-    //   if (targetDistance < d) {
-    //     c++;
-    //   }
-    // });
-    // return c > 0;
-  }
-
-  getNormal(p) {
+  /**
+   * Returns a surface normal.
+   * @param {*} p 
+   */
+  getSurfaceNormal(p) {
     const normal = [0,0,0];
     for (let i = 0; i < p.length; i++) {
       const j = (i + 1) % p.length;
@@ -110,19 +98,6 @@ class Renderer {
       if (debug) this.drawObjDebug2D(obj);
     });
     if (debug) this.drawViewportDebug2D();
-  }
-
-  drawMask0(planeBuffer, vp) {
-    this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
-    planeBuffer.forEach(data => {
-      const cVal = (255 * vp.z / data[0]).toFixed(0);
-      this._ctx.beginPath();
-      data[1].forEach(l => {
-        this._ctx.lineTo(l[0], l[1]);
-      });
-      this._ctx.fillStyle = `rgb(${cVal},${cVal},${cVal})`;
-      this._ctx.fill();
-    });
   }
 
   /**
@@ -235,130 +210,6 @@ class Renderer {
     // TODO: calculate surface normals.
     pBuffer.sort((a, b) => b[3] - a[3]);
     if (draw) this.drawScene(pBuffer);
-  }
-
-  /**
-   * Builds a three dimensional scene
-   * of the world.
-   */
-  build3Dscene(objectMatrix) {
-    const perf0 = performance.now();
-    let str0 = '';
-
-    // Initialize the viewport.
-    const vp = this._viewport;
-    const vpo = [[vp.x + vp.width/2], [vp.y + vp.length/2], [vp.z]];
-
-    // Calculate matrices.
-    const tMatrix = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z);
-    const sMatrix = Matrix.getScalingMatrix(vp.z, vp.z, vp.z);
-    const rMatrixRoll = Matrix.getRotationMatrix('roll', vp.roll);
-    const rMatrixPitch = Matrix.getRotationMatrix('pitch', vp.pitch);
-    const rMatrixYaw = Matrix.getRotationMatrix('yaw', vp.yaw);
-
-    // Clear the rect as delayed as possible.
-    const planeBuffer = [];
-
-    objectMatrix.forEach(x => {
-      x.forEach(y => {
-        y.forEach(obj => {
-          const rot = Matrix.multiply(Matrix.multiply(rMatrixRoll, rMatrixPitch), rMatrixYaw);
-          const M = Matrix.multiply(Matrix.multiply(tMatrix, rot), sMatrix);
-
-          if (obj.height) {
-            const distances = [-1, -1 -1];
-            const side0 = true, side1 = true, side2 = false, side3 = false, top = true;
-
-            // top
-            const tmid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z * obj.height], [1]]);
-            const std = this.getDistance3D(tmid, vpo);
-            const t = [
-              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
-            ];
-
-            // front
-            const s0mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y], [obj.z * obj.height/2], [1]]);
-            const s0d = this.getDistance3D(s0mid, vpo);
-            const s0 = [
-              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
-            ];
-
-            // right
-            const s1mid = Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length/2], [obj.z * obj.height/2], [1]]);
-            const s1d = this.getDistance3D(s1mid, vpo);
-            const s1 = [
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
-            ];
-
-            // back
-            const s2mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length], [obj.z * obj.height/2], [1]]);
-            const s2d = this.getDistance3D(s2mid, vpo);
-            const s2 = [
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
-            ];
-
-            // left
-            const s3mid = Matrix.multiply(M, [[obj.x], [obj.y + obj.length/2], [obj.z * obj.height/2], [1]]);
-            const s3d = this.getDistance3D(s3mid, vpo);
-            const s3 = [
-              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z + obj.height], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
-              Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
-            ];
-
-            if (this.isFacing(tmid, [s0mid, s1mid, s2mid, s3mid])) {
-              planeBuffer.push([std, t, obj.baseColor]);
-            }
-
-            if (this.isFacing(s0mid, [tmid, s1mid, s2mid, s3mid])) {
-              planeBuffer.push([s0d, s0, obj.baseColor]);
-            }
-
-            if (this.isFacing(s1mid, [tmid, s0mid, s2mid, s3mid])) {
-              planeBuffer.push([s1d, s1, obj.baseColor]);
-            }
-
-            if (this.isFacing(s2mid, [tmid, s0mid, s1mid, s3mid])) {
-              planeBuffer.push([s2d, s2, obj.baseColor]);
-            }
-
-            if (this.isFacing(s3mid, [tmid, s0mid, s1mid, s2mid])) {
-              planeBuffer.push([s3d, s3, obj.baseColor]);
-            }
-          } else {
-            const mid = Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z * obj.height/2], [1]]);
-            planeBuffer.push([this.getDistance3D(mid, vpo),
-              [
-                Matrix.multiply(M, [[obj.x], [obj.y], [obj.z], [1]]),
-                Matrix.multiply(M, [[obj.x + obj.width], [obj.y], [obj.z], [1]]),
-                Matrix.multiply(M, [[obj.x + obj.width], [obj.y + obj.length], [obj.z], [1]]),
-                Matrix.multiply(M, [[obj.x], [obj.y + obj.length], [obj.z], [1]]),
-              ], obj.baseColor]);
-          }
-          const mask0 = this.drawMask0(planeBuffer, vp);
-        });
-      });
-    });
-    const str1 = `VIEWPORT: X${vp.x.toFixed(2)} Y${vp.y.toFixed(2)} Z${vp.z.toFixed(2)} R${vp.roll.toFixed(2)} P${vp.pitch.toFixed(2)} Y${vp.yaw.toFixed(2)}`;
-    this._ctx.translate(0,0);
-    this._ctx.setTransform(1,0,0,1,0,0);
-    this._ctx.fillStyle = 'white';
-    this._ctx.fillText(str0, 16, 16);
-    this._ctx.fillText(str1, 16, 32);
-    this._ctx.fillText(`RENDER DELAY: ${(performance.now() - perf0).toFixed(2)} ms`, 16, 48);
   }
   
   constructor(stage, viewport) {
