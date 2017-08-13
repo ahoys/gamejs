@@ -21,9 +21,9 @@ class Viewport {
    */
   doMoveXYZ(v) {
     const pos = this.get3Dmovement(Matrix.getTranslationMatrix(Number(v), Number(v), Number(v)));
-    this._x = pos[0][0].toFixed(4);
-    this._y = pos[1][0].toFixed(4);
-    this._z = pos[2][0].toFixed(4);
+    this._x = pos[0][0].toFixed(2);
+    this._y = pos[1][0].toFixed(2);
+    this._z = pos[2][0].toFixed(2);
   }
 
   /**
@@ -32,8 +32,8 @@ class Viewport {
    */
   doMoveX(v) {
     const pos = this.get3Dmovement(Matrix.getTranslationMatrix(Number(v), 0, 0));
-    this._x = pos[0][0].toFixed(4);
-    this._y = pos[1][0].toFixed(4);
+    this._x = pos[0][0].toFixed(2);
+    this._y = pos[1][0].toFixed(2);
   }
 
   /**
@@ -42,8 +42,8 @@ class Viewport {
    */
   doMoveY(v) {
     const pos = this.get3Dmovement(Matrix.getTranslationMatrix(0, Number(v), 0));
-    this._x = pos[0][0].toFixed(4);
-    this._y = pos[1][0].toFixed(4);
+    this._x = pos[0][0].toFixed(2);
+    this._y = pos[1][0].toFixed(2);
   }
 
   /**
@@ -51,7 +51,7 @@ class Viewport {
    * @param {*} v 
    */
   doRoll(v) {
-    this._yaw += Number(v.toFixed(4));
+    this._yaw += Number(v.toFixed(2));
   }
 
   /**
@@ -59,7 +59,7 @@ class Viewport {
    * @param {*} v 
    */
   doPitch(v) {
-    this._pitch += Number(v.toFixed(4));
+    this._pitch += Number(v.toFixed(2));
   }
 
   /**
@@ -67,7 +67,7 @@ class Viewport {
    * @param {*} v 
    */
   doYaw(v) {
-    this._yaw += Number(v.toFixed(4));
+    this._yaw += Number(v.toFixed(2));
   }
 
   /**
