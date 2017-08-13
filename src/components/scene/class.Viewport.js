@@ -20,7 +20,8 @@ class Viewport {
    * @param {number} v
    */
   doMoveXYZ(v) {
-    const pos = this.get3Dmovement(Matrix.getTranslationMatrix(Number(v), Number(v), Number(v)));
+    const pos = this.get3Dmovement(
+      Matrix.getTransformationMatrix(Number(v), Number(v), Number(v)));
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
     this._z = pos[2][0].toFixed(2);
@@ -31,7 +32,7 @@ class Viewport {
    * @param {number} v
    */
   doMoveX(v) {
-    const pos = this.get3Dmovement(Matrix.getTranslationMatrix(Number(v), 0, 0));
+    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(Number(v), 0, 0));
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
   }
@@ -41,7 +42,7 @@ class Viewport {
    * @param {number} v
    */
   doMoveY(v) {
-    const pos = this.get3Dmovement(Matrix.getTranslationMatrix(0, Number(v), 0));
+    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(0, Number(v), 0));
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
   }

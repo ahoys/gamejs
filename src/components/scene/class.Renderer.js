@@ -139,7 +139,7 @@ class Renderer {
     const vpo = [vpX, vpY, vpZ];
 
     // Calculate matrices.
-    const tM = Matrix.getTranslationMatrix(vpX, vpY, vpZ); // Translation matrix.
+    const tM = Matrix.getTransformationMatrix(vpX, vpY, vpZ); // Translation matrix.
     const sM = Matrix.getScalingMatrix(vpZ, vpZ, vpZ); // Scaling matrix.
     const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
     const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.

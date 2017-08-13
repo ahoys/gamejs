@@ -1,5 +1,5 @@
 module.exports = {
-  getTranslationMatrix(x, y, z) {
+  getTransformationMatrix(x, y, z) {
     return [
       [1, 0, 0, x],
       [0, 1, 0, y],
