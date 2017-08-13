@@ -135,16 +135,17 @@ class Renderer {
 
     // Initialize the viewport.
     const vp = this._viewport;
-    const vpo = [[vp.offset[0] + vp.width/2], [vp.offset[1] + vp.length/2], [100]];
+    const vpo = [[vp.offset[0]], [vp.offset[1]], [100]];
 
     // Calculate matrices.
-    const tM = Matrix.getTransformationMatrix(vp.x, vp.y, vp.z); // Translation matrix.
+    const tM = Matrix.getTransformationMatrix(vp.x, vp.y, vp.z);
+    const tMoffset = Matrix.getTransformationMatrix(vp.offset[0], vp.offset[1], 1); // Translation matrix.
     const sM = Matrix.getScalingMatrix(vp.z, vp.z, vp.z); // Scaling matrix.
     const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
     const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.
     const rMY = Matrix.getRotationMatrixYaw(vp.yaw); // Rotation yaw matrix.
     const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
-    const M = Matrix.multiply(Matrix.multiply(tM, Rm), sM); // Final matrix.
+    const M = Matrix.multiply(Matrix.multiply(Matrix.multiply(tMoffset, Rm), sM), tM); // Final matrix.
 
     // Initialize buffers.
     const pBuffer = []; // All vertices for constructing planes.

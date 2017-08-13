@@ -26,8 +26,8 @@ class Viewport {
     this._y = pos[1][0].toFixed(2);
     this._z = pos[2][0].toFixed(2);
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._offset[0] = oPos[0][0];
-    this._offset[1] = oPos[1][0];
+    this._offset[0] = oPos[0][0] + this._width/2;
+    this._offset[1] = oPos[1][0] + this._length/2;
   }
 
   /**
@@ -39,8 +39,8 @@ class Viewport {
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._offset[0] = oPos[0][0];
-    this._offset[1] = oPos[1][0];
+    this._offset[0] = oPos[0][0] + this._width/2;
+    this._offset[1] = oPos[1][0] + this._length/2;
   }
 
   /**
@@ -52,8 +52,8 @@ class Viewport {
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._offset[0] = oPos[0][0];
-    this._offset[1] = oPos[1][0];
+    this._offset[0] = oPos[0][0] + this._width/2;
+    this._offset[1] = oPos[1][0] + this._length/2;
   }
 
   /**
@@ -148,7 +148,7 @@ class Viewport {
     this._length = length;
     this._resetValues = {x, y, z, roll, pitch, yaw};
     this._offset = [0, 0];
-    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x + width/2, -this._y + length/2, -this._z));
     this._offset[0] = oPos[0][0];
     this._offset[1] = oPos[1][0];
   }
