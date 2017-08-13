@@ -50,9 +50,9 @@ class Renderer {
       if (true) {
         this.drawText2D((obj[2][i]).toFixed(2), origin[0][0], origin[1][0], 'black');
         this.drawText2D(
-          `${(obj[1][i][0][0]).toFixed(0)}.` +
+          `[${(obj[1][i][0][0]).toFixed(0)}.` +
           `${(obj[1][i][1][0]).toFixed(0)}.` +
-          `${(obj[1][i][2][0]).toFixed(0)}`,
+          `${(obj[1][i][2][0]).toFixed(0)}]`,
           origin[0][0], origin[1][0] + 16, 'blue');
       }
     });
@@ -65,6 +65,8 @@ class Renderer {
     const vp = this._viewport;
     this.drawText2D(`${vp.x}, ${vp.y}, ${vp.z}, ${vp.roll}, ${vp.pitch}, ${vp.yaw}`, x, y, color);
     this.drawText2D(`ORIGIN`, vp.x, vp.y, 'red');
+    this.drawText2D(`OFFSET ${vp.offset}`, x, y + 16, 'white');
+    this.drawText2D(`OFFSET`, vp.offset[0], vp.offset[1], 'red');
   }
 
   /**
@@ -133,14 +135,11 @@ class Renderer {
 
     // Initialize the viewport.
     const vp = this._viewport;
-    const vpX = vp.x;
-    const vpY = vp.y;
-    const vpZ = vp.z;
-    const vpo = [[0], [0], [0]];
+    const vpo = [[vp.offset[0] + vp.width/2], [vp.offset[1] + vp.length/2], [100]];
 
     // Calculate matrices.
-    const tM = Matrix.getTransformationMatrix(vpX, vpY, vpZ); // Translation matrix.
-    const sM = Matrix.getScalingMatrix(vpZ, vpZ, vpZ); // Scaling matrix.
+    const tM = Matrix.getTransformationMatrix(vp.x, vp.y, vp.z); // Translation matrix.
+    const sM = Matrix.getScalingMatrix(vp.z, vp.z, vp.z); // Scaling matrix.
     const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
     const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.
     const rMY = Matrix.getRotationMatrixYaw(vp.yaw); // Rotation yaw matrix.

@@ -25,6 +25,9 @@ class Viewport {
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
     this._z = pos[2][0].toFixed(2);
+    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._offset[0] = oPos[0][0];
+    this._offset[1] = oPos[1][0];
   }
 
   /**
@@ -35,6 +38,9 @@ class Viewport {
     const pos = this.get3Dmovement(Matrix.getTransformationMatrix(Number(v), 0, 0));
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
+    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._offset[0] = oPos[0][0];
+    this._offset[1] = oPos[1][0];
   }
 
   /**
@@ -45,6 +51,9 @@ class Viewport {
     const pos = this.get3Dmovement(Matrix.getTransformationMatrix(0, Number(v), 0));
     this._x = pos[0][0].toFixed(2);
     this._y = pos[1][0].toFixed(2);
+    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._offset[0] = oPos[0][0];
+    this._offset[1] = oPos[1][0];
   }
 
   /**
@@ -123,6 +132,10 @@ class Viewport {
     return this._length;
   }
 
+  get offset() {
+    return this._offset;
+  }
+
   constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length) {
     this._x = x;
     this._y = y;
@@ -134,6 +147,10 @@ class Viewport {
     this._width = width;
     this._length = length;
     this._resetValues = {x, y, z, roll, pitch, yaw};
+    this._offset = [0, 0];
+    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._offset[0] = oPos[0][0];
+    this._offset[1] = oPos[1][0];
   }
 }
 

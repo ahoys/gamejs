@@ -143,7 +143,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(200, 300, 1, -5.5, 0, -0.78, vpWidth, vpHeight);
+    this._viewport = new Viewport(0, 0, 1, -5.5, 0, -0.78, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
     this._input = new Input(this._stage); // An input handler.
   }
