@@ -1,6 +1,6 @@
 {
   "w_bedrock": {
-    "dimensions": {"w": 1, "l": 1, "h": 1},
+    "dimensions": {"w": 100, "l": 100, "h": 100},
     "attributes": {
       "isWalkable": false,
       "isBreakable": false,
@@ -19,7 +19,7 @@
     }
   },
   "w_stone": {
-    "dimensions": {"w": 1, "l": 1, "h": 1},
+    "dimensions": {"w": 100, "l": 100, "h": 100},
     "attributes": {
       "isWalkable": false,
       "isBreakable": true,
@@ -38,7 +38,7 @@
     }
   },
   "f_dirt": {
-    "dimensions": {"w": 1, "l": 1, "h": 0},
+    "dimensions": {"w": 100, "l": 100, "h": 0},
     "attributes": {
       "isWalkable": true,
       "isBreakable": false,

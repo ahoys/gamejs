@@ -42,6 +42,23 @@ class Renderer {
   }
 
   /**
+   * Draws debug information about objects.
+   * @param {*} obj 
+   */
+  drawDebug2D(obj) {
+    obj[1].forEach((origin, i) => {
+      if (obj[2][i] < 100) {
+        this.drawText2D((obj[2][i]).toFixed(2), origin[0][0], origin[1][0], 'black');
+        this.drawText2D(
+          `${(obj[1][i][0][0]).toFixed(0)}.` +
+          `${(obj[1][i][1][0]).toFixed(0)}.` +
+          `${(obj[1][i][2][0]).toFixed(0)}`,
+          origin[0][0], origin[1][0] + 16, 'blue');
+      }
+    });
+  }
+
+  /**
    * Draws a plane.
    * @param {*} pV 
    * @param {*} r 
@@ -79,11 +96,7 @@ class Renderer {
       // Draw all planes.
       this._ctx.beginPath();
       obj[0].forEach(plane => this.drawPlane2D(plane, obj[4].r, obj[4].g, obj[4].b));
-      if (debug) {
-        obj[1].forEach((origin, i) => {
-          this.drawText2D(obj[2][i], origin[0][0], origin[1][0], 'black');
-        });
-      }
+      if (debug) this.drawDebug2D(obj);
     });
   }
 
@@ -110,13 +123,17 @@ class Renderer {
 
     // Initialize the viewport.
     const vp = this._viewport;
-    const vpo = [[vp.width/2], [vp.length/2], [100]];
+    const vpX = vp.x;
+    const vpY = vp.y;
+    const vpZ = vp.z;
+    const vpo = [vpX, vpY, vpZ];
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     this.drawText2D(`${vpo[0]}, ${vpo[1]}, ${vpo[2]}`, vpo[0], vpo[1], 'red');
+    this.drawText2D(`${vpX}, ${vpY}, ${vpZ}`, 16, 16, 'white');
 
     // Calculate matrices.
-    const tM = Matrix.getTranslationMatrix(vp.x, vp.y, vp.z); // Translation matrix.
-    const sM = Matrix.getScalingMatrix(vp.z, vp.z, vp.z); // Scaling matrix.
+    const tM = Matrix.getTranslationMatrix(vpX, vpY, vpZ); // Translation matrix.
+    const sM = Matrix.getScalingMatrix(vpZ, vpZ, vpZ); // Scaling matrix.
     const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
     const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.
     const rMY = Matrix.getRotationMatrixYaw(vp.yaw); // Rotation yaw matrix.

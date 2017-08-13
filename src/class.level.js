@@ -41,6 +41,10 @@ class Level {
     return payload;
   }
 
+  get world3D() {
+    return this._3Dmatrix;
+  }
+
   /**
    * Returns a world component based on dataType.
    * @param {*} dataType 
@@ -64,35 +68,42 @@ class Level {
    */
   initLevel(data) {
     // Structure: [[x[y[z]]], [x[y[z]]], [x[y[z]]]].
-    for (let x = 0; x < this._gridW; x++) {
-      // Width.
-      for (let y = 0; y < this._gridL; y++) {
-        // Length.
-        if (y === 0) this._3Dmatrix[x] = [];
-        for (let z = 0; z < this._gridH; z++) {
-          // Height.
-          if (z === 0) {
-            this._3Dmatrix[x][y] = [this.getWorldComponent(
-              'dt_wall',
-              'w_bedrock',
-              x,
-              y,
-              z
-            )];
-          }
-        } 
-      }
-    }
-    // Level specific items.
-    data.forEach((item) => {
-      this._3Dmatrix[item.x][item.y][item.z] = this.getWorldComponent(
-        item.dataType,
-        item.type,
-        item.x,
-        item.y,
-        item.z
-      );
-    });
+    this._3Dmatrix = data.map(x => this.getWorldComponent(
+      x.dataType,
+      x.type,
+      x.x,
+      x.y,
+      x.z,
+    ));
+    // for (let x = 0; x < this._gridW; x++) {
+    //   // Width.
+    //   for (let y = 0; y < this._gridL; y++) {
+    //     // Length.
+    //     if (y === 0) this._3Dmatrix[x] = [];
+    //     for (let z = 0; z < this._gridH; z++) {
+    //       // Height.
+    //       if (z === 0) {
+    //         this._3Dmatrix[x][y] = [this.getWorldComponent(
+    //           'dt_wall',
+    //           'w_bedrock',
+    //           x,
+    //           y,
+    //           z
+    //         )];
+    //       }
+    //     } 
+    //   }
+    // }
+    // // Level specific items.
+    // data.forEach((item) => {
+    //   this._3Dmatrix[item.x][item.y][item.z] = this.getWorldComponent(
+    //     item.dataType,
+    //     item.type,
+    //     item.x,
+    //     item.y,
+    //     item.z
+    //   );
+    // });
   }
 
   constructor(name, worldScale) {

@@ -44,13 +44,13 @@ module.exports = {
     ];
   },
 
-  getProjectionMatrix(x, y, z) {
-    return new Matrix(
-      1, 0, 0, x,
-      0, 1, 0, y,
-      0, 0, 1, z,
-      0, 0, 0, 1
-    );
+  getProjectionMatrix(s) {
+    return [
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, s],
+      [0, 0, 0, s],
+    ];
   },
 
   multiply(a, b) {

@@ -62,15 +62,18 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_UP': () => this._viewport.doMove2D('up', this.getRelativeSpeed(300)),
-      'VP_MOVE_RIGHT': () => this._viewport.doMove2D('right', this.getRelativeSpeed(300)),
-      'VP_MOVE_LEFT': () => this._viewport.doMove2D('left', this.getRelativeSpeed(300)),
-      'VP_MOVE_DOWN': () => this._viewport.doMove2D('down', this.getRelativeSpeed(300)),
+      'VP_MOVE_UP': () => this._viewport.doMove3D('up', this.getRelativeSpeed(300)),
+      'VP_MOVE_RIGHT': () => this._viewport.doMove3D('right', this.getRelativeSpeed(300)),
+      'VP_MOVE_LEFT': () => this._viewport.doMove3D('left', this.getRelativeSpeed(300)),
+      'VP_MOVE_DOWN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(300)),
       'VP_ROTATE_LEFT': () => this._viewport.doRotate('yaw', this.getRelativeSpeed(0.8)),
       'VP_ROTATE_RIGHT': () => this._viewport.doRotate('yaw', -this.getRelativeSpeed(0.8)),
+      'VP_MOVE_FORWARD': () => this._viewport.doMove3D('forward', this.getRelativeSpeed(1)),
+      'VP_MOVE_BACKWARD': () => this._viewport.doMove3D('backward', this.getRelativeSpeed(1)),
+
       //'VP_TOGGLE_PERSPECTIVE': () => this._viewport.togglePerspective(),
-      'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(50)),
-      'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(50)),
+      'VP_ZOOM_OUT': () => this._viewport.doMove3D('up', this.getRelativeSpeed(1)),
+      'VP_ZOOM_IN': () => this._viewport.doMove3D('down', this.getRelativeSpeed(1)),
 
       'VP_ROLL_LEFT': () => this._viewport.doRotate('roll', this.getRelativeSpeed(1)),
       'VP_ROLL_RIGHT': () => this._viewport.doRotate('roll', -this.getRelativeSpeed(1)),
@@ -104,7 +107,7 @@ class Game {
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.
-    this._drawBuffer = this._level.world;
+    this._drawBuffer = this._level.world3D;
     this._perfUpdate = performance.now() - perf;
   }
 
@@ -150,7 +153,7 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(200, 300, 100, -5.5, 0, -0.78, vpWidth, vpHeight);
+    this._viewport = new Viewport(200, 300, 1, -5.5, 0, -0.78, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
     this._input = new Input(this._stage); // An input handler.
   }

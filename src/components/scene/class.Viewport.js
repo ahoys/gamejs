@@ -1,4 +1,5 @@
 const Calc = require('../../utilities/util.calc');
+const Matrix = require('./class.Matrix');
 
 class Viewport {
 
@@ -39,16 +40,8 @@ class Viewport {
     }
   }
 
-  doMove3D(dir, amount) {
+  doZoom(dir, amount) {
     switch (dir) {
-      case 'forward':
-        break;
-      case 'backward':
-        break;
-      case 'left':
-        break;
-      case 'right':
-        break;
       case 'up':
         this._z -= amount;
         break;
@@ -56,6 +49,38 @@ class Viewport {
         this._z += amount;
         break;
     }
+  }
+
+  doMove3D(dir, amount) {
+    let tM;
+    switch (dir) {
+      case 'forward':
+        tM = Matrix.getTranslationMatrix(amount, amount, amount);
+        break;
+      case 'backward':
+        tM = Matrix.getTranslationMatrix(-amount, -amount, -amount);
+        break;
+      case 'left':
+        tM = Matrix.getTranslationMatrix(amount, 0, 0);
+        break;
+      case 'right':
+        tM = Matrix.getTranslationMatrix(-amount, 0, 0);
+        break;
+      case 'up':
+        tM = Matrix.getTranslationMatrix(0, amount, 0);
+        break;
+      case 'down':
+        tM = Matrix.getTranslationMatrix(0, -amount, 0);
+        break;
+    }
+    const rMR = Matrix.getRotationMatrixRoll(this._roll); // Rotation roll matrix.
+    const rMY = Matrix.getRotationMatrixYaw(this._yaw); // Rotation yaw matrix.
+    const Rm = Matrix.multiply(rMR, rMY); // Rotation.
+    const M = tM;
+    const pos = Matrix.multiply(M, [[this._x], [this._y], [this._z], [1]]);
+    this._x = pos[0];
+    this._y = pos[1];
+    this._z = pos[2];
   }
 
   doReset() {
