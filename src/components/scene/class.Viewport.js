@@ -107,7 +107,7 @@ class Viewport {
   }
 
   set width(n) {
-    this._width = n;
+    this._width = Number(n);
   }
 
   get width() {
@@ -115,7 +115,7 @@ class Viewport {
   }
 
   set length(n) {
-    this._length = n;
+    this._length = Number(n);
   }
 
   get length() {
