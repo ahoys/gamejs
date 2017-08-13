@@ -97,7 +97,7 @@ class Game {
     // Debug
     if (c.DEBUG) this.debug();
     // Refresh level.
-    this._drawBuffer = this._level.world3D;
+    this._drawBuffer = this._level.worldObjects;
     this._perfUpdate = performance.now() - perf;
   }
 

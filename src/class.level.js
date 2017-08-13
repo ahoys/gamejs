@@ -5,43 +5,9 @@ const Wall = require('./components/world/entities/class.Wall');
 class Level {
 
   /**
-   * Returns width of the map in grids.
+   * Returns the world in a single list.
    */
-  get width() {
-    return this._gridW;
-  }
-
-  /**
-   * Returns length of the map in grids.
-   */
-  get length() {
-    return this._gridL;
-  }
-
-  /**
-   * Returns height of the map in grids.
-   */
-  get height() {
-    return this._gridH;
-  }
-
-  /**
-   * Returns the world matrix.
-   * This includes the entire level.
-   */
-  get world() {
-    const payload = [];
-    this._3Dmatrix.forEach(x => {
-      x.forEach(y => {
-        y.forEach(obj => {
-          payload.push(obj);
-        });
-      });
-    });
-    return payload;
-  }
-
-  get world3D() {
+  get worldObjects() {
     return this._3Dmatrix;
   }
 
@@ -66,8 +32,7 @@ class Level {
    * Should be ran only once.
    * @param {object} data
    */
-  initLevel(data) {
-    // Structure: [[x[y[z]]], [x[y[z]]], [x[y[z]]]].
+  init3Dlevel(data) {
     this._3Dmatrix = data.map(x => this.getWorldComponent(
       x.dataType,
       x.type,
@@ -75,45 +40,12 @@ class Level {
       x.y,
       x.z,
     ));
-    // for (let x = 0; x < this._gridW; x++) {
-    //   // Width.
-    //   for (let y = 0; y < this._gridL; y++) {
-    //     // Length.
-    //     if (y === 0) this._3Dmatrix[x] = [];
-    //     for (let z = 0; z < this._gridH; z++) {
-    //       // Height.
-    //       if (z === 0) {
-    //         this._3Dmatrix[x][y] = [this.getWorldComponent(
-    //           'dt_wall',
-    //           'w_bedrock',
-    //           x,
-    //           y,
-    //           z
-    //         )];
-    //       }
-    //     } 
-    //   }
-    // }
-    // // Level specific items.
-    // data.forEach((item) => {
-    //   this._3Dmatrix[item.x][item.y][item.z] = this.getWorldComponent(
-    //     item.dataType,
-    //     item.type,
-    //     item.x,
-    //     item.y,
-    //     item.z
-    //   );
-    // });
   }
 
-  constructor(name, worldScale) {
+  constructor(name) {
     const res = require(`./levels/${name}.json`);
-    this._gridW = res.dimensions.w;
-    this._gridL = res.dimensions.l;
-    this._gridH = res.dimensions.h;
     this._3Dmatrix = [];
-    this._worldScale = worldScale;
-    this.initLevel(res.data);
+    this.init3Dlevel(res.data);
   }
 }
 
