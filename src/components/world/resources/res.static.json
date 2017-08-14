@@ -14,7 +14,7 @@
     },
     "graphics": {
       "texture": "",
-      "baseColor": {"r": 95, "g": 93, "b": 92},
+      "baseColor": {"r": 48, "g": 48, "b": 48},
       "shading": "sh_rock"
     }
   },
@@ -33,7 +33,7 @@
     },
     "graphics": {
       "texture": "",
-      "baseColor": {"r": 56, "g": 45, "b": 34},
+      "baseColor": {"r": 64, "g": 64, "b": 64},
       "shading": "sh_rock"
     }
   },
@@ -52,7 +52,7 @@
     },
     "graphics": {
       "texture": "",
-      "baseColor": {"r": 150, "g": 120, "b": 90},
+      "baseColor": {"r": 128, "g": 110, "b": 92},
       "shading": "sh_dirt"
     }
   }
