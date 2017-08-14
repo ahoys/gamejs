@@ -2,6 +2,7 @@ const Renderer = require('./components/scene/class.Renderer');
 const Viewport = require('./components/scene/class.Viewport');
 const Level = require('./class.level');
 const Input = require('./class.input');
+const Calc = require('./utilities/util.calc');
 
 class Game {
 
@@ -29,27 +30,18 @@ class Game {
     return false;
   }
 
-  /**
-   * Returns a relative speed in seconds.
-   * Changing tickLength won't affect speeds set with this.
-   * @param {number} target 
-   */
-  getRelativeSpeed(target) {
-    return (this.tickLength / 1000) * target;
-  }
-
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_FORWARD': () => this._viewport.doMoveXYZ(this.getRelativeSpeed(1)),
-      'VP_MOVE_BACKWARD': () => this._viewport.doMoveXYZ(-this.getRelativeSpeed(1)),
-      'VP_MOVE_LEFT': () => this._viewport.doMoveX(this.getRelativeSpeed(100)),
-      'VP_MOVE_RIGHT': () => this._viewport.doMoveX(-this.getRelativeSpeed(100)),
-      'VP_MOVE_UP': () => this._viewport.doMoveY(this.getRelativeSpeed(100)),
-      'VP_MOVE_DOWN': () => this._viewport.doMoveY(-this.getRelativeSpeed(100)),
-      'VP_ROTATE_LEFT': () => this._viewport.doYaw(this.getRelativeSpeed(0.8)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doYaw(-this.getRelativeSpeed(0.8)),
-      'VP_ROLL_LEFT': () => this._viewport.doRoll(this.getRelativeSpeed(1)),
-      'VP_ROLL_RIGHT': () => this._viewport.doRoll(-this.getRelativeSpeed(1)),
+      'VP_MOVE_FORWARD': () => this._viewport.doMoveXYZ(Calc.getRelativeSpeed(this.tickLength, 1)),
+      'VP_MOVE_BACKWARD': () => this._viewport.doMoveXYZ(-Calc.getRelativeSpeed(this.tickLength, 1)),
+      'VP_MOVE_LEFT': () => this._viewport.doMoveX(Calc.getRelativeSpeed(this.tickLength, 100)),
+      'VP_MOVE_RIGHT': () => this._viewport.doMoveX(-Calc.getRelativeSpeed(this.tickLength, 100)),
+      'VP_MOVE_UP': () => this._viewport.doMoveY(Calc.getRelativeSpeed(this.tickLength, 100)),
+      'VP_MOVE_DOWN': () => this._viewport.doMoveY(-Calc.getRelativeSpeed(this.tickLength, 100)),
+      'VP_ROTATE_LEFT': () => this._viewport.doYaw(Calc.getRelativeSpeed(this.tickLength, 0.8)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doYaw(-Calc.getRelativeSpeed(this.tickLength, 0.8)),
+      'VP_ROLL_LEFT': () => this._viewport.doRoll(Calc.getRelativeSpeed(this.tickLength, 1)),
+      'VP_ROLL_RIGHT': () => this._viewport.doRoll(-Calc.getRelativeSpeed(this.tickLength, 1)),
       'VP_RESET': () => this._viewport.doReset(),
     }
     active.forEach((actionRequest) => {

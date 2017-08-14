@@ -26,4 +26,13 @@ module.exports = {
   getAngle: (cx, cy, ex, ey) => {
     return Math.atan2((ey - cy), (ex - cx));
   },
+
+  /**
+   * Returns relative speed based on a tick length.
+   * @param {number} tickLength
+   * @param {number} speed
+   */
+  getRelativeSpeed: (tickLength, speed) => {
+    return tickLength / 1000 * speed;
+  },
 };
