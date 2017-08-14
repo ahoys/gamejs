@@ -121,7 +121,7 @@ class Game {
       this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
 
       // Load the level.
-      this._level = new Level('cubedebug');
+      this._level = new Level('lvl_cubes');
 
       // Viewport handles the real world movement.
       this._viewport = new Viewport(
