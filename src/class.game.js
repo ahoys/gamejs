@@ -32,16 +32,16 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_FORWARD': () => this._viewport.doMoveXYZ(Calc.getRelativeSpeed(this.tickLength, 1)),
-      'VP_MOVE_BACKWARD': () => this._viewport.doMoveXYZ(-Calc.getRelativeSpeed(this.tickLength, 1)),
-      'VP_MOVE_LEFT': () => this._viewport.doMoveX(Calc.getRelativeSpeed(this.tickLength, 100)),
-      'VP_MOVE_RIGHT': () => this._viewport.doMoveX(-Calc.getRelativeSpeed(this.tickLength, 100)),
-      'VP_MOVE_UP': () => this._viewport.doMoveY(Calc.getRelativeSpeed(this.tickLength, 100)),
-      'VP_MOVE_DOWN': () => this._viewport.doMoveY(-Calc.getRelativeSpeed(this.tickLength, 100)),
-      'VP_ROTATE_LEFT': () => this._viewport.doYaw(Calc.getRelativeSpeed(this.tickLength, 0.8)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doYaw(-Calc.getRelativeSpeed(this.tickLength, 0.8)),
-      'VP_ROLL_LEFT': () => this._viewport.doRoll(Calc.getRelativeSpeed(this.tickLength, 1)),
-      'VP_ROLL_RIGHT': () => this._viewport.doRoll(-Calc.getRelativeSpeed(this.tickLength, 1)),
+      'VP_MOVE_FORWARD': () => this._viewport.doMoveXYZ(Calc.getRelativeSpeed(this._tickLength, 1)),
+      'VP_MOVE_BACKWARD': () => this._viewport.doMoveXYZ(-Calc.getRelativeSpeed(this._tickLength, 1)),
+      'VP_MOVE_LEFT': () => this._viewport.doMoveX(Calc.getRelativeSpeed(this._tickLength, 100)),
+      'VP_MOVE_RIGHT': () => this._viewport.doMoveX(-Calc.getRelativeSpeed(this._tickLength, 100)),
+      'VP_MOVE_UP': () => this._viewport.doMoveY(Calc.getRelativeSpeed(this._tickLength, 100)),
+      'VP_MOVE_DOWN': () => this._viewport.doMoveY(-Calc.getRelativeSpeed(this._tickLength, 100)),
+      'VP_ROTATE_LEFT': () => this._viewport.doYaw(Calc.getRelativeSpeed(this._tickLength, 0.8)),
+      'VP_ROTATE_RIGHT': () => this._viewport.doYaw(-Calc.getRelativeSpeed(this._tickLength, 0.8)),
+      'VP_ROLL_LEFT': () => this._viewport.doRoll(Calc.getRelativeSpeed(this._tickLength, 1)),
+      'VP_ROLL_RIGHT': () => this._viewport.doRoll(-Calc.getRelativeSpeed(this._tickLength, 1)),
       'VP_RESET': () => this._viewport.doReset(),
     }
     active.forEach((actionRequest) => {
@@ -61,7 +61,7 @@ class Game {
     this._drawBuffer = [];
     this._textBuffer = [];
     // Refresh game time
-    this._time = (this.lastTick + this.tickLength) / 1000;
+    this._time = (this._lastTick + this._tickLength) / 1000;
     // Handle input.
     this.handleControlActions(this._input.active);
     // Refresh level.
@@ -77,8 +77,8 @@ class Game {
    */
   queueUpdates(numTicks) {
     for (let i = 0; i < numTicks; i++) {
-      this.lastTick = this.lastTick + this.tickLength;
-      this.update(this.lastTick);
+      this._lastTick = this._lastTick + this._tickLength;
+      this.update(this._lastTick);
     }
   }
 
@@ -90,53 +90,22 @@ class Game {
   main(tFrame) {
     const perf = performance.now();
     this.stopMain = window.requestAnimationFrame(() => this.main(performance.now()));
-    const nextTick = this.lastTick + this.tickLength;
+    const nextTick = this._lastTick + this._tickLength;
     let numTicks = 0;
     if (tFrame > nextTick) {
-      const timeSinceTick = tFrame - this.lastTick;
-      numTicks = Math.floor(timeSinceTick / this.tickLength);
+      const timeSinceTick = tFrame - this._lastTick;
+      numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
     this._renderer.buildScene(this._drawBuffer, this._level.worldCamera);
-    this.lastRender = tFrame;
+    this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
 
   /**
-   * Initializes the game logic.
-   * @param {number} vpWidth Viewport width in pixels.
-   * @param {number} vpHeight Viewport height in pixels.
+   * Handles window resizes.
    */
-  initGameLogic(vpWidth, vpHeight) {
-    this._time = 0; // In-game time in seconds.
-    this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._level = new Level('cubedebug'); // Initializes the first game level.
-    this._viewport = new Viewport(0, 0, 1, -5.5, 0, -0.78, vpWidth, vpHeight, this._level.worldCamera);
-    this._input = new Input(this._stage); // An input handler.
-  }
-
-  /**
-   * Initializes rendering.
-   * @param {number} stWidth Stage width in pixels.
-   * @param {number} stHeight Stage height in pixels.
-   */
-  initRendering(stWidth, stHeight) {
-    this.lastTick = performance.now();
-    this.lastRender = this.lastTick;
-    this.tickLength = 50; // Delay of a one tick (affects game logic).
-    this._drawBuffer = [];
-    this._textBuffer = [];
-    this._stage.width = stWidth;
-    this._stage.height = stHeight;
-    this._renderer = new Renderer( // The main renderer.
-      this._stage,
-      this._viewport
-    );
-    this.main(performance.now());
-  }
-
   resize() {
-    console.log(document.body.clientWidth, document.body.clientHeight);
     this._stage.width = document.body.clientWidth;
     this._stage.height = document.body.clientHeight;
     this._viewport.width = document.body.clientWidth;
@@ -146,8 +115,45 @@ class Game {
   constructor() {
     this._stage = document.getElementById('canvas');
     if (this._stage && this._stage.getContext) {
-      this.initGameLogic(document.body.clientWidth, document.body.clientHeight);
-      this.initRendering(document.body.clientWidth, document.body.clientHeight);
+      // Initialization starts.
+      // The main principle is to load game logic first, then the rendering side.
+
+      // Variables.
+      this._time = 0; // In-game time in seconds.
+      this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
+
+      // Load the level.
+      this._level = new Level('cubedebug');
+
+      // Viewport handles the real world movement.
+      this._viewport = new Viewport(
+        0,
+        0,
+        1,
+        -5.5,
+        0,
+        -0.78,
+        document.body.clientWidth,
+        document.body.clientHeight,
+        this._level.worldCamera
+      );
+
+      // Load inputs.
+      this._input = new Input(this._stage);
+
+      // Rendering.
+      this._lastTick = performance.now();
+      this._lastRender = this._lastTick;
+      this._tickLength = 50; // Delay of a one tick (affects game logic).
+      this._drawBuffer = [];
+      this._textBuffer = [];
+      this._stage.width = document.body.clientWidth;
+      this._stage.height = document.body.clientHeight;
+      this._renderer = new Renderer( // The main renderer.
+        this._stage,
+        this._viewport
+      );
+      this.main(performance.now());
     }
   }
 }
