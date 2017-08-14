@@ -1,4 +1,4 @@
-const Matrix = require('./class.Matrix');
+const Matrix = require('../../utilities/util.matrix');
 
 class Viewport {
 
