@@ -89,7 +89,7 @@ class Game {
     this._stage.width = document.body.clientWidth;
     this._stage.height = document.body.clientHeight;
     this._viewport.width = document.body.clientWidth;
-    this._viewport.height = document.body.clientHeight;
+    this._viewport.length = document.body.clientHeight;
   }
 
   /**
