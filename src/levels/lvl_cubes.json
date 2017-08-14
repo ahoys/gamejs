@@ -85,6 +85,34 @@
       "x": 200,
       "y": 200,
       "z": 0
+    },
+    {
+      "type": "f_dirt",
+      "dataType": "dt_floor",
+      "x": 300,
+      "y": 600,
+      "z": 0
+    },
+    {
+      "type": "w_stone",
+      "dataType": "dt_wall",
+      "x": 400,
+      "y": 600,
+      "z": 0
+    },
+    {
+      "type": "w_stone",
+      "dataType": "dt_wall",
+      "x": 400,
+      "y": 600,
+      "z": 100
+    },
+    {
+      "type": "w_stone",
+      "dataType": "dt_wall",
+      "x": 400,
+      "y": 600,
+      "z": 200
     }
   ]
 }
