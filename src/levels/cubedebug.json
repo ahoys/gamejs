@@ -7,6 +7,13 @@
   },
   "data": [
     {
+      "type": "v_virtualCamera",
+      "dataType": "dt_virtual",
+      "x": 100,
+      "y": 100,
+      "z": 400
+    },
+    {
       "type": "w_bedrock",
       "dataType": "dt_wall",
       "x": 0,

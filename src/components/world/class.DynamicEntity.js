@@ -1,3 +1,5 @@
+const StaticEntity = require('./class.StaticEntity');
+
 /**
  * DynamicEntity
  * Ari Höysniemi, 10.8.2017

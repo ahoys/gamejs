@@ -61,10 +61,17 @@ class StaticEntity {
     this._x = x; // Position in x-axel.
     this._y = y; // Position in y-axel.
     this._z = z; // Position in z-axel.
-    this._dimensions = resJSON[type].dimensions; // Size.
-    this._attributes = resJSON[type].attributes; // Features.
-    this._sfx = resJSON[type].sfx; // Sounds.
-    this._graphics = resJSON[type].graphics; // Textures, colors and shading.
+    if (resJSON[type]) {
+      this._dimensions = resJSON[type].dimensions; // Size.
+      this._attributes = resJSON[type].attributes; // Features.
+      this._sfx = resJSON[type].sfx; // Sounds.
+      this._graphics = resJSON[type].graphics; // Textures, colors and shading.
+    } else {
+      this._dimensions = {};
+      this._attributes = {};
+      this._sfx = {};
+      this._graphics = {};
+    }
   }
 }
 
