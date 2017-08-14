@@ -1,4 +1,3 @@
-const c = require('./constants.json');
 const Floor = require('./components/world/entities/class.Floor');
 const Wall = require('./components/world/entities/class.Wall');
 const VirtualCamera = require('./components/world/entities/class.VirtualCamera');
