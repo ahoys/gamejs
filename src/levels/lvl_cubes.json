@@ -1,10 +1,5 @@
 {
   "title": "cubedebug",
-  "dimensions": {
-    "w": 3,
-    "l": 3,
-    "h": 1
-  },
   "data": [
     {
       "type": "v_virtualCamera",
