@@ -83,6 +83,16 @@ class Game {
   }
 
   /**
+   * Handles window resizes.
+   */
+  resize() {
+    this._stage.width = document.body.clientWidth;
+    this._stage.height = document.body.clientHeight;
+    this._viewport.width = document.body.clientWidth;
+    this._viewport.height = document.body.clientHeight;
+  }
+
+  /**
    * MAIN LOOP --------------------------------
    * The main game loop.
    * @param {number} tFrame 
@@ -100,16 +110,6 @@ class Game {
     this._renderer.buildScene(this._drawBuffer, this._level.worldCamera);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
-  }
-
-  /**
-   * Handles window resizes.
-   */
-  resize() {
-    this._stage.width = document.body.clientWidth;
-    this._stage.height = document.body.clientHeight;
-    this._viewport.width = document.body.clientWidth;
-    this._viewport.height = document.body.clientHeight;
   }
 
   constructor() {
