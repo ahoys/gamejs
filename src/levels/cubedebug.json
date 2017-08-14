@@ -11,7 +11,10 @@
       "dataType": "dt_virtual",
       "x": 100,
       "y": 100,
-      "z": 400
+      "z": 400,
+      "roll": 0,
+      "pitch": 0,
+      "yaw": 0
     },
     {
       "type": "w_bedrock",

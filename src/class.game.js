@@ -39,7 +39,7 @@ class Game {
       this._debugPerfM = this._perfMain.toFixed(2);
       this._debugPerfU = this._perfUpdate.toFixed(2);
     }
-    this.textBuffer.push({
+    this._textBuffer.push({
       x: 16,
       y: 16,
       str: `Main delay: ${this._debugPerfM}/16.7 ms | ` +
@@ -89,7 +89,7 @@ class Game {
     const perf = performance.now();
     // Clear buffers.
     this._drawBuffer = [];
-    this.textBuffer = [];
+    this._textBuffer = [];
     // Refresh game time
     this._time = (this.lastTick + this.tickLength) / 1000;
     // Handle input.
@@ -130,7 +130,7 @@ class Game {
     }
     this.queueUpdates(numTicks);
     // this.renderer.draw(tFrame, this._worldScale, this.drawBuffer, this.textBuffer);
-    this._renderer.buildScene(this._drawBuffer);
+    this._renderer.buildScene(this._drawBuffer, this._level.worldCamera);
     this.lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -143,8 +143,8 @@ class Game {
   initGameLogic(vpWidth, vpHeight) {
     this._time = 0; // In-game time in seconds.
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
-    this._viewport = new Viewport(0, 0, 1, -5.5, 0, -0.78, vpWidth, vpHeight);
     this._level = new Level('cubedebug', this._worldScale); // Initializes the first game level.
+    this._viewport = new Viewport(0, 0, 1, -5.5, 0, -0.78, vpWidth, vpHeight, this._level.worldCamera);
     this._input = new Input(this._stage); // An input handler.
   }
 
@@ -158,7 +158,7 @@ class Game {
     this.lastRender = this.lastTick;
     this.tickLength = 50; // Delay of a one tick (affects game logic).
     this._drawBuffer = [];
-    this.textBuffer = [];
+    this._textBuffer = [];
     this._stage.width = stWidth;
     this._stage.height = stHeight;
     this._renderer = new Renderer( // The main renderer.

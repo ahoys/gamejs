@@ -1,7 +1,7 @@
 const c = require('./constants.json');
 const Floor = require('./components/world/entities/class.Floor');
 const Wall = require('./components/world/entities/class.Wall');
-const Virtual = require('./components/world/entities/class.Virtual');
+const VirtualCamera = require('./components/world/entities/class.VirtualCamera');
 
 class Level {
 
@@ -27,13 +27,13 @@ class Level {
    * @param {*} y 
    * @param {*} z 
    */
-  getWorldComponent(dataType, type, x, y, z) {
+  getWorldComponent(dataType, type, x, y, z, roll = 0, pitch = 0, yaw = 0) {
     const types = {
       "dt_wall": Wall,
       "dt_floor": Floor,
-      "dt_virtual": Virtual,
+      "dt_virtual": VirtualCamera,
     }
-    return new types[dataType](type, x, y, z);
+    return new types[dataType](type, x, y, z, roll, pitch, yaw);
   }
 
   /**
@@ -67,6 +67,9 @@ class Level {
           x.x,
           x.y,
           x.z,
+          x.roll,
+          x.pitch,
+          x.yaw,
         );
       }
     });
@@ -77,8 +80,8 @@ class Level {
     const res = require(`./levels/${name}.json`);
     this._name = name;
     this._3Dmatrix = [];
-    this.init3Dlevel(res.data);
     this._virtualCamera = undefined;
+    this.init3Dlevel(res.data);
   }
 }
 

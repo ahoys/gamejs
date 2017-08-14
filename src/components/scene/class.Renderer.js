@@ -55,6 +55,7 @@ class Renderer {
     this.drawText2D(`ORIGIN`, vp.x, vp.y, 'red');
     this.drawText2D(`OFFSET ${vp.offset}`, x, y + 16, 'white');
     this.drawText2D(`OFFSET`, vp.offset[0], vp.offset[1], 'red');
+    this.drawText2D(`CAMERA`, this._cameraPos[0], this._cameraPos[1], 'white');
   }
 
   /**
@@ -104,13 +105,14 @@ class Renderer {
    * Builds a scene for scene drawing.
    * @param {*} objects 
    */
-  buildScene(objects, debug) {
+  buildScene(objects, camera, debug) {
     const d_performance = performance.now();
     let d_string = '';
 
     // Initialize the viewport.
     const vp = this._viewport;
-    const vpo = [[vp.offset[0]], [vp.offset[1]], [100]];
+    const vpo = [[camera.x], [camera.y], [camera.z]];
+    this._cameraPos = [camera.x, camera.y, camera.z];
 
     // Calculate matrices.
     const tM = Matrix.getTransformationMatrix(vp.x, vp.y, vp.z);
@@ -216,6 +218,7 @@ class Renderer {
     this._stage = stage;
     this._ctx = this._stage.getContext('2d');
     this._viewport = viewport;
+    this._cameraPos = [0, 0, 0];
   }
 }
 

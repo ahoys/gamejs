@@ -92,7 +92,7 @@ class Viewport {
     }
   }
 
-  constructor(x = 0, y = 0, width, height, rotation = 0.785398, hScale, vScale) {
+  constructor(x = 0, y = 0, width, height, rotation = 0.785398, hScale, vScale, camera) {
     this._x = x;
     this._y = y;
     this._width = width; // Size of the viewport (px).
@@ -101,6 +101,7 @@ class Viewport {
     this._distance = 100; // Distance in pixels
     this._hScale = hScale;
     this._vScale = vScale;
+    this._camera = camera;
   }
 }
 
