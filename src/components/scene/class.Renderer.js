@@ -35,7 +35,7 @@ class Renderer {
    */
   drawObjDebug2D(obj) {
     obj[1].forEach((origin, i) => {
-      if (true) {
+      if (obj[3] < 700) {
         this.drawText2D((obj[2][i]).toFixed(2), origin[0][0], origin[1][0], 'black');
         this.drawText2D(
           `[${(obj[1][i][0][0]).toFixed(0)}.` +
