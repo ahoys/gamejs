@@ -28,6 +28,9 @@ class Viewport {
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
     this._offset[0] = oPos[0][0] + this._width/2;
     this._offset[1] = oPos[1][0] + this._length/2;
+    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._camera.x = cPos[0][0] + this._width/2;
+    this._camera.y = cPos[1][0] + this._length;
   }
 
   /**
@@ -41,6 +44,9 @@ class Viewport {
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
     this._offset[0] = oPos[0][0] + this._width/2;
     this._offset[1] = oPos[1][0] + this._length/2;
+    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._camera.x = cPos[0][0] + this._width/2;
+    this._camera.y = cPos[1][0] + this._length;
   }
 
   /**
@@ -54,6 +60,9 @@ class Viewport {
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
     this._offset[0] = oPos[0][0] + this._width/2;
     this._offset[1] = oPos[1][0] + this._length/2;
+    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._camera.x = cPos[0][0] + this._width/2;
+    this._camera.y = cPos[1][0] + this._length;
   }
 
   /**
@@ -136,21 +145,25 @@ class Viewport {
     return this._offset;
   }
 
-  constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length) {
+  constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length, camera) {
     this._x = x;
     this._y = y;
     this._z = z;
     this._w = 1;
     this._roll = roll; // Axis of rotation: x.
-    this._yaw = yaw; // Axis of rotation: z.
     this._pitch = pitch; // Axis of rotation: y.
+    this._yaw = yaw; // Axis of rotation: z.
     this._width = width;
     this._length = length;
+    this._camera = camera;
     this._resetValues = {x, y, z, roll, pitch, yaw};
     this._offset = [0, 0];
     const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x + width/2, -this._y + length/2, -this._z));
     this._offset[0] = oPos[0][0];
     this._offset[1] = oPos[1][0];
+    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x + width/2, -this._y + length, -this._z));
+    this._camera.x = cPos[0][0];
+    this._camera.y = cPos[1][0];
   }
 }
 

@@ -55,6 +55,7 @@ class Renderer {
     this.drawText2D(`ORIGIN`, vp.x, vp.y, 'red');
     this.drawText2D(`OFFSET ${vp.offset}`, x, y + 16, 'white');
     this.drawText2D(`OFFSET`, vp.offset[0], vp.offset[1], 'red');
+    this.drawText2D(`CAMERA ${this._cameraPos}`, x, y + 32, 'white');
     this.drawText2D(`CAMERA`, this._cameraPos[0], this._cameraPos[1], 'white');
   }
 
