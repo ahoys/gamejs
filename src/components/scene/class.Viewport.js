@@ -162,8 +162,8 @@ class Viewport {
   }
 
   constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length, camera) {
-    this._x = x;
-    this._y = y;
+    this._x = -camera.x;
+    this._y = -camera.y;
     this._w = 1;
     this._roll = roll;
     this._pitch = pitch;
