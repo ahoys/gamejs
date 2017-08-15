@@ -3,13 +3,14 @@
   "data": [
     {
       "type": "v_virtualCamera",
-      "dataType": "dt_virtual",
+      "dataType": "dt_camera",
       "x": 100,
       "y": 100,
       "z": 1000,
       "roll": 0,
       "pitch": 0,
-      "yaw": 0
+      "yaw": 0,
+      "enabled": true
     },
     {
       "type": "w_bedrock",

@@ -3,185 +3,186 @@
   "data": [
     {
       "type": "v_virtualCamera",
-      "dataType": "dt_virtual",
-      "x": 200,
-      "y": 200,
+      "dataType": "dt_camera",
+      "x": 100,
+      "y": 100,
       "z": 1000,
       "roll": 5.5,
       "pitch": 0,
-      "yaw": 0.78
+      "yaw": 0.785,
+      "enabled": true
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 100,
       "y": 100,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 100,
       "y": 200,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 100,
       "y": 300,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 200,
       "y": 100,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 200,
       "y": 200,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 200,
       "y": 300,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 300,
       "y": 100,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 300,
       "y": 200,
       "z": 0
     },
     {
       "type": "f_dirt",
-      "dataType": "dt_floor",
+      "dataType": "dt_static",
       "x": 300,
       "y": 300,
       "z": 0
     },
     {
       "type": "w_bedrock",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 0,
       "y": 0,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 100,
       "y": 0,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 200,
       "y": 0,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 300,
       "y": 0,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 400,
       "y": 0,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 0,
       "y": 100,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 0,
       "y": 200,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 0,
       "y": 300,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 0,
       "y": 400,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 400,
       "y": 100,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 400,
       "y": 200,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 400,
       "y": 300,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 400,
       "y": 400,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 100,
       "y": 400,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 200,
       "y": 400,
       "z": 0
     },
     {
       "type": "w_stone",
-      "dataType": "dt_wall",
+      "dataType": "dt_static",
       "x": 300,
       "y": 400,
       "z": 0

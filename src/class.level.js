@@ -1,22 +1,12 @@
-const Floor = require('./components/world/entities/class.Floor');
-const Wall = require('./components/world/entities/class.Wall');
-const VirtualCamera = require('./components/world/entities/class.VirtualCamera');
+const StaticProp = require('./components/world/entities/class.StaticProp');
+const DynamicProp = require('./components/world/entities/class.DynamicProp');
+const CameraProp = require('./components/world/entities/class.CameraProp');
 
 class Level {
 
-  /**
-   * Returns the world in a single list.
-   */
-  get worldObjects() {
-    return this._3Dmatrix;
-  }
-
-  /**
-   * Returns world's camera.
-   */
-  get worldCamera() {
-    return this._virtualCamera;
-  }
+  get staticProps() { return this._staticProps; }
+  get dynamicProps() { return this._dynamicProps; }
+  get cameraProps() { return this._cameraProps; }
 
   /**
    * Returns a world component based on dataType.
@@ -26,13 +16,13 @@ class Level {
    * @param {*} y 
    * @param {*} z 
    */
-  getWorldComponent(dataType, type, x, y, z, roll = 0, pitch = 0, yaw = 0) {
+  getWorldComponent(dataType, type, x, y, z, roll, pitch, yaw, enabled) {
     const types = {
-      "dt_wall": Wall,
-      "dt_floor": Floor,
-      "dt_virtual": VirtualCamera,
+      "dt_static": StaticProp,
+      "dt_dynamic": DynamicProp,
+      "dt_camera": CameraProp,
     }
-    return new types[dataType](type, x, y, z, roll, pitch, yaw);
+    return new types[dataType](type, x, y, z, roll, pitch, yaw, enabled);
   }
 
   /**
@@ -41,45 +31,36 @@ class Level {
    * @param {object} data
    */
   init3Dlevel(data) {
-    const virtuals = [];
-    const entities = data.filter(x => {
-      if (x.dataType === 'dt_virtual') {
-        virtuals.push(x);
-        return false;
-      }
-      return true;
-    });
-    // Handle entities.
-    this._3Dmatrix = entities.map(x => this.getWorldComponent(
-      x.dataType,
-      x.type,
-      x.x,
-      x.y,
-      x.z,
-    ));
-    // Handle virtual entities.
-    virtuals.forEach(x => {
-      if (x.type === 'v_virtualCamera') {
-        this._virtualCamera = this.getWorldComponent(
-          x.dataType,
-          x.type,
-          x.x,
-          x.y,
-          x.z,
-          x.roll,
-          x.pitch,
-          x.yaw,
-        );
+    data.filter(x => {
+      const obj = this.getWorldComponent(
+        x.dataType,
+        x.type,
+        x.x,
+        x.y,
+        x.z,
+        x.roll,
+        x.pitch,
+        x.yaw,
+        x.enabled,
+      );
+      if (x.dataType === 'dt_static' && obj) {
+        this._staticProps.push(obj);
+      } else if (x.dataType === 'dt_dynamic' && obj) {
+        this._dynamicProps.push(obj);
+      } else if (x.dataType === 'dt_camera' && obj) {
+        this._cameraProps.push(obj);
       }
     });
-    console.log(`Level ${this._name} read. Entities: ${this._3Dmatrix.length}, camera: ${this._virtualCamera !== undefined}`);
+    console.log(`Level ${this._name} read. StaticProps: ${this._staticProps.length}, ` +
+    `dynamicProps: ${this._dynamicProps.length}, cameraProps: ${this._cameraProps.length}`);
   }
 
   constructor(name) {
     const res = require(`./levels/${name}.json`);
     this._name = name;
-    this._3Dmatrix = [];
-    this._virtualCamera = undefined;
+    this._staticProps = [];
+    this._dynamicProps = [];
+    this._cameraProps = [];
     this.init3Dlevel(res.data);
   }
 }

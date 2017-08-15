@@ -112,7 +112,7 @@ class Renderer {
    * Builds a scene for scene drawing.
    * @param {*} objects 
    */
-  buildScene(objects, camera, debug) {
+  buildScene(staticProps, dynamicProps) {
     const d_performance = performance.now();
     this._counts = [0, 0];
     let d_string = '';
@@ -137,9 +137,9 @@ class Renderer {
     let draw = false;
 
     // Objects are in a 3D space.
-    objects.forEach(obj => {
+    staticProps.forEach(obj => {
       draw = true;
-      const planeObject = [[], [], [], 0, obj.baseColor]; // 0: vertices, 1: origins, 2: distances, 3, closest, 4: color.
+      const planeObject = [[], [], [], 0, obj.color]; // 0: vertices, 1: origins, 2: distances, 3, closest, 4: color.
 
       // Calculate primary (top) plane. Every object (2D/3D) has one.
       planeObject[1].push(Matrix.multiply(M, [[obj.x + obj.width/2], [obj.y + obj.length/2], [obj.z + obj.height], [1]]));

@@ -57,15 +57,13 @@ class Game {
    */
   update(lastTick) {
     const perf = performance.now();
-    // Clear buffers.
-    this._drawBuffer = [];
-    this._textBuffer = [];
     // Refresh game time
     this._time = (this._lastTick + this._tickLength) / 1000;
     // Handle input.
     this.handleControlActions(this._input.active);
     // Refresh level.
-    this._drawBuffer = this._level.worldObjects;
+    this._staticProps = this._level.staticProps;
+    this._dynamicProps = this._level.dynamicProps;
     this._perfUpdate = performance.now() - perf;
   }
 
@@ -105,7 +103,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
-    this._renderer.buildScene(this._drawBuffer);
+    this._renderer.buildScene(this._staticProps, this._dynamicProps);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -124,7 +122,10 @@ class Game {
       this._level = new Level('lvl_room');
 
       // Viewport handles the real world movement.
-      this._viewport = new Viewport(this._level.worldCamera);
+      const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
+      console.log(activeCamera, this._level.cameraProps);
+      this._viewport = new Viewport(activeCamera);
+      
 
       // Load inputs.
       this._input = new Input(this._stage);
@@ -133,8 +134,8 @@ class Game {
       this._lastTick = performance.now();
       this._lastRender = this._lastTick;
       this._tickLength = 50; // Delay of a one tick (affects game logic).
-      this._drawBuffer = [];
-      this._textBuffer = [];
+      this._staticProps = [];
+      this._dynamicProps = [];
       this._stage.width = document.body.clientWidth;
       this._stage.height = document.body.clientHeight;
       this._renderer = new Renderer( // The main renderer.
