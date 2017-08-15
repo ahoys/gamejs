@@ -121,9 +121,9 @@ class Renderer {
     const tM = Matrix.getTransformationMatrix(vp.x, vp.y, vp.z);
     const tMoffset = Matrix.getTransformationMatrix(vp.origin[0], vp.origin[1], 1); // Translation matrix.
     const sM = Matrix.getScalingMatrix(vp.z, vp.z, vp.z); // Scaling matrix.
-    const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
-    const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.
-    const rMY = Matrix.getRotationMatrixYaw(vp.yaw); // Rotation yaw matrix.
+    const rMR = Matrix.getRotationMatrixRoll(-vp.roll); // Rotation roll matrix.
+    const rMP = Matrix.getRotationMatrixPitch(-vp.pitch); // Rotation pitch matrix.
+    const rMY = Matrix.getRotationMatrixYaw(-vp.yaw); // Rotation yaw matrix.
     const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
     const M = Matrix.multiply(Matrix.multiply(Matrix.multiply(tMoffset, Rm), sM), tM); // Final matrix.
 
