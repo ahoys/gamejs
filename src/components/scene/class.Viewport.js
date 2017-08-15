@@ -4,13 +4,9 @@ class Viewport {
 
   /**
    * Calculates 3D matrices for movement.
-   * @param {number} tM
+   * @param {number} M
    */
-  get3Dmovement(tM) {
-    const rMR = Matrix.getRotationMatrixRoll(this._roll); // Rotation roll matrix.
-    const rMY = Matrix.getRotationMatrixYaw(this._yaw); // Rotation yaw matrix.
-    const Rm = Matrix.multiply(rMR, rMY); // Rotation.
-    const M = tM;
+  get3Dmovement(M) {
     return Matrix.multiply(M, [[this._x], [this._y], [this._z], [this._w]]);
   }
 
@@ -34,7 +30,9 @@ class Viewport {
    * @param {number} v
    */
   doMoveX(v) {
-    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(Number(v), 0, 0));
+    const nX = Number(v) * Math.cos(this._yaw);
+    const nY = Number(v) * Math.sin(this._yaw);
+    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(nX, nY, 0));
     this._x = pos[0][0];
     this._y = pos[1][0];
     this.refreshOrigin();
@@ -46,7 +44,9 @@ class Viewport {
    * @param {number} v
    */
   doMoveY(v) {
-    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(0, Number(v), 0));
+    const nX = Number(v) * Math.sin(-this._yaw);
+    const nY = Number(v) * Math.cos(-this._yaw);
+    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(nX, nY, 0));
     this._x = pos[0][0];
     this._y = pos[1][0];
     this.refreshOrigin();
@@ -97,10 +97,20 @@ class Viewport {
    * Virtual camera is used to calculate in-game distances to the camera.
    */
   refreshCamera() {
-    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._camera.x = pos[0][0] + document.body.clientWidth/2;
-    this._camera.y = pos[1][0] + document.body.clientHeight;
-    this._camera.z = document.body.clientHeight / this._z || 1;
+    //const pos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    const tM = Matrix.getTransformationMatrix(-this._x, -this._y, this._z);
+    // const tMoffset = Matrix.getTransformationMatrix(this._origin[0], this._origin[1], 1); // Translation matrix.
+    // const sM = Matrix.getScalingMatrix(this._z, this._z, this._z); // Scaling matrix.
+    // const rMR = Matrix.getRotationMatrixRoll(-this._roll); // Rotation roll matrix.
+    // const rMP = Matrix.getRotationMatrixPitch(-this._pitch); // Rotation pitch matrix.
+    // const rMY = Matrix.getRotationMatrixYaw(this._yaw); // Rotation yaw matrix.
+    // const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
+    // const M = Matrix.multiply(Matrix.multiply(Rm, sM), tM); // Final matrix.
+    const pos = Matrix.multiply(tM, [[document.body.clientWidth/2], [document.body.clientHeight/2], [document.body.clientHeight/2], [1]]);
+    this._camera.x = pos[0][0];
+    this._camera.y = pos[1][0];
+    this._camera.z = pos[2][0];
+    // this._camera.z = Matrix.getRotationMatrixRoll(document.body.clientHeight) / this._z || 1;
   }
 
   /**
@@ -154,12 +164,13 @@ class Viewport {
     this._pitch = camera.pitch;
     this._yaw = camera.yaw;
 
+    // Calculate the center position.
+    this._origin = [0, 0];
+    this.refreshOrigin();
+
     // Translate required height to camera scale.
     this._camera = camera;
     this.refreshCamera();
-
-    // Calculate the center position.
-    this.refreshOrigin();
 
     // Save reset values after everything is calculated.
     this._resetValues = {
