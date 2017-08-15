@@ -105,7 +105,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
-    this._renderer.buildScene(this._drawBuffer, this._level.worldCamera);
+    this._renderer.buildScene(this._drawBuffer);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -124,17 +124,7 @@ class Game {
       this._level = new Level('lvl_room');
 
       // Viewport handles the real world movement.
-      this._viewport = new Viewport(
-        0,
-        0,
-        1,
-        -5.5,
-        0,
-        -0.78,
-        document.body.clientWidth,
-        document.body.clientHeight,
-        this._level.worldCamera
-      );
+      this._viewport = new Viewport(this._level.worldCamera);
 
       // Load inputs.
       this._input = new Input(this._stage);

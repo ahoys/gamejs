@@ -117,60 +117,28 @@ class Viewport {
     refreshCamera();
   }
 
-  get x() {
-    return this._x;
-  }
+  get x() { return this._x; }
+  get y() { return this._y; }
+  get z() { return this._z; }
+  get w() { return this._w; }
+  get roll() { return this._roll; }
+  get pitch() { return this._pitch; }
+  get yaw() { return this._yaw; }
+  get origin() { return this._origin; }
+  get camera() { return this._camera; }
 
-  get y() {
-    return this._y;
-  }
+  constructor(camera) {
 
-  get z() {
-    return this._z;
-  }
-
-  get roll() {
-    return this._roll;
-  }
-
-  get pitch() {
-    return this._pitch;
-  }
-
-  get yaw() {
-    return this._yaw;
-  }
-
-  set width(n) {
-    this._width = Number(n);
-  }
-
-  get width() {
-    return this._width;
-  }
-
-  set length(n) {
-    this._length = Number(n);
-  }
-
-  get length() {
-    return this._length;
-  }
-
-  get origin() {
-    return this._origin;
-  }
-
-  constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length, camera) {
+    // Initialize basic values.
     this._x = -camera.x;
     this._y = -camera.y;
+    this._z = 1000 / camera.z;
     this._w = 1;
     this._roll = camera.roll;
     this._pitch = camera.pitch;
     this._yaw = camera.yaw;
 
     // Translate required height to camera scale.
-    this._z = 1000 / camera.z;
     this._camera = camera;
     this.refreshCamera();
 
