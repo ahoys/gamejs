@@ -130,10 +130,10 @@ class Viewport {
   constructor(camera) {
 
     // Initialize basic values.
-    this._x = -camera.x;
+    this._x = -camera.x; // We want the initial pos to be the camera set pos.
     this._y = -camera.y;
-    this._z = 1000 / camera.z;
-    this._w = 1;
+    this._z = 1000 / camera.z; // Scaling is based on the camera height.
+    this._w = 1; // Projection, does nothing for now.
     this._roll = camera.roll;
     this._pitch = camera.pitch;
     this._yaw = camera.yaw;
