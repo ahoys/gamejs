@@ -113,8 +113,8 @@ class Viewport {
     this._roll = this._resetValues.roll;
     this._pitch = this._resetValues.pitch;
     this._yaw = this._resetValues.yaw;
-    refreshOrigin();
-    refreshCamera();
+    this.refreshOrigin();
+    this.refreshCamera();
   }
 
   get x() { return this._x; }
