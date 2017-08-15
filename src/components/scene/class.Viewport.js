@@ -165,9 +165,9 @@ class Viewport {
     this._x = -camera.x;
     this._y = -camera.y;
     this._w = 1;
-    this._roll = roll;
-    this._pitch = pitch;
-    this._yaw = yaw;
+    this._roll = camera.roll;
+    this._pitch = camera.pitch;
+    this._yaw = camera.yaw;
 
     // Translate required height to camera scale.
     this._z = 1000 / camera.z;
