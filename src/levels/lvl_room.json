@@ -4,8 +4,8 @@
     {
       "type": "v_virtualCamera",
       "dataType": "dt_virtual",
-      "x": 100,
-      "y": 100,
+      "x": 200,
+      "y": 200,
       "z": 1000,
       "roll": 0,
       "pitch": 0,

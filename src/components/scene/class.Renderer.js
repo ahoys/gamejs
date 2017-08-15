@@ -53,8 +53,8 @@ class Renderer {
     const vp = this._viewport;
     this.drawText2D(`${vp.x}, ${vp.y}, ${vp.z}, ${vp.roll}, ${vp.pitch}, ${vp.yaw}`, x, y, color);
     this.drawText2D(`ORIGIN`, vp.x, vp.y, 'red');
-    this.drawText2D(`OFFSET ${vp.offset}`, x, y + 16, 'white');
-    this.drawText2D(`OFFSET`, vp.offset[0], vp.offset[1], 'red');
+    this.drawText2D(`OFFSET ${vp.origin}`, x, y + 16, 'white');
+    this.drawText2D(`OFFSET`, vp.origin[0], vp.origin[1], 'red');
     this.drawText2D(`CAMERA ${this._cameraPos}`, x, y + 32, 'white');
     this.drawText2D(`CAMERA`, this._cameraPos[0], this._cameraPos[1], 'white');
   }
@@ -119,7 +119,7 @@ class Renderer {
 
     // Calculate matrices.
     const tM = Matrix.getTransformationMatrix(vp.x, vp.y, vp.z);
-    const tMoffset = Matrix.getTransformationMatrix(vp.offset[0], vp.offset[1], 1); // Translation matrix.
+    const tMoffset = Matrix.getTransformationMatrix(vp.origin[0], vp.origin[1], 1); // Translation matrix.
     const sM = Matrix.getScalingMatrix(vp.z, vp.z, vp.z); // Scaling matrix.
     const rMR = Matrix.getRotationMatrixRoll(vp.roll); // Rotation roll matrix.
     const rMP = Matrix.getRotationMatrixPitch(vp.pitch); // Rotation pitch matrix.

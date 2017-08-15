@@ -22,15 +22,11 @@ class Viewport {
   doMoveXYZ(v) {
     const pos = this.get3Dmovement(
       Matrix.getTransformationMatrix(Number(v), Number(v), Number(v)));
-    this._x = pos[0][0].toFixed(2);
-    this._y = pos[1][0].toFixed(2);
-    this._z = pos[2][0].toFixed(2);
-    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._offset[0] = oPos[0][0] + this._width/2;
-    this._offset[1] = oPos[1][0] + this._length/2;
-    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._camera.x = cPos[0][0] + this._width/2;
-    this._camera.y = cPos[1][0] + this._length;
+    this._x = pos[0][0];
+    this._y = pos[1][0];
+    this._z = pos[2][0];
+    this.refreshOrigin();
+    this.refreshCamera();
   }
 
   /**
@@ -39,14 +35,10 @@ class Viewport {
    */
   doMoveX(v) {
     const pos = this.get3Dmovement(Matrix.getTransformationMatrix(Number(v), 0, 0));
-    this._x = pos[0][0].toFixed(2);
-    this._y = pos[1][0].toFixed(2);
-    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._offset[0] = oPos[0][0] + this._width/2;
-    this._offset[1] = oPos[1][0] + this._length/2;
-    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._camera.x = cPos[0][0] + this._width/2;
-    this._camera.y = cPos[1][0] + this._length;
+    this._x = pos[0][0];
+    this._y = pos[1][0];
+    this.refreshOrigin();
+    this.refreshCamera();
   }
 
   /**
@@ -55,14 +47,10 @@ class Viewport {
    */
   doMoveY(v) {
     const pos = this.get3Dmovement(Matrix.getTransformationMatrix(0, Number(v), 0));
-    this._x = pos[0][0].toFixed(2);
-    this._y = pos[1][0].toFixed(2);
-    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._offset[0] = oPos[0][0] + this._width/2;
-    this._offset[1] = oPos[1][0] + this._length/2;
-    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    this._camera.x = cPos[0][0] + this._width/2;
-    this._camera.y = cPos[1][0] + this._length;
+    this._x = pos[0][0];
+    this._y = pos[1][0];
+    this.refreshOrigin();
+    this.refreshCamera();
   }
 
   /**
@@ -70,7 +58,7 @@ class Viewport {
    * @param {*} v 
    */
   doRoll(v) {
-    this._yaw += Number(v.toFixed(2));
+    this._yaw += Number(v);
   }
 
   /**
@@ -78,7 +66,7 @@ class Viewport {
    * @param {*} v 
    */
   doPitch(v) {
-    this._pitch += Number(v.toFixed(2));
+    this._pitch += Number(v);
   }
 
   /**
@@ -86,7 +74,33 @@ class Viewport {
    * @param {*} v 
    */
   doYaw(v) {
-    this._yaw += Number(v.toFixed(2));
+    this._yaw += Number(v);
+  }
+
+  /**
+   * Updates the origin (the center point of the viewport).
+   * This should basically mirror the vp.
+   */
+  refreshOrigin() {
+    const pos = this.get3Dmovement(
+      Matrix.getTransformationMatrix(
+        -this._x + document.body.clientWidth / 2,
+        -this._y + document.body.clientHeight / 2,
+        -this._z,
+      )
+    );
+    this._origin = [pos[0][0], pos[1][0]];
+  }
+
+  /**
+   * Updates virtual camera position based on the viewport.
+   * Virtual camera is used to calculate in-game distances to the camera.
+   */
+  refreshCamera() {
+    const pos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
+    this._camera.x = pos[0][0] + document.body.clientWidth/2;
+    this._camera.y = pos[1][0] + document.body.clientHeight;
+    this._camera.z = document.body.clientHeight / this._z || 1;
   }
 
   /**
@@ -99,6 +113,8 @@ class Viewport {
     this._roll = this._resetValues.roll;
     this._pitch = this._resetValues.pitch;
     this._yaw = this._resetValues.yaw;
+    refreshOrigin();
+    refreshCamera();
   }
 
   get x() {
@@ -141,29 +157,35 @@ class Viewport {
     return this._length;
   }
 
-  get offset() {
-    return this._offset;
+  get origin() {
+    return this._origin;
   }
 
   constructor(x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0, width, length, camera) {
     this._x = x;
     this._y = y;
-    this._z = z;
     this._w = 1;
-    this._roll = roll; // Axis of rotation: x.
-    this._pitch = pitch; // Axis of rotation: y.
-    this._yaw = yaw; // Axis of rotation: z.
-    this._width = width;
-    this._length = length;
+    this._roll = roll;
+    this._pitch = pitch;
+    this._yaw = yaw;
+
+    // Translate required height to camera scale.
+    this._z = 1000 / camera.z;
     this._camera = camera;
-    this._resetValues = {x, y, z, roll, pitch, yaw};
-    this._offset = [0, 0];
-    const oPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x + width/2, -this._y + length/2, -this._z));
-    this._offset[0] = oPos[0][0];
-    this._offset[1] = oPos[1][0];
-    const cPos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x + width/2, -this._y + length, -this._z));
-    this._camera.x = cPos[0][0];
-    this._camera.y = cPos[1][0];
+    this.refreshCamera();
+
+    // Calculate the center position.
+    this.refreshOrigin();
+
+    // Save reset values after everything is calculated.
+    this._resetValues = {
+      x: this._x,
+      y: this._y,
+      z: this._z,
+      roll: this._roll,
+      pitch: this._pitch,
+      yaw: this._yaw,
+    };
   }
 }
 
