@@ -117,6 +117,20 @@ class Viewport {
     this.refreshCamera();
   }
 
+  /**
+   * Sets a new camera and essentially
+   * a new position for the viewport.
+   * @param {VirtualCamera} camera
+   */
+  set camera(camera) {
+    this._x = -camera.x;
+    this._y = -camera.y;
+    this._z = 1000 / camera.z;
+    this._roll = camera.roll;
+    this._pitch = camera.pitch;
+    this._yaw = camera.yaw;
+  }
+
   get x() { return this._x; }
   get y() { return this._y; }
   get z() { return this._z; }
