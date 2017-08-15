@@ -7,9 +7,9 @@
       "x": 200,
       "y": 200,
       "z": 1000,
-      "roll": 0,
+      "roll": -5.5,
       "pitch": 0,
-      "yaw": 0
+      "yaw": -0.78
     },
     {
       "type": "f_dirt",
@@ -75,7 +75,7 @@
       "z": 0
     },
     {
-      "type": "w_stone",
+      "type": "w_bedrock",
       "dataType": "dt_wall",
       "x": 0,
       "y": 0,
