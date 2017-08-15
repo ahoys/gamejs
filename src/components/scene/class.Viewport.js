@@ -97,20 +97,9 @@ class Viewport {
    * Virtual camera is used to calculate in-game distances to the camera.
    */
   refreshCamera() {
-    //const pos = this.get3Dmovement(Matrix.getTransformationMatrix(-this._x, -this._y, -this._z));
-    const tM = Matrix.getTransformationMatrix(-this._x, -this._y, this._z);
-    // const tMoffset = Matrix.getTransformationMatrix(this._origin[0], this._origin[1], 1); // Translation matrix.
-    // const sM = Matrix.getScalingMatrix(this._z, this._z, this._z); // Scaling matrix.
-    // const rMR = Matrix.getRotationMatrixRoll(-this._roll); // Rotation roll matrix.
-    // const rMP = Matrix.getRotationMatrixPitch(-this._pitch); // Rotation pitch matrix.
-    // const rMY = Matrix.getRotationMatrixYaw(this._yaw); // Rotation yaw matrix.
-    // const Rm = Matrix.multiply(Matrix.multiply(rMR, rMP), rMY); // Rotation.
-    // const M = Matrix.multiply(Matrix.multiply(Rm, sM), tM); // Final matrix.
-    const pos = Matrix.multiply(tM, [[document.body.clientWidth/2], [document.body.clientHeight/2], [document.body.clientHeight/2], [1]]);
-    this._camera.x = pos[0][0];
-    this._camera.y = pos[1][0];
-    this._camera.z = pos[2][0];
-    // this._camera.z = Matrix.getRotationMatrixRoll(document.body.clientHeight) / this._z || 1;
+    this._camera.x = document.body.clientWidth/2;
+    this._camera.y = document.body.clientHeight;
+    this._camera.z = document.body.clientHeight / this._z || 1;
   }
 
   /**
