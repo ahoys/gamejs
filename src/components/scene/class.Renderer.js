@@ -96,7 +96,7 @@ class Renderer {
     buffer.forEach(obj => {
       // Draw all planes.
       this._ctx.beginPath();
-      const cDepth = Math.floor(obj[3] / 100);
+      const cDepth = Math.floor(255 / (obj[3] / 10));
       obj[0].forEach(plane => this.drawPlane2D(
         plane, obj[4].r + cDepth, obj[4].g + cDepth, obj[4].b + cDepth));
       if (debug) this.drawObjDebug2D(obj);
