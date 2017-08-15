@@ -57,6 +57,8 @@ class Renderer {
     this.drawText2D(`OFFSET`, vp.origin[0], vp.origin[1], 'red');
     this.drawText2D(`CAMERA ${vp.camera.z}`, x, y + 32, 'white');
     this.drawText2D(`CAMERA`, vp.camera.x, vp.camera.y, 'white');
+    this.drawText2D(`VERTEXES ${this._counts[0]}`, x, y + 48, 'white');
+    this.drawText2D(`PLANES ${this._counts[1]}`, x, y + 64, 'white');
   }
 
   /**
@@ -71,8 +73,10 @@ class Renderer {
     this._ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     pV.forEach(v => {
       this._ctx.lineTo(v[0], v[1]);
+      this._counts[0]++;
     });
     this._ctx.fill();
+    this._counts[1]++;
   }
 
   /**
@@ -110,6 +114,7 @@ class Renderer {
    */
   buildScene(objects, camera, debug) {
     const d_performance = performance.now();
+    this._counts = [0, 0];
     let d_string = '';
 
     // Initialize the viewport.
@@ -220,6 +225,7 @@ class Renderer {
     this._stage = stage;
     this._ctx = this._stage.getContext('2d');
     this._viewport = viewport;
+    this._counts = [0];
   }
 }
 
