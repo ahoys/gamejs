@@ -119,7 +119,7 @@ class Game {
       this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
 
       // Load the level.
-      this._level = new Level('lvl_cubes');
+      this._level = new Level('lvl_room');
 
       // Viewport handles the real world movement.
       const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
