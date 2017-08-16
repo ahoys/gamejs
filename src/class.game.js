@@ -1,8 +1,8 @@
-const Level = require('./class.level');
-const Viewport = require('./components/scene/class.Viewport');
-const Input = require('./class.input');
-const Renderer = require('./components/scene/class.Renderer');
-const Calc = require('./utilities/util.calc');
+const Level = require('./src/class.level');
+const Viewport = require('./src/components/scene/class.Viewport');
+const Input = require('./src/class.input');
+const Renderer = require('./src/components/scene/class.Renderer');
+const Calc = require('./src/utilities/util.calc');
 
 class Game {
 

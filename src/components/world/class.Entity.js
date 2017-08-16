@@ -1,4 +1,5 @@
 const staticJSON = require('./resources/res.static.json');
+const Obj = require('../../utilities/util.obj');
 
 /**
  * StaticEntity
@@ -41,6 +42,7 @@ class Entity {
     this._length = staticJSON[type] ? staticJSON[type].length : 0;
     this._height = staticJSON[type] ? staticJSON[type].height : 0;
     this._color = staticJSON[type] ? staticJSON[type].color : '0,0,0';
+    this._model = Obj.importObj(`./src/assets/models/${type}.obj`);
   }
 }
 

@@ -4,14 +4,7 @@
   "description": "A simple javascript game engine.",
   "main": "main.js",
   "author": "Ari Höysniemi",
-  "scripts": {
-    "compile": "webpack ./src/class.game.js ./build/main.bundle.js"
-  },
   "devDependencies": {
-    "babel-core": "6.25.x",
-    "babel-loader": "7.1.x",
-    "babel-preset-latest": "6.24.x",
-    "electron": "^1.7.5",
-    "webpack": "3.0.x"
+    "electron": "^1.7.5"
   }
 }
