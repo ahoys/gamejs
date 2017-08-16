@@ -4,111 +4,20 @@
     {
       "type": "v_virtualCamera",
       "dataType": "dt_camera",
-      "x": 100,
-      "y": 100,
-      "z": 1000,
-      "roll": 0,
+      "x": 50,
+      "y": 50,
+      "z": 500,
+      "roll": 5.5,
       "pitch": 0,
-      "yaw": 0,
+      "yaw": 0.78,
       "enabled": true
     },
     {
-      "type": "w_bedrock",
-      "dataType": "dt_wall",
+      "type": "w_stone",
+      "dataType": "dt_static",
       "x": 0,
       "y": 0,
       "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 0,
-      "y": 100,
-      "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 0,
-      "y": 200,
-      "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 100,
-      "y": 0,
-      "z": 0
-    },
-    {
-      "type": "w_bedrock",
-      "dataType": "dt_wall",
-      "x": 100,
-      "y": 100,
-      "z": 0
-    },
-    {
-      "type": "w_bedrock",
-      "dataType": "dt_wall",
-      "x": 100,
-      "y": 100,
-      "z": 100
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 100,
-      "y": 200,
-      "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 200,
-      "y": 0,
-      "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 200,
-      "y": 100,
-      "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 200,
-      "y": 200,
-      "z": 0
-    },
-    {
-      "type": "f_dirt",
-      "dataType": "dt_floor",
-      "x": 300,
-      "y": 600,
-      "z": 0
-    },
-    {
-      "type": "w_stone",
-      "dataType": "dt_wall",
-      "x": 400,
-      "y": 600,
-      "z": 0
-    },
-    {
-      "type": "w_stone",
-      "dataType": "dt_wall",
-      "x": 400,
-      "y": 600,
-      "z": 100
-    },
-    {
-      "type": "w_stone",
-      "dataType": "dt_wall",
-      "x": 400,
-      "y": 600,
-      "z": 200
     }
   ]
 }

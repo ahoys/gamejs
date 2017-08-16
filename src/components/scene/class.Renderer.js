@@ -80,6 +80,20 @@ class Renderer {
   }
 
   /**
+   * Draws a wireframe.
+   * @param {*} pV 
+   */
+  drawWireframe2D(pV) {
+    this._ctx.strokeStyle = `rgba(255,255,255,0.1)`;
+    pV.forEach(v => {
+      this._ctx.lineTo(Math.floor(v[0][0]), Math.floor(v[1][0]));
+      this._counts[0]++;
+    });
+    this._ctx.stroke();
+    this._counts[1]++;
+  }
+
+  /**
    * Draws a text string to the canvas.
    * @param {string} str 
    * @param {number} x 
@@ -95,7 +109,7 @@ class Renderer {
    * Draws a scene.
    * @param {*} buffer 
    */
-  drawScene(buffer, debug = true, wireframe = false) {
+  drawScene(buffer, debug = true, wireframe = true) {
     this._ctx.clearRect(0, 0, this._stage.width, this._stage.height);
     buffer.forEach(obj => {
       // Draw all planes.
@@ -103,6 +117,9 @@ class Renderer {
       const cDepth = Math.floor(255 / (obj[3] / 10));
       obj[0].forEach(plane => this.drawPlane2D(
         plane, obj[4].r + cDepth, obj[4].g + cDepth, obj[4].b + cDepth));
+      // Whether to draw wireframes.
+      if (wireframe) {obj[0].forEach(plane => this.drawWireframe2D(plane));};
+      // Whether to draw plane debug information.
       if (debug) this.drawObjDebug2D(obj);
     });
     // Removes transparent artefact edges.
