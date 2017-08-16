@@ -72,7 +72,7 @@ class Renderer {
   drawPlane2D(pV, r, g, b, a = 1) {
     this._ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     pV.forEach(v => {
-      this._ctx.lineTo(v[0], v[1]);
+      this._ctx.lineTo(Math.floor(v[0][0]), Math.floor(v[1][0]));
       this._counts[0]++;
     });
     this._ctx.fill();
@@ -105,6 +105,8 @@ class Renderer {
         plane, obj[4].r + cDepth, obj[4].g + cDepth, obj[4].b + cDepth));
       if (debug) this.drawObjDebug2D(obj);
     });
+    // Removes transparent artefact edges.
+    this._aliasCtx.drawImage(this._stage, 1, 1);
     if (debug) this.drawViewportDebug2D();
   }
 
@@ -219,11 +221,22 @@ class Renderer {
     // TODO: calculate surface normals.
     pBuffer.sort((a, b) => b[3] - a[3]);
     if (draw) this.drawScene(pBuffer);
+
+    // Calculate the final latency.
+    const d_performanceResult = Math.floor(performance.now() - d_performance);
+    this.drawText2D(
+      `LATENCY ${d_performanceResult}`, 16, 96, d_performanceResult < 16 ? 'green' : 'red'
+    );
   }
   
   constructor(stage, viewport) {
     this._stage = stage;
+    this._aliasStage = stage;
     this._ctx = this._stage.getContext('2d');
+    this._aliasCtx = this._aliasStage.getContext('2d');
+    this._ctx.webkitImageSmoothingEnabled = false;
+    this._ctx.mozImageSmoothingEnabled = false;
+    this._ctx.imageSmoothingEnabled = false;
     this._viewport = viewport;
     this._counts = [0];
   }
