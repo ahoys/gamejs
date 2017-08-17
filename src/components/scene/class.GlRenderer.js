@@ -43,6 +43,8 @@ class GlRenderer {
     this._gl.enableVertexAttribArray(
       this._gl.getAttribLocation(this._shaderProgram, 'aVertexPosition')
     );
+    this._vertexColorAttribute = this._gl.getAttribLocation(this._shaderProgram, 'aVertexColor');
+    this._gl.enableVertexAttribArray(this._vertexColorAttribute);
   }
 
   /**
@@ -119,6 +121,8 @@ class GlRenderer {
     this.mvTranslate([-0.0, 0.0, -6.0]);
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._squareVerticesBuffer);
     this._gl.vertexAttribPointer(this._vertexPositionAttribute, 3, this._gl.FLOAT, false, 0, 0);
+    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._squareVerticesColorBuffer);
+    this._gl.vertexAttribPointer(this._vertexColorAttribute, 4, this._gl.FLOAT, false, 0, 0);
     this.setMatrixUniforms();
     this._gl.drawArrays(this._gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -127,13 +131,25 @@ class GlRenderer {
     this._mvMatrix;
     this._shaderProgram;
     this._squareVerticesBuffer;
+    this._squareVerticesColorBuffer;
     this._perspectiveMatrix;
     this._vertexPositionAttribute;
+    this._vertexColorAttribute;
     this._gl = this.initWebGL(canvas);
     this._gl.clearColor(0.0, 0.0, 0.0, 1.0);
     this._gl.enable(this._gl.DEPTH_TEST);
     this._gl.depthFunc(this._gl.LEQUAL);
     this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
+    // Below is a color example.
+    const colors = [
+      1.0,  1.0,  1.0,  1.0,    // white
+      1.0,  0.0,  0.0,  1.0,    // red
+      0.0,  1.0,  0.0,  1.0,    // green
+      0.0,  0.0,  1.0,  1.0     // blue
+    ];
+    this._squareVerticesColorBuffer = this._gl.createBuffer();
+    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._squareVerticesColorBuffer);
+    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(colors), this._gl.STATIC_DRAW);
     this.initShaders();
     this.initBuffers();
     this.drawScene();
