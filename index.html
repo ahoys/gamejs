@@ -6,7 +6,24 @@
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <canvas id="glCanvas" width="1920" height="480">
+      Application failed to load <code>&lt;canvas&gt;</code> element.
+    </canvas>
+    <script id="shader-fs" type="x-shader/x-fragment">
+      void main(void) {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+      }
+    </script>
+    <script id="shader-vs" type="x-shader/x-vertex">
+      attribute vec3 aVertexPosition;
+        uniform mat4 uMVMatrix;
+        uniform mat4 uPMatrix;
+        void main(void) {
+          gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        }
+    </script>
+    <script src="src/utilities/util.sylvester.js"></script>
+    <script src="src/utilities/util.glUtils.js"></script>
     <script src="src/class.game.js"></script>
   </body>
 </html>

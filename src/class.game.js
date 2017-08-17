@@ -1,7 +1,7 @@
 const Level = require('./src/class.level');
 const Viewport = require('./src/components/scene/class.Viewport');
 const Input = require('./src/class.input');
-const Renderer = require('./src/components/scene/class.Renderer');
+const GlRenderer = require('./src/components/scene/class.GlRenderer');
 const Calc = require('./src/utilities/util.calc');
 
 class Game {
@@ -84,8 +84,11 @@ class Game {
    * Handles window resizes.
    */
   resize() {
-    this._stage.width = document.body.clientWidth;
-    this._stage.height = document.body.clientHeight;
+    const nW = document.body.clientWidth;
+    const nH = document.body.clientHeight;
+    this._stage.width = nW;
+    this._stage.height = nH;
+    this._renderer.setViewportSize(nW, nH);
   }
 
   /**
@@ -103,47 +106,42 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
-    this._renderer.buildScene(this._staticProps, this._dynamicProps);
+    // this._renderer.buildScene(this._staticProps, this._dynamicProps);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
 
   constructor() {
-    this._stage = document.getElementById('canvas');
-    if (this._stage && this._stage.getContext) {
-      // Initialization starts.
-      // The main principle is to load game logic first, then the rendering side.
+    // Load the stage.
+    this._stage = document.getElementById('glCanvas');
+    this._stage.width = document.body.clientWidth;
+    this._stage.height = document.body.clientHeight;
 
-      // Variables.
-      this._time = 0; // In-game time in seconds.
-      this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
+    // Variables.
+    this._time = 0; // In-game time in seconds.
+    this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
 
-      // Load the level.
-      this._level = new Level('lvl_room');
+    // Load the level.
+    this._level = new Level('lvl_room');
 
-      // Viewport handles the real world movement.
-      const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
-      console.log(activeCamera, this._level.cameraProps);
-      this._viewport = new Viewport(activeCamera);
-      
+    // Viewport handles the real world movement.
+    const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
+    this._viewport = new Viewport(activeCamera);
 
-      // Load inputs.
-      this._input = new Input(this._stage);
+    // Load inputs.
+    this._input = new Input(this._stage);
 
-      // Rendering.
-      this._lastTick = performance.now();
-      this._lastRender = this._lastTick;
-      this._tickLength = 50; // Delay of a one tick (affects game logic).
-      this._staticProps = [];
-      this._dynamicProps = [];
-      this._stage.width = document.body.clientWidth;
-      this._stage.height = document.body.clientHeight;
-      this._renderer = new Renderer( // The main renderer.
-        this._stage,
-        this._viewport
-      );
-      this.main(performance.now());
-    }
+    // Rendering.
+    this._lastTick = performance.now();
+    this._lastRender = this._lastTick;
+    this._tickLength = 50; // Delay of a one tick (affects game logic).
+    this._staticProps = [];
+    this._dynamicProps = [];
+    this._renderer = new GlRenderer(
+      this._stage,
+      this._viewport,
+    );
+    this.main(performance.now());
   }
 }
 
