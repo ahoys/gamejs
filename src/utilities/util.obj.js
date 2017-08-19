@@ -8,10 +8,10 @@ module.exports = {
    * See: https://en.wikipedia.org/wiki/Wavefront_.obj_file
    */
   importObj: (path) => {
+    console.log(`Import .obj model: ${path}`);
     const payload = { v: [], vt: [], vn: [], vp: [], f: [], fP: [], vP: [] };
     const tempF = [];
     let fPoints = [];
-    console.log('---------------------')
     if (fs.existsSync(path)) {
       fs
       .readFileSync(path)

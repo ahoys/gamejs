@@ -2,17 +2,19 @@
   "title": "cubedebug",
   "data": [
     {
+      "id": 0,
       "type": "v_virtualCamera",
       "dataType": "dt_camera",
-      "x": 50,
-      "y": 50,
-      "z": 500,
+      "x": 0,
+      "y": 0,
+      "z": -6,
       "roll": 5.5,
       "pitch": 0,
       "yaw": 0.78,
       "enabled": true
     },
     {
+      "id": 1,
       "type": "w_stone",
       "dataType": "dt_static",
       "x": 0,

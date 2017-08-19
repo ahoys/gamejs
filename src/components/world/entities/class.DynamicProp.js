@@ -7,8 +7,8 @@ const Entity = require('../class.Entity');
  * Ari Höysniemi, 10.8.2017
  */
 class DynamicProp extends Entity {
-  constructor(type, x, y, z, roll, pitch, yaw) {
-    super(type, x, y, z, roll, pitch, yaw);
+  constructor(id, type, x, y, z, roll, pitch, yaw) {
+    super(id, type, x, y, z, roll, pitch, yaw);
   }
 }
 

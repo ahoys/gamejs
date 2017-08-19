@@ -32,17 +32,12 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'VP_MOVE_FORWARD': () => this._viewport.doMoveXYZ(Calc.getRelativeSpeed(this._tickLength, 1)),
-      'VP_MOVE_BACKWARD': () => this._viewport.doMoveXYZ(-Calc.getRelativeSpeed(this._tickLength, 1)),
-      'VP_MOVE_LEFT': () => this._viewport.doMoveX(Calc.getRelativeSpeed(this._tickLength, 100)),
-      'VP_MOVE_RIGHT': () => this._viewport.doMoveX(-Calc.getRelativeSpeed(this._tickLength, 100)),
-      'VP_MOVE_UP': () => this._viewport.doMoveY(Calc.getRelativeSpeed(this._tickLength, 100)),
-      'VP_MOVE_DOWN': () => this._viewport.doMoveY(-Calc.getRelativeSpeed(this._tickLength, 100)),
-      'VP_ROTATE_LEFT': () => this._viewport.doYaw(Calc.getRelativeSpeed(this._tickLength, 0.8)),
-      'VP_ROTATE_RIGHT': () => this._viewport.doYaw(-Calc.getRelativeSpeed(this._tickLength, 0.8)),
-      'VP_ROLL_LEFT': () => this._viewport.doRoll(Calc.getRelativeSpeed(this._tickLength, 1)),
-      'VP_ROLL_RIGHT': () => this._viewport.doRoll(-Calc.getRelativeSpeed(this._tickLength, 1)),
-      'VP_RESET': () => this._viewport.doReset(),
+      'CAM_MOVE_+X': () => this._camera.doMoveX(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_-X': () => this._camera.doMoveX(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_+Y': () => this._camera.doMoveY(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_-Y': () => this._camera.doMoveY(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_+Z': () => this._camera.doMoveZ(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_-Z': () => this._camera.doMoveZ(-Calc.getRelativeSpeed(this._tickLength, 10)),
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {
@@ -64,8 +59,10 @@ class Game {
     // Refresh level.
     const staticProps = this._level.staticProps;
     const dynamicProps = this._level.dynamicProps;
+    // Select the camera.
+    this._camera = this._level.cameraProps.filter(x => x.enabled)[0];
     // Send props to be rendered.
-    this._renderer.addBuffer(staticProps);
+    this._renderer.addBuffer(staticProps, this._camera);
     // this._renderer.addBuffer(dynamicProps);
     this._perfUpdate = performance.now() - perf;
   }
@@ -126,11 +123,12 @@ class Game {
     this._waitUntil = {}; // Accurate waiting timers (see waitUntil).
 
     // Load the level.
-    this._level = new Level('lvl_room');
+    this._level = new Level('lvl_cubes');
+    this._camera = this._level.cameraProps.filter(x => x.enabled)[0];
 
     // Viewport handles the real world movement.
-    const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
-    this._viewport = new Viewport(activeCamera);
+    //const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
+    //this._viewport = new Viewport(activeCamera);
 
     // Load inputs.
     this._input = new Input(this._stage);
@@ -141,7 +139,7 @@ class Game {
     this._tickLength = 50; // Delay of a one tick (affects game logic).
     this._renderer = new GlRenderer(
       this._stage,
-      this._viewport,
+      this._camera,
     );
     this.main(performance.now());
   }

@@ -16,13 +16,13 @@ class Level {
    * @param {*} y 
    * @param {*} z 
    */
-  getWorldComponent(dataType, type, x, y, z, roll, pitch, yaw, enabled) {
+  getWorldComponent(id, dataType, type, x, y, z, roll, pitch, yaw, enabled) {
     const types = {
       "dt_static": StaticProp,
       "dt_dynamic": DynamicProp,
       "dt_camera": CameraProp,
     }
-    return new types[dataType](type, x, y, z, roll, pitch, yaw, enabled);
+    return new types[dataType](id, type, x, y, z, roll, pitch, yaw, enabled);
   }
 
   /**
@@ -33,6 +33,7 @@ class Level {
   init3Dlevel(data) {
     data.filter(x => {
       const obj = this.getWorldComponent(
+        x.id,
         x.dataType,
         x.type,
         x.x,

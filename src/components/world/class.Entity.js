@@ -10,6 +10,30 @@ const Obj = require('../../utilities/util.obj');
  */
 class Entity {
 
+  doMoveX(v) {
+    this._x += v;
+  }
+
+  doMoveY(v) {
+    this._y += v;
+  }
+
+  doMoveZ(v) {
+    this._z += v;
+  }
+
+  doRoll(v) {
+    this._roll += v;
+  }
+
+  doPitch(v) {
+    this._pitch += v;
+  }
+
+  doYaw(v) {
+    this._yaw += v;
+  }
+
   set x(v) { this._x = Number(v); }
   set y(v) { this._y = Number(v); }
   set z(v) { this._z = Number(v); }
@@ -20,7 +44,8 @@ class Entity {
   set length(v) { this._length = Number(v); }
   set height(v) { this._height = Number(v); }
   set color(v) { this._color = Number(v); }
-  get type() { return this._type };
+  get id() { return this._id; }
+  get type() { return this._type; }
   get x() { return this._x; }
   get y() { return this._y; }
   get z() { return this._z; }
@@ -39,7 +64,8 @@ class Entity {
   get fP() { return this._model.fP; }
   get vP() { return this._model.vP; }
 
-  constructor (type, x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0) {
+  constructor (id, type, x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0) {
+    this._id = id;
     this._type = type;
     this._x = x;
     this._y = y;

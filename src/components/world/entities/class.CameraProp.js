@@ -13,8 +13,8 @@ class CameraProp extends Entity {
   get enabled() { return this._enabled; }
   get filter() { return this._filter; }
 
-  constructor(type, x, y, z, roll, pitch, yaw, enabled) {
-    super(type, x, y, z, roll, pitch, yaw);
+  constructor(id, type, x, y, z, roll, pitch, yaw, enabled) {
+    super(id, type, x, y, z, roll, pitch, yaw);
     this._enabled = Boolean(enabled);
     this._filter = undefined;
   }

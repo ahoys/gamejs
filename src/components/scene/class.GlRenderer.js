@@ -90,8 +90,13 @@ class GlRenderer {
   /**
    * Adds props into a buffer, waiting for drawing.
    * @param {*} props 
+   * @param {object} camera
    */
-  addBuffer(props) {
+  addBuffer(props, camera) {
+    // Switch the camera if required.
+    if (camera.id !== this._camera.id) this._camera = camera;
+
+    // Create a vertice buffer.
     this._propVerticesBuffer = this._gl.createBuffer();
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
 
@@ -135,7 +140,7 @@ class GlRenderer {
     ];
 
     // TODO: add all vertices.
-    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(props[12].vP), this._gl.STATIC_DRAW);
+    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(props[0].vP), this._gl.STATIC_DRAW);
 
     // Colors -----------
     const colors = [
@@ -275,7 +280,7 @@ class GlRenderer {
     this.loadIdentity();
 
     // Position where we start drawing.
-    this.mvTranslate([0,0,-6]);
+    this.mvTranslate([this._camera.x, this._camera.y, this._camera.z]);
 
     // Draw by binding the array buffer to the cube's vertices array.
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
@@ -309,18 +314,18 @@ class GlRenderer {
           Headroom: ${(headroom).toFixed(2)} ms
         </li>
         <li>Frametime: ${((performance.now() - this._frametime) / 1000).toFixed(2)} ms</li>
-        <li>Viewport: 
-          ${(this._viewport.x).toFixed(2)} 
-          ${(this._viewport.y).toFixed(2)} 
-          ${(this._viewport.z).toFixed(2)}
+        <li>Camera: 
+          X ${(this._camera.x).toFixed(2)} 
+          Y ${(this._camera.y).toFixed(2)} 
+          Z ${(this._camera.z).toFixed(2)}
         </li>
       </ul>
     `;
   }
 
-  constructor(canvas, viewport, debug = true) {
+  constructor(canvas, camera, debug = true) {
     this._canvas = canvas;
-    this._viewport = viewport;
+    this._camera = camera;
     this._debug = debug;
     this._debugElement = document.getElementById('debug');
     this._pDebugUpdate = 0;
