@@ -268,13 +268,14 @@ class GlRenderer {
     this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
 
     // Establish the perspective.
-    this._perspectiveMatrix = makePerspective(45, 640.0/480.0, 0.1, 100.0);
+    this._perspectiveMatrix = makePerspective(
+      45, this._canvas.width/this._canvas.height, 0.1, 100.0);
 
     // Set the drawing position to the identitity point (center of the scene).
     this.loadIdentity();
 
     // Position where we start drawing.
-    this.mvTranslate([this._viewport.x, this._viewport.y, this._viewport.z]);
+    this.mvTranslate([0,0,-6]);
 
     // Draw by binding the array buffer to the cube's vertices array.
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
@@ -318,6 +319,7 @@ class GlRenderer {
   }
 
   constructor(canvas, viewport, debug = true) {
+    this._canvas = canvas;
     this._viewport = viewport;
     this._debug = debug;
     this._debugElement = document.getElementById('debug');
