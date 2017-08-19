@@ -1,8 +1,14 @@
 {
-  "w": ["CAM_MOVE_+Y"],
-  "s": ["CAM_MOVE_-Y"],
-  "d": ["CAM_MOVE_+X"],
-  "a": ["CAM_MOVE_-X"],
-  "z": ["CAM_MOVE_-Z"],
-  "c": ["CAM_MOVE_+Z"]
+  "w": ["CAM_MOVE_+Z"],
+  "s": ["CAM_MOVE_-Z"],
+  "a": ["CAM_MOVE_+X"],
+  "d": ["CAM_MOVE_-X"],
+  "c": ["CAM_MOVE_-Y"],
+  "z": ["CAM_MOVE_+Y"],
+  "r": ["CAM_ROTATE_+X"],
+  "f": ["CAM_ROTATE_-X"],
+  "e": ["CAM_ROTATE_+Y"],
+  "q": ["CAM_ROTATE_-Y"],
+  "1": ["CAM_ROTATE_+Z"],
+  "3": ["CAM_ROTATE_-Z"]
 }

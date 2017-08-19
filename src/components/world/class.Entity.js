@@ -22,15 +22,15 @@ class Entity {
     this._z += v;
   }
 
-  doRoll(v) {
+  doRotateX(v) {
     this._roll += v;
   }
 
-  doPitch(v) {
+  doRotateY(v) {
     this._pitch += v;
   }
 
-  doYaw(v) {
+  doRotateZ(v) {
     this._yaw += v;
   }
 
