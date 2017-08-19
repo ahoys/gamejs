@@ -271,7 +271,7 @@ class GlRenderer {
     this.loadIdentity();
 
     // Position where we start drawing.
-    this.mvTranslate([-0.0, 0.0, -6.0]);
+    this.mvTranslate([this._viewport.x, this._viewport.y, this._viewport.z]);
 
     // Draw by binding the array buffer to the cube's vertices array.
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
@@ -288,6 +288,8 @@ class GlRenderer {
   }
 
   constructor(canvas, viewport) {
+    this._viewport = viewport;
+
     this._mvMatrix;
     this._shaderProgram;
     this._squareVerticesBuffer;

@@ -79,7 +79,6 @@ module.exports = {
           // });
         });
       });
-      console.log(payload.vP);
       return payload;
     } else {
       console.log(`File ${path} does not exist.`);
