@@ -20,6 +20,7 @@ class Entity {
   set length(v) { this._length = Number(v); }
   set height(v) { this._height = Number(v); }
   set color(v) { this._color = Number(v); }
+  get type() { return this._type };
   get x() { return this._x; }
   get y() { return this._y; }
   get z() { return this._z; }
@@ -30,8 +31,16 @@ class Entity {
   get length() { return this._length; }
   get height() { return this._height; }
   get color() { return this._color; }
+  get v() { return this._model.v; }
+  get vt() { return this._model.vt; }
+  get vn() { return this._model.vn; }
+  get vp() { return this._model.vp; }
+  get f() { return this._model.f; }
+  get fP() { return this._model.fP; }
+  get vP() { return this._model.vP; }
 
   constructor (type, x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0) {
+    this._type = type;
     this._x = x;
     this._y = y;
     this._z = z;

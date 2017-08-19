@@ -62,8 +62,11 @@ class Game {
     // Handle input.
     this.handleControlActions(this._input.active);
     // Refresh level.
-    this._staticProps = this._level.staticProps;
-    this._dynamicProps = this._level.dynamicProps;
+    const staticProps = this._level.staticProps;
+    const dynamicProps = this._level.dynamicProps;
+    // Send props to be rendered.
+    this._renderer.addBuffer(staticProps);
+    // this._renderer.addBuffer(dynamicProps);
     this._perfUpdate = performance.now() - perf;
   }
 
@@ -107,6 +110,7 @@ class Game {
     }
     this.queueUpdates(numTicks);
     // this._renderer.buildScene(this._staticProps, this._dynamicProps);
+    this._renderer.drawScene();
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -135,8 +139,6 @@ class Game {
     this._lastTick = performance.now();
     this._lastRender = this._lastTick;
     this._tickLength = 50; // Delay of a one tick (affects game logic).
-    this._staticProps = [];
-    this._dynamicProps = [];
     this._renderer = new GlRenderer(
       this._stage,
       this._viewport,

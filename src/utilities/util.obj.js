@@ -8,63 +8,78 @@ module.exports = {
    * See: https://en.wikipedia.org/wiki/Wavefront_.obj_file
    */
   importObj: (path) => {
-    const payload = {};
+    const payload = { v: [], vt: [], vn: [], vp: [], f: [], fP: [], vP: [] };
+    const tempF = [];
+    let fPoints = [];
+    console.log('---------------------')
     if (fs.existsSync(path)) {
-      payload.v = [];
-      payload.vt = [];
-      payload.vn = [];
-      payload.vp = [];
-      payload.f = [];
-      const data = fs.readFileSync(path).toString().split('\n');
-      let vTemp = [];
-      let vtTemp = [];
-      let vnTemp = [];
-      let vpTemp = [];
-      let fTemp = [];
-      data.forEach(line => {
+      fs
+      .readFileSync(path)
+      .toString()
+      .split('\n')
+      .forEach(line => {
         if (line.substr(0, 2) === 'v ') {
-          // Geometric vertices [x, y, z, (w)].
-          const vLine = line.replace('v ', '');
-          vTemp.push(vLine.split('\n'));
-          if (vTemp.length >= 4) {
-            // Push one plane at the time.
-            payload.v.push(vTemp);
-            vTemp = [];
-          }
+          // Geometric vertices.
+          payload.v.push(line.replace('v ', '').split(' '));
         } else if (line.substr(0, 3) === 'vt ') {
           // Texture coordinates.
-          const vtLine = line.replace('vt ', '');
-          vtTemp.push(vtLine.split('\n'));
-          if (vtTemp.length >= 4) {
-            payload.vt.push(vtTemp);
-            vtTemp = [];
-          }
+          payload.vt.push(line.replace('vt ', '').split(' '));
         } else if (line.substr(0, 3) === 'vn ') {
           // Vertex normals.
-          const vnLine = line.replace('vn ', '');
-          vnTemp.push(vnLine.split('\n'));
-          if (vnTemp.length >= 4) {
-            payload.vn.push(vnTemp);
-            vnTemp = [];
-          }
+          payload.vn.push(line.replace('vn ', '').split(' '));
         } else if (line.substr(0, 3) === 'vp ') {
           // Parameter space vertices.
-          const vpLine = line.replace('vp ', '');
-          vpTemp.push(vpLine.split('\n'));
-          if (vpTemp.length >= 4) {
-            payload.vp.push(vpTemp);
-            vpTemp = [];
-          }
+          payload.vp.push(line.replace('vp ', '').split(' '));
         } else if (line.substr(0, 2) === 'f ') {
           // Polygonal face element.
-          const fLine = line.replace('f ', '');
-          fTemp.push(fLine.split('\n'));
-          if (fTemp.length >= 4) {
-            payload.f.push(fTemp);
-            fTemp = [];
-          }
+          // The first value is v, second vt and third vn.
+          const fLine = line.replace('f ', '').split(' ');
+          const temp = [];
+          fLine.forEach(section => {
+            const valueArr = [];
+            section.split('/').forEach(val => {
+              valueArr.push(Number(val));
+            });
+            temp.push(valueArr);
+          });
+          payload.f.push(temp);
         }
       });
+      // Link values to payload.fP
+      const temp = [];
+      payload.f.forEach(f => {
+        // [[1,1,1], [2,2,2], [3,3,3]]
+        const fTemp = [];
+        f.forEach(valueSet => {
+          // [1,1,1]
+          const vsTemp = [];
+          valueSet.forEach((value, j) => {
+            if (j === 0) {
+              // v
+              vsTemp.push(payload.v[value - 1]);
+            } else if (j === 1) {
+              // vt
+              vsTemp.push(payload.vt[value - 1]);
+            } else if (j === 2) {
+              // vn
+              vsTemp.push(payload.vn[value - 1]);
+            }
+          });
+          fTemp.push(vsTemp);
+        });
+        temp.push(fTemp);
+      });
+      payload.fP = temp;
+      // Process v
+      payload.fP.forEach(fP => {
+        fP.forEach(valueSet => {
+          payload.vP = payload.vP.concat(valueSet[0]);
+          // valueSet[0].forEach(v => {
+
+          // });
+        });
+      });
+      console.log(payload.vP);
       return payload;
     } else {
       console.log(`File ${path} does not exist.`);
