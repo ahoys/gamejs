@@ -261,6 +261,9 @@ class GlRenderer {
   }
 
   drawScene() {
+    // Record when the drawing was started for performance measures.
+    const drawInitTime = performance.now();
+
     // Clear the canvas.
     this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
 
@@ -285,10 +288,34 @@ class GlRenderer {
     this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
     this.setMatrixUniforms();
     this._gl.drawElements(this._gl.TRIANGLES, 36, this._gl.UNSIGNED_SHORT, 0);
+
+    // Display debug information.
+    if (this._debug && performance.now() - this._lastDebugUpdate > 100) this.drawDebug(drawInitTime);
   }
 
-  constructor(canvas, viewport) {
+  /**
+   * Draws debug information by using HTML.
+   * @param {number} time 
+   */
+  drawDebug(time) {
+    this._lastDebugUpdate = performance.now();
+    this._debugElement.innerHTML = `
+      <ul>
+        <li>Latency: ${(performance.now() - time).toFixed(2)}</li>
+        <li>Viewport: 
+          ${(this._viewport.x).toFixed(2)} 
+          ${(this._viewport.y).toFixed(2)} 
+          ${(this._viewport.z).toFixed(2)}
+        </li>
+      </ul>
+    `;
+  }
+
+  constructor(canvas, viewport, debug = true) {
     this._viewport = viewport;
+    this._debug = debug;
+    this._debugElement = document.getElementById('debug');
+    this._lastDebugUpdate = 0;
 
     this._mvMatrix;
     this._shaderProgram;
