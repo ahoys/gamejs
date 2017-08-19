@@ -42,3 +42,11 @@ body {
 #debug ul {
   list-style-type: none;
 }
+
+#debug .warning {
+  color: orange;
+}
+
+#debug .danger {
+  color: red;
+}

@@ -261,7 +261,7 @@ class GlRenderer {
   }
 
   drawScene() {
-    // Record when the drawing was started for performance measures.
+    // Record performance measures.
     const drawInitTime = performance.now();
 
     // Clear the canvas.
@@ -290,18 +290,24 @@ class GlRenderer {
     this._gl.drawElements(this._gl.TRIANGLES, 36, this._gl.UNSIGNED_SHORT, 0);
 
     // Display debug information.
-    if (this._debug && performance.now() - this._lastDebugUpdate > 100) this.drawDebug(drawInitTime);
+    if (this._debug && performance.now() - this._pDebugUpdate > 100) this.drawDebug(drawInitTime);
+    this._frametime = performance.now();
   }
 
   /**
-   * Draws debug information by using HTML.
+   * Draws debug information with HTML elements.
    * @param {number} time 
    */
   drawDebug(time) {
-    this._lastDebugUpdate = performance.now();
+    this._pDebugUpdate = performance.now();
+    const headroom = 16 - (performance.now() - time);
+    const headroomClass = headroom < 10 ? headroom < 4 ? 'danger' : 'warning' : '';
     this._debugElement.innerHTML = `
       <ul>
-        <li>Latency: ${(performance.now() - time).toFixed(2)}</li>
+        <li class="${headroomClass}">
+          Headroom: ${(headroom).toFixed(2)} ms
+        </li>
+        <li>Frametime: ${((performance.now() - this._frametime) / 1000).toFixed(2)} ms</li>
         <li>Viewport: 
           ${(this._viewport.x).toFixed(2)} 
           ${(this._viewport.y).toFixed(2)} 
@@ -315,7 +321,8 @@ class GlRenderer {
     this._viewport = viewport;
     this._debug = debug;
     this._debugElement = document.getElementById('debug');
-    this._lastDebugUpdate = 0;
+    this._pDebugUpdate = 0;
+    this._frametime = 0;
 
     this._mvMatrix;
     this._shaderProgram;
