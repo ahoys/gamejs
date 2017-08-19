@@ -146,42 +146,6 @@ class GlRenderer {
     );
   }
 
-  // Replaced by addBuffer!
-  initBuffers(objects) {
-    console.log('initBuffers', objects);
-    objects.forEach(obj => {
-      // Read color information.
-      let generatedColors = [];
-      for (let i = 0; i < 6; i++) {
-        const c = obj.colors[j];
-        for (let j = 0; j < 4; j++) {
-          generatedColors = generatedColors.concat(c);
-        }
-      }
-      this._objectVerticesColorBuffer = this._gl.createBuffer();
-      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._objectVerticesColorBuffer);
-      this._gl.bufferData(this._gl, new Float32Array(generatedColors), this._gl.STATIC_DRAW);
-
-      this._objectVerticesIndexBuffer = this._gl.createBuffer();
-      this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._objectVerticesIndexBuffer);
-
-      // Defines each face as two triangles.
-      const objVertexIndices = [
-        0,  1,  2,      0,  2,  3,    // front
-        4,  5,  6,      4,  6,  7,    // back
-        8,  9,  10,     8,  10, 11,   // top
-        12, 13, 14,     12, 14, 15,   // bottom
-        16, 17, 18,     16, 18, 19,   // right
-        20, 21, 22,     20, 22, 23    // left
-      ];
-
-      this._gl.bufferData(
-        this._gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(objVertexIndices),
-        this._gl.STATIC_DRAW
-      );
-    });
-  }
-
   /**
    * For demoing colored block drawing.
    */
