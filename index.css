@@ -12,11 +12,12 @@ body {
   background: black;
 }
 
+/* OpenGL canvas container */
 #glCanvas {
-  background: rgb(45, 74, 84);
   z-index: 0;
 }
 
+/* Main UI container */
 #overlay {
   position: absolute;
   left: 0;
@@ -28,6 +29,7 @@ body {
   font-size: 0.8em;
 }
 
+/* Debug display */
 #debug {
   position: absolute;
   left: 0;
