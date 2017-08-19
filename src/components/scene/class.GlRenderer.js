@@ -100,45 +100,6 @@ class GlRenderer {
     this._propVerticesBuffer = this._gl.createBuffer();
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
 
-    // TODO: remove this when props[12].v works.
-    const vertices = [
-      // Front face
-      -0.5, -0.5,  0.5,
-       0.5, -0.5,  0.5,
-       0.5,  0.5,  0.5,
-      -0.5,  0.5,  0.5,
-  
-      // Back face
-      -0.5, -0.5, -0.5,
-      -0.5,  0.5, -0.5,
-       0.5,  0.5, -0.5,
-       0.5, -0.5, -0.5,
-  
-      // Top face
-      -0.5,  0.5, -0.5,
-      -0.5,  0.5,  0.5,
-       0.5,  0.5,  0.5,
-       0.5,  0.5, -0.5,
-  
-      // Bottom face
-      -0.5, -0.5, -0.5,
-       0.5, -0.5, -0.5,
-       0.5, -0.5,  0.5,
-      -0.5, -0.5,  0.5,
-  
-      // Right face
-       0.5, -0.5, -0.5,
-       0.5,  0.5, -0.5,
-       0.5,  0.5,  0.5,
-       0.5, -0.5,  0.5,
-  
-      // Left face
-      -0.5, -0.5, -0.5,
-      -0.5, -0.5,  0.5,
-      -0.5,  0.5,  0.5,
-      -0.5,  0.5, -0.5
-    ];
-
     // TODO: add all vertices.
     this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(props[0].vP), this._gl.STATIC_DRAW);
 
