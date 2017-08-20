@@ -179,6 +179,7 @@ class GlRenderer {
     
     this._props.forEach(prop => {
       this.initBuffer(prop);
+      this.mvTranslate([prop.x, prop.y, prop.z]);
 
       // Draw by binding the array buffer to the cube's vertices array.
       this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
