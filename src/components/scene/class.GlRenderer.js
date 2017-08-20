@@ -165,8 +165,7 @@ class GlRenderer {
   drawScene() {
     // Record performance measures.
     const drawInitTime = performance.now();
-
-    this.initShaders();
+    
     this.initBuffer();
 
     // Clear the canvas.
@@ -256,6 +255,7 @@ class GlRenderer {
     this._gl.clearColor(0.0, 0.0, 0.0, 1.0);
     this._gl.enable(this._gl.DEPTH_TEST);
     this._gl.depthFunc(this._gl.LEQUAL);
+    this.initShaders();
   }
 }
 
