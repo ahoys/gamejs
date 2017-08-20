@@ -169,7 +169,7 @@ class GlRenderer {
     
     // Establish the perspective.
     this._perspectiveMatrix = makePerspective(
-      45, this._canvas.width/this._canvas.height, 0.1, 100.0);
+      this._camera.fov, this._canvas.width/this._canvas.height, 0.1, 100.0);
 
     // Set the drawing position to the identitity point (center of the scene).
     this.loadIdentity();
@@ -220,7 +220,8 @@ class GlRenderer {
           Z ${(this._camera.z).toFixed(2)} 
           rX ${(this._camera.roll).toFixed(2)} 
           rY ${(this._camera.pitch).toFixed(2)} 
-          rZ ${(this._camera.yaw).toFixed(2)}
+          rZ ${(this._camera.yaw).toFixed(2)} 
+          FoV ${(this._camera.fov).toFixed(2)}
         </li>
       </ul>
     `;

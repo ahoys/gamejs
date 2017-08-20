@@ -8,15 +8,19 @@ const Entity = require('../class.Entity');
  */
 class CameraProp extends Entity {
 
-  set enabled(v) { this._enabled = Boolean(v); }
-  set filter(v) { this._filter = v; }
-  get enabled() { return this._enabled; }
-  get filter() { return this._filter; }
+  doFov(v) {
+    this._fov += Number(v);
+  }
 
-  constructor(id, type, x, y, z, roll, pitch, yaw, enabled) {
+  set enabled(v) { this._enabled = Boolean(v); }
+  set fov(v) { this._fov = Number(v); }
+  get enabled() { return this._enabled; }
+  get fov() { return this._fov; }
+
+  constructor(id, type, x, y, z, roll, pitch, yaw, fov, enabled) {
     super(id, type, x, y, z, roll, pitch, yaw);
+    this._fov = Number(fov);
     this._enabled = Boolean(enabled);
-    this._filter = undefined;
   }
 }
 

@@ -44,6 +44,8 @@ class Game {
       'CAM_ROTATE_-Y': () => this._camera.doRotateY(-Calc.getRelativeSpeed(this._tickLength, 10)),
       'CAM_ROTATE_+Z': () => this._camera.doRotateZ(Calc.getRelativeSpeed(this._tickLength, 10)),
       'CAM_ROTATE_-Z': () => this._camera.doRotateZ(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_FOV_+': () => this._camera.doFov(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_FOV_-': () => this._camera.doFov(-Calc.getRelativeSpeed(this._tickLength, 10)),
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {

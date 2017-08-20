@@ -11,6 +11,7 @@
       "roll": 5.5,
       "pitch": 0,
       "yaw": 0.78,
+      "fov": 45,
       "enabled": true
     },
     {

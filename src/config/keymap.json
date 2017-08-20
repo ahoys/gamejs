@@ -10,5 +10,7 @@
   "e": ["CAM_ROTATE_+Y"],
   "q": ["CAM_ROTATE_-Y"],
   "1": ["CAM_ROTATE_+Z"],
-  "3": ["CAM_ROTATE_-Z"]
+  "3": ["CAM_ROTATE_-Z"],
+  "+": ["CAM_FOV_+"],
+  "-": ["CAM_FOV_-"]
 }
