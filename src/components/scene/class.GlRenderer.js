@@ -217,7 +217,10 @@ class GlRenderer {
         <li>Camera: 
           X ${(this._camera.x).toFixed(2)} 
           Y ${(this._camera.y).toFixed(2)} 
-          Z ${(this._camera.z).toFixed(2)}
+          Z ${(this._camera.z).toFixed(2)} 
+          rX ${(this._camera.roll).toFixed(2)} 
+          rY ${(this._camera.pitch).toFixed(2)} 
+          rZ ${(this._camera.yaw).toFixed(2)}
         </li>
       </ul>
     `;
