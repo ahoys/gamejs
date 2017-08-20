@@ -25,8 +25,8 @@
       "id": 2,
       "type": "w_stone",
       "dataType": "dt_static",
-      "x": 100,
-      "y": 100,
+      "x": 1,
+      "y": 1,
       "z": 0
     }
   ]
