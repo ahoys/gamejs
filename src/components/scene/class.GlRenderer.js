@@ -110,56 +110,54 @@ class GlRenderer {
    * Adds props into a buffer, waiting for drawing.
    */
   initBuffer() {
-    this._props.forEach(prop => {
-      // Create a vertice buffer.
-      this._propVerticesBuffer = this._gl.createBuffer();
-      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
+    // Create a vertice buffer.
+    this._propVerticesBuffer = this._gl.createBuffer();
+    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
 
-      // TODO: add all vertices.
-      this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(prop.vP), this._gl.STATIC_DRAW);
+    // TODO: add all vertices.
+    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(prop.vP), this._gl.STATIC_DRAW);
 
-      // Colors -----------
-      const colors = [
-        [1.0,  1.0,  1.0,  1.0],    // Front face: white
-        [1.0,  0.0,  0.0,  1.0],    // Back face: red
-        [0.0,  1.0,  0.0,  1.0],    // Top face: green
-        [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
-        [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
-        [1.0,  0.0,  1.0,  1.0]     // Left face: purple
-      ];
+    // Colors -----------
+    const colors = [
+      [1.0,  1.0,  1.0,  1.0],    // Front face: white
+      [1.0,  0.0,  0.0,  1.0],    // Back face: red
+      [0.0,  1.0,  0.0,  1.0],    // Top face: green
+      [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
+      [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
+      [1.0,  0.0,  1.0,  1.0]     // Left face: purple
+    ];
 
-      let generatedColors = [];
-      for (let j=0; j<6; j++) {
-        const c = colors[j];
-        // Repeat each color four times for the four vertices of the face
-        for (let i=0; i<4; i++) {
-          generatedColors = generatedColors.concat(c);
-        }
+    let generatedColors = [];
+    for (let j=0; j<6; j++) {
+      const c = colors[j];
+      // Repeat each color four times for the four vertices of the face
+      for (let i=0; i<4; i++) {
+        generatedColors = generatedColors.concat(c);
       }
+    }
 
-      this._propVerticesColorBuffer = this._gl.createBuffer();
-      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesColorBuffer);
-      this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(generatedColors), this._gl.STATIC_DRAW);
+    this._propVerticesColorBuffer = this._gl.createBuffer();
+    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesColorBuffer);
+    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(generatedColors), this._gl.STATIC_DRAW);
 
-      // Indices ----------
-      this._propVerticesIndexBuffer = this._gl.createBuffer();
-      this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
+    // Indices ----------
+    this._propVerticesIndexBuffer = this._gl.createBuffer();
+    this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
 
-      const propVertexIndices = [
-        0,  1,  2,      0,  2,  3,    // front
-        4,  5,  6,      4,  6,  7,    // back
-        8,  9,  10,     8,  10, 11,   // top
-        12, 13, 14,     12, 14, 15,   // bottom
-        16, 17, 18,     16, 18, 19,   // right
-        20, 21, 22,     20, 22, 23    // left
-      ];
+    const propVertexIndices = [
+      0,  1,  2,      0,  2,  3,    // front
+      4,  5,  6,      4,  6,  7,    // back
+      8,  9,  10,     8,  10, 11,   // top
+      12, 13, 14,     12, 14, 15,   // bottom
+      16, 17, 18,     16, 18, 19,   // right
+      20, 21, 22,     20, 22, 23    // left
+    ];
 
-      this._gl.bufferData(
-        this._gl.ELEMENT_ARRAY_BUFFER,
-        new Uint16Array(propVertexIndices),
-        this._gl.STATIC_DRAW
-      );
-    });
+    this._gl.bufferData(
+      this._gl.ELEMENT_ARRAY_BUFFER,
+      new Uint16Array(propVertexIndices),
+      this._gl.STATIC_DRAW
+    );
   }
 
   drawScene() {
