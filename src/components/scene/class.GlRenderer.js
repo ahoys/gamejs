@@ -109,7 +109,7 @@ class GlRenderer {
   /**
    * Adds props into a buffer, waiting for drawing.
    */
-  initBuffer() {
+  initBuffer(prop) {
     // Create a vertice buffer.
     this._propVerticesBuffer = this._gl.createBuffer();
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
@@ -163,12 +163,10 @@ class GlRenderer {
   drawScene() {
     // Record performance measures.
     const drawInitTime = performance.now();
-    
-    this.initBuffer();
 
     // Clear the canvas.
     this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-
+    
     // Establish the perspective.
     this._perspectiveMatrix = makePerspective(
       45, this._canvas.width/this._canvas.height, 0.1, 100.0);
@@ -178,19 +176,23 @@ class GlRenderer {
 
     // Position where we start drawing.
     this.mvTranslate([this._camera.x, this._camera.y, this._camera.z]);
+    
+    this._props.forEach(prop => {
+      this.initBuffer(prop);
 
-    // Draw by binding the array buffer to the cube's vertices array.
-    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
-    this._gl.vertexAttribPointer(this._vertexPositionAttribute, 3, this._gl.FLOAT, false, 0, 0);
+      // Draw by binding the array buffer to the cube's vertices array.
+      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
+      this._gl.vertexAttribPointer(this._vertexPositionAttribute, 3, this._gl.FLOAT, false, 0, 0);
 
-    // Colors.
-    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesColorBuffer);
-    this._gl.vertexAttribPointer(this._vertexColorAttribute, 4, this._gl.FLOAT, false, 0, 0);
+      // Colors.
+      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesColorBuffer);
+      this._gl.vertexAttribPointer(this._vertexColorAttribute, 4, this._gl.FLOAT, false, 0, 0);
 
-    // Draw.
-    this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
-    this.setMatrixUniforms();
-    this._gl.drawElements(this._gl.TRIANGLES, 36, this._gl.UNSIGNED_SHORT, 0);
+      // Draw.
+      this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
+      this.setMatrixUniforms();
+      this._gl.drawElements(this._gl.TRIANGLES, prop.vP.length/3, this._gl.UNSIGNED_SHORT, 0);
+    });
 
     // Display debug information.
     if (this._debug && performance.now() - this._pDebugUpdate > 100) this.drawDebug(drawInitTime);
