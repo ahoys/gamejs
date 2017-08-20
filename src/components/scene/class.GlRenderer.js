@@ -87,90 +87,6 @@ class GlRenderer {
     return shader;
   }
 
-  /**
-   * Adds props into a buffer, waiting for drawing.
-   * @param {*} props 
-   * @param {object} camera
-   */
-  addBuffer(props, camera) {
-    // Switch the camera if required.
-    if (camera.id !== this._camera.id) this._camera = camera;
-
-    // Create a vertice buffer.
-    this._propVerticesBuffer = this._gl.createBuffer();
-    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
-
-    // TODO: add all vertices.
-    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(props[0].vP), this._gl.STATIC_DRAW);
-
-    // Colors -----------
-    const colors = [
-      [1.0,  1.0,  1.0,  1.0],    // Front face: white
-      [1.0,  0.0,  0.0,  1.0],    // Back face: red
-      [0.0,  1.0,  0.0,  1.0],    // Top face: green
-      [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
-      [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
-      [1.0,  0.0,  1.0,  1.0]     // Left face: purple
-    ];
-
-    let generatedColors = [];
-    for (let j=0; j<6; j++) {
-      const c = colors[j];
-      // Repeat each color four times for the four vertices of the face
-      for (let i=0; i<4; i++) {
-        generatedColors = generatedColors.concat(c);
-      }
-    }
-
-    this._propVerticesColorBuffer = this._gl.createBuffer();
-    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesColorBuffer);
-    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(generatedColors), this._gl.STATIC_DRAW);
-
-    // Indices ----------
-    this._propVerticesIndexBuffer = this._gl.createBuffer();
-    this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
-
-    const propVertexIndices = [
-      0,  1,  2,      0,  2,  3,    // front
-      4,  5,  6,      4,  6,  7,    // back
-      8,  9,  10,     8,  10, 11,   // top
-      12, 13, 14,     12, 14, 15,   // bottom
-      16, 17, 18,     16, 18, 19,   // right
-      20, 21, 22,     20, 22, 23    // left
-    ];
-
-    this._gl.bufferData(
-      this._gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(propVertexIndices),
-      this._gl.STATIC_DRAW
-    );
-  }
-
-  /**
-   * For demoing colored block drawing.
-   */
-  demoInitBuffers() {
-    this._squareVerticesBuffer = this._gl.createBuffer();
-    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._squareVerticesBuffer);
-    const vertices = [
-      1.0,  1.0,  0.0,
-      -1.0, 1.0,  0.0,
-      1.0,  -1.0, 0.0,
-      -1.0, -1.0, 0.0
-    ];
-    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(vertices), this._gl.STATIC_DRAW);
-    // Below is a color example.
-    const colors = [
-      1.0,  1.0,  1.0,  1.0,    // white
-      1.0,  0.0,  0.0,  1.0,    // red
-      0.0,  1.0,  0.0,  1.0,    // green
-      0.0,  0.0,  1.0,  1.0     // blue
-    ];
-    this._squareVerticesColorBuffer = this._gl.createBuffer();
-    this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._squareVerticesColorBuffer);
-    this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(colors), this._gl.STATIC_DRAW);
-  }
-
   loadIdentity() {
     this._mvMatrix = Matrix.I(4);
   }
@@ -190,9 +106,68 @@ class GlRenderer {
     this._gl.uniformMatrix4fv(mvUniform, false, new Float32Array(this._mvMatrix.flatten()));
   }
 
+  /**
+   * Adds props into a buffer, waiting for drawing.
+   */
+  initBuffer() {
+    this._props.forEach(prop => {
+      // Create a vertice buffer.
+      this._propVerticesBuffer = this._gl.createBuffer();
+      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesBuffer);
+
+      // TODO: add all vertices.
+      this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(prop.vP), this._gl.STATIC_DRAW);
+
+      // Colors -----------
+      const colors = [
+        [1.0,  1.0,  1.0,  1.0],    // Front face: white
+        [1.0,  0.0,  0.0,  1.0],    // Back face: red
+        [0.0,  1.0,  0.0,  1.0],    // Top face: green
+        [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
+        [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
+        [1.0,  0.0,  1.0,  1.0]     // Left face: purple
+      ];
+
+      let generatedColors = [];
+      for (let j=0; j<6; j++) {
+        const c = colors[j];
+        // Repeat each color four times for the four vertices of the face
+        for (let i=0; i<4; i++) {
+          generatedColors = generatedColors.concat(c);
+        }
+      }
+
+      this._propVerticesColorBuffer = this._gl.createBuffer();
+      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._propVerticesColorBuffer);
+      this._gl.bufferData(this._gl.ARRAY_BUFFER, new Float32Array(generatedColors), this._gl.STATIC_DRAW);
+
+      // Indices ----------
+      this._propVerticesIndexBuffer = this._gl.createBuffer();
+      this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
+
+      const propVertexIndices = [
+        0,  1,  2,      0,  2,  3,    // front
+        4,  5,  6,      4,  6,  7,    // back
+        8,  9,  10,     8,  10, 11,   // top
+        12, 13, 14,     12, 14, 15,   // bottom
+        16, 17, 18,     16, 18, 19,   // right
+        20, 21, 22,     20, 22, 23    // left
+      ];
+
+      this._gl.bufferData(
+        this._gl.ELEMENT_ARRAY_BUFFER,
+        new Uint16Array(propVertexIndices),
+        this._gl.STATIC_DRAW
+      );
+    });
+  }
+
   drawScene() {
     // Record performance measures.
     const drawInitTime = performance.now();
+
+    this.initShaders();
+    this.initBuffer();
 
     // Clear the canvas.
     this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
@@ -248,9 +223,20 @@ class GlRenderer {
     `;
   }
 
+  /**
+   * Sets a new camera that is used in transformations.
+   */
+  set camera(c) { this._camera = c };
+
+  /**
+   * Sets props that require drawing.
+   */
+  set props(p) { this._props = p };
+
   constructor(canvas, camera, debug = true) {
     this._canvas = canvas;
     this._camera = camera;
+    this._props = [];
     this._debug = debug;
     this._debugElement = document.getElementById('debug');
     this._pDebugUpdate = 0;
@@ -258,15 +244,9 @@ class GlRenderer {
 
     this._mvMatrix;
     this._shaderProgram;
-    this._squareVerticesBuffer;
-    this._squareVerticesColorBuffer;
     this._perspectiveMatrix;
     this._vertexPositionAttribute;
     this._vertexColorAttribute;
-
-    // TODO remove.
-    this._objectVerticesColorBuffer;
-    this._objectVerticesIndexBuffer;
 
     this._propVerticesBuffer;
     this._propVerticesColorBuffer;
@@ -276,11 +256,6 @@ class GlRenderer {
     this._gl.clearColor(0.0, 0.0, 0.0, 1.0);
     this._gl.enable(this._gl.DEPTH_TEST);
     this._gl.depthFunc(this._gl.LEQUAL);
-    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-    this.initShaders();
-    // Demo purposes.
-    // this.demoInitBuffers();
-    // this.drawScene();
   }
 }
 

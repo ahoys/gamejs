@@ -65,10 +65,8 @@ class Game {
     // Refresh level.
     const staticProps = this._level.staticProps;
     const dynamicProps = this._level.dynamicProps;
-    // Select the camera.
-    this._camera = this._level.cameraProps.filter(x => x.enabled)[0];
     // Send props to be rendered.
-    this._renderer.addBuffer(staticProps, this._camera);
+    this._renderer.props = staticProps;
     // this._renderer.addBuffer(dynamicProps);
     this._perfUpdate = performance.now() - perf;
   }
