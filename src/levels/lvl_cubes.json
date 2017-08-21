@@ -15,16 +15,8 @@
       "enabled": true
     },
     {
-      "id": 1,
-      "type": "w_stone",
-      "dataType": "dt_static",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    {
-      "id": 2,
-      "type": "w_stone",
+      "id": 0,
+      "type": "p_cube",
       "dataType": "dt_static",
       "x": 1,
       "y": 0,
