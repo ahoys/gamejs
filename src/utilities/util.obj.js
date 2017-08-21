@@ -74,11 +74,9 @@ module.exports = {
       payload.fP.forEach(fP => {
         fP.forEach(valueSet => {
           payload.vP = payload.vP.concat(valueSet[0]);
-          // valueSet[0].forEach(v => {
-
-          // });
         });
       });
+      console.log(payload.vP);
       return payload;
     } else {
       console.log(`File ${path} does not exist.`);

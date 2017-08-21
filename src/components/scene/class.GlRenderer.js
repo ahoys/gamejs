@@ -192,7 +192,7 @@ class GlRenderer {
       // Draw.
       this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
       this.setMatrixUniforms();
-      this._gl.drawElements(this._gl.TRIANGLES, prop.vP.length/3, this._gl.UNSIGNED_SHORT, 0);
+      this._gl.drawElements(this._gl.TRIANGLES, prop.vP.length/2, this._gl.UNSIGNED_SHORT, 0);
     });
 
     // Display debug information.
