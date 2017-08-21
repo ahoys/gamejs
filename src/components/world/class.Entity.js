@@ -63,6 +63,7 @@ class Entity {
   get f() { return this._model.f; }
   get fP() { return this._model.fP; }
   get vP() { return this._model.vP; }
+  get texture() { return this._texture; }
 
   constructor (id, type, x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0) {
     this._id = id;
@@ -78,6 +79,7 @@ class Entity {
     this._height = staticJSON[type] ? staticJSON[type].height : 0;
     this._color = staticJSON[type] ? staticJSON[type].color : '0,0,0';
     this._model = Obj.importObj(`./src/assets/models/${type}.obj`);
+    this._texture = staticJSON[type] ? staticJSON[type].texture : '';
   }
 }
 
