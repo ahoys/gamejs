@@ -16,13 +16,13 @@ class Level {
    * @param {*} y 
    * @param {*} z 
    */
-  getWorldComponent(id, dataType, type, x, y, z, roll, pitch, yaw, fov, enabled) {
+  getWorldComponent(id, dataType, type, x, y, z, rX, rY, rZ, fov, enabled) {
     const types = {
       "dt_static": StaticProp,
       "dt_dynamic": DynamicProp,
       "dt_camera": CameraProp,
     }
-    return new types[dataType](id, type, x, y, z, roll, pitch, yaw, fov, enabled);
+    return new types[dataType](id, type, x, y, z, rX, rY, rZ, fov, enabled);
   }
 
   /**
@@ -39,9 +39,9 @@ class Level {
         x.x,
         x.y,
         x.z,
-        x.roll,
-        x.pitch,
-        x.yaw,
+        x.rX,
+        x.rY,
+        x.rZ,
         x.fov,
         x.enabled,
       );

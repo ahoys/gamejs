@@ -17,8 +17,8 @@ class CameraProp extends Entity {
   get enabled() { return this._enabled; }
   get fov() { return this._fov; }
 
-  constructor(id, type, x, y, z, roll, pitch, yaw, fov, enabled) {
-    super(id, type, x, y, z, roll, pitch, yaw);
+  constructor(id, type, x, y, z, rX, rY, rZ, fov, enabled) {
+    super(id, type, x, y, z, rX, rY, rZ);
     this._fov = Number(fov);
     this._enabled = Boolean(enabled);
   }

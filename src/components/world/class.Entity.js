@@ -11,35 +11,35 @@ const Obj = require('../../utilities/util.obj');
 class Entity {
 
   doMoveX(v) {
-    this._x += v;
+    this._x += Number(v);
   }
 
   doMoveY(v) {
-    this._y += v;
+    this._y += Number(v);
   }
 
   doMoveZ(v) {
-    this._z += v;
+    this._z += Number(v);
   }
 
   doRotateX(v) {
-    this._roll += v;
+    this._rX += Number(v);
   }
 
   doRotateY(v) {
-    this._pitch += v;
+    this._rY += Number(v);
   }
 
   doRotateZ(v) {
-    this._yaw += v;
+    this._rZ += Number(v);
   }
 
   set x(v) { this._x = Number(v); }
   set y(v) { this._y = Number(v); }
   set z(v) { this._z = Number(v); }
-  set roll(v) { this._roll = Number(v); }
-  set pitch(v) { this._pitch = Number(v); }
-  set yaw(v) { this._yaw = Number(v); }
+  set rX(v) { this._rX = Number(v); }
+  set rY(v) { this._rY = Number(v); }
+  set rZ(v) { this._rZ = Number(v); }
   set width(v) { this._width = Number(v); }
   set length(v) { this._length = Number(v); }
   set height(v) { this._height = Number(v); }
@@ -49,9 +49,9 @@ class Entity {
   get x() { return this._x; }
   get y() { return this._y; }
   get z() { return this._z; }
-  get roll() { return this._roll; }
-  get pitch() { return this._pitch; }
-  get yaw() { return this._yaw; }
+  get rX() { return this._rX; }
+  get rY() { return this._rY; }
+  get rZ() { return this._rZ; }
   get width() { return this._width; }
   get length() { return this._length; }
   get height() { return this._height; }
@@ -65,15 +65,15 @@ class Entity {
   get vP() { return this._model.vP; }
   get texture() { return this._texture; }
 
-  constructor (id, type, x = 0, y = 0, z = 0, roll = 0, pitch = 0, yaw = 0) {
+  constructor (id, type, x = 0, y = 0, z = 0, rX = 0, rY = 0, rZ = 0) {
     this._id = id;
     this._type = type;
     this._x = x;
     this._y = y;
     this._z = z;
-    this._roll = roll;
-    this._pitch = pitch;
-    this._yaw = yaw;
+    this._rX = rX;
+    this._rY = rY;
+    this._rZ = rZ;
     this._width = staticJSON[type] ? staticJSON[type].width : 0;
     this._length = staticJSON[type] ? staticJSON[type].length : 0;
     this._height = staticJSON[type] ? staticJSON[type].height : 0;

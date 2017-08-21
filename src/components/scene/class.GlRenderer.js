@@ -99,11 +99,34 @@ class GlRenderer {
     this.multMatrix(Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4());
   }
 
+  mvRotate(angle, v) {
+    const inRadians = angle * Math.PI / 180.0;
+    const m = Matrix.Rotation(inRadians, $V([v[0], v[1], v[2]])).ensure4x4();
+    this.multMatrix(m);
+  }
+
   setMatrixUniforms() {
     const pUniform = this._gl.getUniformLocation(this._shaderProgram, 'uPMatrix');
     this._gl.uniformMatrix4fv(pUniform, false, new Float32Array(this._perspectiveMatrix.flatten()));
     const mvUniform = this._gl.getUniformLocation(this._shaderProgram, "uMVMatrix");
     this._gl.uniformMatrix4fv(mvUniform, false, new Float32Array(this._mvMatrix.flatten()));
+  }
+
+  mvPushMatrix(m) {
+    if (m) {
+      this._mvMatrixStack.push(m.dup());
+      this._mvMatrix = m.dup();
+    } else {
+      this._mvMatrixStack.push(this._mvMatrix.dup());
+    }
+  }
+
+  mvPopMatrix() {
+    if (!this._mvMatrixStack.length) {
+      throw(`Can't pop from an empty matrix stack.`);
+    }
+    this._mvMatrix = this._mvMatrixStack.pop();
+    return this._mvMatrix;
   }
 
   /**
@@ -176,7 +199,11 @@ class GlRenderer {
 
     // Position where we start drawing.
     this.mvTranslate([this._camera.x, this._camera.y, this._camera.z]);
-    
+    this.mvRotate(this._camera.rX, [1, 0, 0]);
+    this.mvRotate(this._camera.rY, [0, 1, 0]);
+    this.mvRotate(this._camera.rZ, [0, 0, 1]);
+    this.mvPushMatrix();
+
     this._props.forEach(prop => {
       this.initBuffer(prop);
       this.mvTranslate([prop.x, prop.y, prop.z]);
@@ -194,6 +221,8 @@ class GlRenderer {
       this.setMatrixUniforms();
       this._gl.drawElements(this._gl.TRIANGLES, prop.vP.length/2, this._gl.UNSIGNED_SHORT, 0);
     });
+
+    this.mvPopMatrix();
 
     // Display debug information.
     if (this._debug && performance.now() - this._pDebugUpdate > 100) this.drawDebug(drawInitTime);
@@ -218,9 +247,9 @@ class GlRenderer {
           X ${(this._camera.x).toFixed(2)} 
           Y ${(this._camera.y).toFixed(2)} 
           Z ${(this._camera.z).toFixed(2)} 
-          rX ${(this._camera.roll).toFixed(2)} 
-          rY ${(this._camera.pitch).toFixed(2)} 
-          rZ ${(this._camera.yaw).toFixed(2)} 
+          rX ${(this._camera.rX).toFixed(2)} 
+          rY ${(this._camera.rY).toFixed(2)} 
+          rZ ${(this._camera.rZ).toFixed(2)} 
           FoV ${(this._camera.fov).toFixed(2)}
         </li>
       </ul>
@@ -247,6 +276,7 @@ class GlRenderer {
     this._frametime = 0;
 
     this._mvMatrix;
+    this._mvMatrixStack = [];
     this._shaderProgram;
     this._perspectiveMatrix;
     this._vertexPositionAttribute;
