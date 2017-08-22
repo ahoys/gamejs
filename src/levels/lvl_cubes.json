@@ -31,11 +31,19 @@
       "z": 0
     },
     {
-      "id": 1,
+      "id": 2,
       "type": "p_cube",
       "dataType": "dt_static",
       "x": 0,
       "y": -4,
+      "z": 0
+    },
+    {
+      "id": 3,
+      "type": "p_torus",
+      "dataType": "dt_static",
+      "x": -2,
+      "y": 0,
       "z": 0
     }
   ]
