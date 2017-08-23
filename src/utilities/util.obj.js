@@ -9,7 +9,7 @@ module.exports = {
    */
   importObj: (path) => {
     console.log(`Import .obj model: ${path}`);
-    const payload = { v: [], vt: [], vn: [], vp: [], f: [], fP: [], vP: [] };
+    const payload = { v: [], vt: [], vn: [], vp: [], f: [], fP: [], vP: [], vI: [], vC: [], vCount: 0 };
     const tempF = [];
     let fPoints = [];
     if (fs.existsSync(path)) {
@@ -20,7 +20,9 @@ module.exports = {
       .forEach(line => {
         if (line.substr(0, 2) === 'v ') {
           // Geometric vertices.
-          payload.v.push(line.replace('v ', '').split(' '));
+          line.replace('v ', '').split(' ').forEach(x => {
+            payload.v.push(Number(x));
+          });
         } else if (line.substr(0, 3) === 'vt ') {
           // Texture coordinates.
           payload.vt.push(line.replace('vt ', '').split(' '));
@@ -36,8 +38,11 @@ module.exports = {
           const fLine = line.replace('f ', '').split(' ');
           const temp = [];
           fLine.forEach(section => {
+            // Vertex index.
             const valueArr = [];
-            section.split('/').forEach(val => {
+            const split = section.split('/');
+            payload.vI.push(Number(split[0]) - 1);
+            split.forEach(val => {
               valueArr.push(Number(val));
             });
             temp.push(valueArr);
@@ -45,38 +50,21 @@ module.exports = {
           payload.f.push(temp);
         }
       });
-      // Link values to payload.fP
-      const temp = [];
-      payload.f.forEach(f => {
-        // [[1,1,1], [2,2,2], [3,3,3]]
-        const fTemp = [];
-        f.forEach(valueSet => {
-          // [1,1,1]
-          const vsTemp = [];
-          valueSet.forEach((value, j) => {
-            if (j === 0) {
-              // v
-              vsTemp.push(payload.v[value - 1]);
-            } else if (j === 1) {
-              // vt
-              vsTemp.push(payload.vt[value - 1]);
-            } else if (j === 2) {
-              // vn
-              vsTemp.push(payload.vn[value - 1]);
-            }
-          });
-          fTemp.push(vsTemp);
-        });
-        temp.push(fTemp);
+
+      let i = 0;
+      payload.v.forEach(v => {
+        if (i === 2) {
+          payload.vC.push(0.5);
+          payload.vC.push(1.0);
+          i = 0;
+        } else {
+          payload.vC.push(0.5);
+        }
+        i++;
       });
-      payload.fP = temp;
-      // Process v
-      payload.fP.forEach(fP => {
-        fP.forEach(valueSet => {
-          payload.vP = payload.vP.concat(valueSet[0]);
-        });
-      });
-      console.log(payload.vP);
+
+      payload.vCount = payload.v.length;
+
       return payload;
     } else {
       console.log(`File ${path} does not exist.`);

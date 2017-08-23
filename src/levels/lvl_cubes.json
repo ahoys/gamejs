@@ -15,34 +15,34 @@
       "enabled": true
     },
     {
-      "id": 0,
-      "type": "p_cube",
+      "id": 1,
+      "type": "p_cube_tri",
       "dataType": "dt_static",
       "x": 0,
       "y": 0,
       "z": 0
     },
     {
-      "id": 1,
-      "type": "p_cube",
+      "id": 2,
+      "type": "p_torus_tri",
       "dataType": "dt_static",
       "x": 2,
       "y": 0,
       "z": 0
     },
     {
-      "id": 2,
-      "type": "p_cube",
+      "id": 3,
+      "type": "p_plane_tri",
       "dataType": "dt_static",
-      "x": 0,
-      "y": -4,
+      "x": 4,
+      "y": 0,
       "z": 0
     },
     {
       "id": 3,
-      "type": "p_torus",
+      "type": "p_monkey_tri",
       "dataType": "dt_static",
-      "x": -2,
+      "x": 6,
       "y": 0,
       "z": 0
     }

@@ -63,6 +63,9 @@ class Entity {
   get f() { return this._model.f; }
   get fP() { return this._model.fP; }
   get vP() { return this._model.vP; }
+  get vI() { return this._model.vI; }
+  get vC() { return this._model.vC; }
+  get vCount() { return this._model.vCount; }
   get texture() { return this._texture; }
 
   constructor (id, type, x = 0, y = 0, z = 0, rX = 0, rY = 0, rZ = 0) {
