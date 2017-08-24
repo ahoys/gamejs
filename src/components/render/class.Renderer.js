@@ -43,7 +43,7 @@ class Renderer {
    * @param {*} v Point.
    */
   mvRotate(a, v) {
-    this.mvMultiply(Matrix.Rotation(a * Math.PI / 180.0, $V([v[0], v[1], v[2]])).ensure4x4());
+    this.mvMultiply(Matrix.Rotation(a, $V([v[0], v[1], v[2]])).ensure4x4());
   }
 
   /**
