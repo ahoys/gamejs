@@ -19,11 +19,27 @@
       "type": "p_cube_tri",
       "dataType": "dt_static",
       "x": 0,
-      "y": 0,
+      "y": 2,
       "z": 0
     },
     {
       "id": 2,
+      "type": "p_cube_tri",
+      "dataType": "dt_static",
+      "x": 0,
+      "y": 4,
+      "z": 0
+    },
+    {
+      "id": 3,
+      "type": "p_cube_tri",
+      "dataType": "dt_static",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": 4,
       "type": "p_torus_tri",
       "dataType": "dt_static",
       "x": 2,
@@ -31,7 +47,7 @@
       "z": 0
     },
     {
-      "id": 3,
+      "id": 5,
       "type": "p_plane_tri",
       "dataType": "dt_static",
       "x": 4,
@@ -39,7 +55,7 @@
       "z": 0
     },
     {
-      "id": 3,
+      "id": 6,
       "type": "p_monkey_tri",
       "dataType": "dt_static",
       "x": 6,

@@ -175,12 +175,12 @@ class GlRenderer {
     this.mvRotate(this._camera.rX, [1, 0, 0]);
     this.mvRotate(this._camera.rY, [0, 1, 0]);
     this.mvRotate(this._camera.rZ, [0, 0, 1]);
-    this.mvPushMatrix();
 
     this._props.forEach(prop => {
       vCount += prop.vCount;
 
       this.initBuffer(prop);
+      this.mvPushMatrix();
       this.mvTranslate([prop.x, prop.y, prop.z]);
 
       // Draw by binding the array buffer to the cube's vertices array.
@@ -195,9 +195,10 @@ class GlRenderer {
       this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._propVerticesIndexBuffer);
       this.setMatrixUniforms();
       this._gl.drawElements(this._gl.TRIANGLES, prop.vI.length, this._gl.UNSIGNED_SHORT, 0);
+      this.mvPopMatrix();
     });
 
-    this.mvPopMatrix();
+    
 
     // Display debug information.
     if (this._debug && performance.now() - this._pDebugUpdate > 100) this.drawDebug(drawInitTime, vCount);
