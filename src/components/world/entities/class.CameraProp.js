@@ -4,7 +4,7 @@ const Entity = require('../class.Entity');
  * CameraProp
  * Ari Höysniemi, 14.8.2017
  * 
- * Used in rendering to determine distance to the viewport.
+ * Used in rendering.
  */
 class CameraProp extends Entity {
 

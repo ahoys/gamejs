@@ -1,5 +1,4 @@
 const Level = require('./src/class.level');
-const Viewport = require('./src/components/scene/class.Viewport');
 const Input = require('./src/class.input');
 const Renderer = require('./src/components/render/class.Renderer');
 const Calc = require('./src/utilities/util.calc');
@@ -130,10 +129,6 @@ class Game {
     // Load the level.
     this._level = new Level('lvl_cubes');
     this._camera = this._level.cameraProps.filter(x => x.enabled)[0];
-
-    // Viewport handles the real world movement.
-    //const activeCamera = this._level.cameraProps.filter(x => x.enabled)[0];
-    //this._viewport = new Viewport(activeCamera);
 
     // Load inputs.
     this._input = new Input(this._stage);
