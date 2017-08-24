@@ -86,17 +86,6 @@ class Game {
   }
 
   /**
-   * Handles window resizes.
-   */
-  resize() {
-    const nW = document.body.clientWidth;
-    const nH = document.body.clientHeight;
-    this._stage.width = nW;
-    this._stage.height = nH;
-    this._renderer.setViewportSize(nW, nH);
-  }
-
-  /**
    * MAIN LOOP --------------------------------
    * The main game loop.
    * @param {number} tFrame 
@@ -147,5 +136,3 @@ class Game {
 
 // Create a new Game instance.
 const thisGame = new Game();
-
-window.addEventListener("resize", () => thisGame.resize(), false);

@@ -6,6 +6,12 @@ if (!canvas) {
   throw 0;
 };
 
+// Allow screen resizing.
+window.addEventListener("resize", () => {
+  canvas.width = document.body.clientWidth;
+  canvas.height = document.body.clientHeight;
+}, false);
+
 module.exports = {
 
   /**
