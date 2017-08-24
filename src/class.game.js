@@ -1,7 +1,7 @@
 const Level = require('./src/class.level');
 const Viewport = require('./src/components/scene/class.Viewport');
 const Input = require('./src/class.input');
-const GlRenderer = require('./src/components/scene/class.GlRenderer');
+const Renderer = require('./src/components/render/class.Renderer');
 const Calc = require('./src/utilities/util.calc');
 
 class Game {
@@ -46,6 +46,7 @@ class Game {
       'CAM_ROTATE_-Z': () => this._camera.doRotateZ(-Calc.getRelativeSpeed(this._tickLength, 20)),
       'CAM_FOV_+': () => this._camera.doFov(Calc.getRelativeSpeed(this._tickLength, 10)),
       'CAM_FOV_-': () => this._camera.doFov(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'RENDER_WIREFRAME': () => { this._wireframe = !this._wireframe },
     }
     active.forEach((actionRequest) => {
       if (actions[actionRequest]) {
@@ -69,7 +70,6 @@ class Game {
     const dynamicProps = this._level.dynamicProps;
     // Send props to be rendered.
     this._renderer.props = staticProps;
-    // this._renderer.addBuffer(dynamicProps);
     this._perfUpdate = performance.now() - perf;
   }
 
@@ -112,8 +112,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
-    // this._renderer.buildScene(this._staticProps, this._dynamicProps);
-    this._renderer.drawScene();
+    this._renderer.drawScene(this._wireframe);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -140,11 +139,11 @@ class Game {
     this._input = new Input(this._stage);
 
     // Rendering.
+    this._wireframe = false;
     this._lastTick = performance.now();
     this._lastRender = this._lastTick;
     this._tickLength = 50; // Delay of a one tick (affects game logic).
-    this._renderer = new GlRenderer(
-      this._stage,
+    this._renderer = new Renderer(
       this._camera,
     );
     this.main(performance.now());
