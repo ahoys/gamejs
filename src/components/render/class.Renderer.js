@@ -116,10 +116,12 @@ class Renderer {
     pVerticesBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, pVerticesBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(prop.v), gl.STATIC_DRAW);
+    gl.vertexAttribPointer(vPositionAttribute, 3, gl.FLOAT, false, 0, 0);
     // Color.
     pVerticesColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, pVerticesColorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(prop.vC), gl.STATIC_DRAW);
+    gl.vertexAttribPointer(vColorAttribute, 4, gl.FLOAT, false, 0, 0);
     // Indices.
     pVerticesIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, pVerticesIndexBuffer);
@@ -155,20 +157,18 @@ class Renderer {
       Debug.increaseVertexCount(prop.vCount);
       // Create buffers.
       this.createPropBuffers(prop);
-      // Translate.
+      // Save matrix state & translate.
       this.mvPushMatrix();
       this.mvTranslate([prop.x, prop.y, prop.z]);
-      // Vertices.
-      gl.bindBuffer(gl.ARRAY_BUFFER, pVerticesBuffer);
-      gl.vertexAttribPointer(vPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-      // Colors.
-      gl.bindBuffer(gl.ARRAY_BUFFER, pVerticesColorBuffer);
-      gl.vertexAttribPointer(vColorAttribute, 4, gl.FLOAT, false, 0, 0);
       // Draw.
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, pVerticesIndexBuffer);
       this.mvMatrixUniforms();
       gl.drawElements(wf ? gl.LINES : gl.TRIANGLES, prop.vI.length, gl.UNSIGNED_SHORT, 0);
+      // Revert translation for the next object.
       this.mvPopMatrix();
+      // Clear buffers to avoid memory leaks.
+      gl.deleteBuffer(pVerticesBuffer);
+      gl.deleteBuffer(pVerticesColorBuffer);
+      gl.deleteBuffer(pVerticesIndexBuffer);
     });
     // Update debug information.
     Debug.refresh(camera);
