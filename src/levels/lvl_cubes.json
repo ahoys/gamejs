@@ -61,6 +61,30 @@
       "x": 6,
       "y": 0,
       "z": 0
+    },
+    {
+      "id": 7,
+      "type": "p_cube_tri",
+      "dataType": "dt_static",
+      "x": -2,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": 8,
+      "type": "p_cube_tri",
+      "dataType": "dt_static",
+      "x": -4,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": 9,
+      "type": "p_cube_tri",
+      "dataType": "dt_static",
+      "x": -6,
+      "y": 0,
+      "z": 0
     }
   ]
 }
