@@ -34,13 +34,13 @@
     <script>
       const debug = require('debug');
       debug.enable('*');
-      const gl_canvas = document.getElementById('glCanvas');
-      const gl_ctx = gl_canvas.getContext('webgl') || gl_canvas.getContext('experimental-webgl');
-      const gl_regl = require('regl')(gl_ctx);
-      let gl_tick;
-      const gl_renderer = require('./src/components/render/module.renderer');
-      gl_renderer.init();
-      document.addEventListener('resize', require('canvas-fit')(gl_canvas), false);
+      // Initialize global rendering variables.
+      let gl_canvas, gl_ctx, gl_regl, gl_tick;
+      // Initialize rendering API.
+      const gl_render = require('./src/render/render.api');
+      // Launch rendering.
+      gl_render.init('glCanvas');
+      gl_render.frame();
     </script>
     <script src="src/class.game.js"></script>
   </body>

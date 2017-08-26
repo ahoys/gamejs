@@ -1,3 +1,4 @@
+const log = debug('render/cmds/cmd.setupCamera');
 const regl = require('regl');
 const mat4 = require('gl-mat4');
 

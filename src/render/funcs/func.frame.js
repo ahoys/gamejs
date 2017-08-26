@@ -1,8 +1,8 @@
-const log = debug('components/render/parts/func.drawScene');
-const drawBunny = require('./func.drawBunny');
+const log = debug('render/funcs/func.frame');
 
 module.exports = () => {
-  log('Start drawing...');
+  const drawBunny = require('../cmds/cmd.drawBunny');
+  log('Drawing...');
   gl_tick = gl_regl.frame(() => {
     gl_regl.clear({
       depth: 1,
