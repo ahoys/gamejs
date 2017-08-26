@@ -1,6 +1,5 @@
 const Level = require('./src/class.level');
 const Input = require('./src/class.input');
-const Renderer = require('./src/components/render/class.Renderer');
 const Calc = require('./src/utilities/util.calc');
 
 class Game {
@@ -67,9 +66,6 @@ class Game {
     // Refresh level.
     const staticProps = this._level.staticProps;
     const dynamicProps = this._level.dynamicProps;
-    // Send props to be rendered.
-    this._renderer.props = staticProps;
-    this._perfUpdate = performance.now() - perf;
   }
 
   /**
@@ -100,7 +96,6 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
-    this._renderer.drawScene(tFrame, this._lastTick, this._tickLength, this._wireframe);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
@@ -127,9 +122,7 @@ class Game {
     this._lastTick = performance.now();
     this._lastRender = this._lastTick;
     this._tickLength = 50; // Delay of a one tick (affects game logic).
-    this._renderer = new Renderer(
-      this._camera,
-    );
+    this._gl
     this.main(performance.now());
   }
 }

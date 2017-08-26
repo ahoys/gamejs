@@ -15,6 +15,13 @@ window.addEventListener("resize", () => {
 module.exports = {
 
   /**
+   * Returns the canvas element.
+   */
+  getCanvasElement: () => {
+    return canvas;
+  },
+
+  /**
    * Returns a WebGL ready context.
    */
   getContext: () => {

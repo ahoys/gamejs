@@ -31,6 +31,17 @@
     </script>
     <script src="src/utilities/util.sylvester.js"></script>
     <script src="src/utilities/util.glUtils.js"></script>
+    <script>
+      const debug = require('debug');
+      debug.enable('*');
+      const gl_canvas = document.getElementById('glCanvas');
+      const gl_ctx = gl_canvas.getContext('webgl') || gl_canvas.getContext('experimental-webgl');
+      const gl_regl = require('regl')(gl_ctx);
+      let gl_tick;
+      const gl_renderer = require('./src/components/render/module.renderer');
+      gl_renderer.init();
+      document.addEventListener('resize', require('canvas-fit')(gl_canvas), false);
+    </script>
     <script src="src/class.game.js"></script>
   </body>
 </html>
