@@ -130,9 +130,11 @@ class Renderer {
 
   /**
    * Draws a new scene
+   * @param {number} tick
+   * @param {number} tickLength
    * @param {boolean} wf Wireframe true/false.
    */
-  drawScene(wf) {
+  drawScene(tFrame, lastTick, tickLength, wf) {
     // Make sure there is something to render.
     if (!props) return null;
     // Start debugging.
@@ -171,7 +173,7 @@ class Renderer {
       gl.deleteBuffer(pVerticesIndexBuffer);
     });
     // Update debug information.
-    Debug.refresh(camera);
+    Debug.refresh({ camera, tFrame, lastTick, tickLength });
   }
 
   /**

@@ -100,7 +100,7 @@ class Game {
       numTicks = Math.floor(timeSinceTick / this._tickLength);
     }
     this.queueUpdates(numTicks);
-    this._renderer.drawScene(this._wireframe);
+    this._renderer.drawScene(tFrame, this._lastTick, this._tickLength, this._wireframe);
     this._lastRender = tFrame;
     this._perfMain = performance.now() - perf;
   }
