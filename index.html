@@ -36,6 +36,7 @@
       debug.enable('*');
       // Initialize global rendering variables.
       let gl_canvas, gl_ctx, gl_regl, gl_tick;
+      let staticProps = [], dynamicProps = [], cameraProps = [];
       // Initialize rendering API.
       const gl_render = require('./src/render/render.api');
       // Launch rendering.

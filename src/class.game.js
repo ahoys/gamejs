@@ -64,8 +64,8 @@ class Game {
     // Handle input.
     this.handleControlActions(this._input.active);
     // Refresh level.
-    const staticProps = this._level.staticProps;
-    const dynamicProps = this._level.dynamicProps;
+    staticProps = this._level.staticProps;
+    dynamicProps = this._level.dynamicProps;
   }
 
   /**
