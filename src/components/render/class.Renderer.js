@@ -162,6 +162,9 @@ class Renderer {
       // Save matrix state & translate.
       this.mvPushMatrix();
       this.mvTranslate([prop.x, prop.y, prop.z]);
+      this.mvRotate(prop.rX, [1, 0, 0]);
+      this.mvRotate(prop.rY, [0, 1, 0]);
+      this.mvRotate(prop.rZ, [0, 0, 1]);
       // Draw.
       this.mvMatrixUniforms();
       gl.drawElements(wf ? gl.LINES : gl.TRIANGLES, prop.vI.length, gl.UNSIGNED_SHORT, 0);
