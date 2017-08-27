@@ -33,13 +33,19 @@ module.exports = gl_regl({
 
   uniforms: {
     model: mat4.identity([]),
-    view: ({tick}) => {
-      const t = 0.01 * tick
-      return mat4.lookAt([],
-        [30 * Math.cos(t), 2.5, 30 * Math.sin(t)],
-        [0, 2.5, 0],
-        [0, 1, 0])
-    },
+    view: mat4.lookAt(
+      [],
+      [gl_camera.x, gl_camera.y, gl_camera.z],
+      [0, 2.5, 0],
+      [0, 1, 0]
+    ),
+    // view: ({tick}) => {
+    //   const t = 0.01 * tick
+    //   return mat4.lookAt([],
+    //     [8, 8, 8],
+    //     [0, 2.5, 0],
+    //     [0, 1, 0])
+    // },
     projection: ({viewportWidth, viewportHeight}) =>
     mat4.perspective([],
       Math.PI / 4,

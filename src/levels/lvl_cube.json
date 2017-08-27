@@ -2,6 +2,19 @@
   "title": "cube",
   "data": [
     {
+      "id": 0,
+      "type": "v_virtualCamera",
+      "dataType": "dt_camera",
+      "x": 8,
+      "y": 8,
+      "z": 8,
+      "rX": 0,
+      "rY": 0,
+      "rZ": 0,
+      "fov": 90,
+      "enabled": true
+    },
+    {
       "id": 1,
       "type": "p_cube_tri",
       "dataType": "dt_static",
