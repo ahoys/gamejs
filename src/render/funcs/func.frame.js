@@ -21,5 +21,6 @@ module.exports = () => {
       drawProp(staticProps);
     });
     gl_cpuTime = (drawProp.stats.cpuTime / performance.now()).toFixed(4);
+    gl_gpuTime = (drawProp.stats.gpuTime / performance.now());
   });
 };

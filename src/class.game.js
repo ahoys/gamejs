@@ -76,7 +76,8 @@ class Game {
       dynamicProps: ${dynamicProps.length}
     `;
     overlay_debug_gl.innerHTML = `
-      CPU Time: ${gl_cpuTime} ms
+      CPU Time: ${gl_cpuTime} ms<br/>
+      GPU Time: ${gl_gpuTime} ms
     `;
   }
 
