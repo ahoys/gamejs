@@ -16,10 +16,5 @@ module.exports = (id) => {
   }
   // Setup the scoped camera.
   gl_camera = require('../cmds/cmd.setupCamera');
-  // Initialize debugging.
-  const node = document.createElement('div');
-  node.id = 'gl_debug';
-  overlay_debug.appendChild(node);
-  overlay_debug_gl = document.getElementById('gl_debug');
   log('Initialization successful!');
 };

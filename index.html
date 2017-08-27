@@ -10,7 +10,10 @@
       Application failed to load <code>&lt;canvas&gt;</code> element.
     </canvas>
     <div id="overlay">
-      <div id="debug"></div>
+      <div id="overlay-debug">
+        <div id="overlay_debug_gl"></div>
+        <div id="overlay_debug_game"></div>
+      </div>
     </div>
     <script id="shader-fs" type="x-shader/x-fragment">
       varying lowp vec4 vColor;
@@ -36,7 +39,8 @@
       // UI
       const overlay = document.getElementById('overlay');
       const overlay_debug = document.getElementById('debug');
-      let overlay_debug_gl, overlay_debug_game;
+      const overlay_debug_gl = document.getElementById('overlay_debug_gl');
+      const overlay_debug_game = document.getElementById('overlay_debug_game');
 
       // GL
       let gl_canvas, gl_ctx, gl_regl, gl_tick, gl_camera;
