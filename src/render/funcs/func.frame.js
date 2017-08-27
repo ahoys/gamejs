@@ -1,5 +1,4 @@
 const log = debug('render/funcs/func.frame');
-const mat4 = require('gl-mat4');
 
 module.exports = () => {
   log('Drawing...');
@@ -20,6 +19,7 @@ module.exports = () => {
     }, () => {
       drawProp(staticProps);
     });
+    // Real-time data for debuggers.
     gl_cpuTime = (drawProp.stats.cpuTime / performance.now()).toFixed(4);
     gl_gpuTime = (drawProp.stats.gpuTime / performance.now());
   });
