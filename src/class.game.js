@@ -124,6 +124,7 @@ class Game {
     this._tickLength = 50; // Delay of a one tick (affects game logic).
     this._gl
     this.main(performance.now());
+    gl_render.frame();
   }
 }
 
