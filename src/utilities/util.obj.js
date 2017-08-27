@@ -56,7 +56,7 @@ module.exports = {
         if (i === 2) {
           payload.vC.push(0.5);
           payload.vC.push(1.0);
-          i = 0;
+          i = -1;
         } else {
           payload.vC.push(0.5);
         }

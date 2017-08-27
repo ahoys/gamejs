@@ -1,40 +1,50 @@
 const log = debug('render/cmds/cmd.drawProp');
 const mat4 = require('gl-mat4');
 const normals = require('angle-normals');
+const bunny = require('bunny');
 
 module.exports = gl_regl({
   vert: `
-    attribute vec3 aVertexPosition;
-    attribute vec4 aVertexColor;
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-    varying lowp vec4 color;
-    void main(void) {
-      gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-      color = aVertexColor;
+    precision mediump float;
+    attribute vec3 position;
+    uniform mat4 model, view, projection;
+    void main() {
+      gl_Position = projection * view * model * vec4(position, 1);
     }
   `,
 
   frag: `
-    varying lowp vec4 color;
-    void main(void) {
-      gl_FragColor = color;
+    precision mediump float;
+    void main() {
+      gl_FragColor = vec4(1, 1, 1, 1);
     }
   `,
   
   attributes: {
-    aVertexPosition: gl_regl.prop.v || [],
-    aVertexColor: gl_regl.prop.vC || [],
-    // normal: normals(gl_regl.prop.vI, gl_regl.prop.v)
+    // Position === vertices relative to the world.
+    // Eg. three points: [[x, y, z], [x, y, z], [x, y, z]].
+    position: [[-1, 0, 0], [0, -1, 0], [1, 1, 0]],
   },
 
-  elements: gl_regl.prop.v || [],
+  // Elements === faces.
+  // Eg. [[0,1,2]] means 1 face, using vertices 0, 1 and 2.
+  // Vertices must be formatted as [[x, y, z], [x, y, z], [x, y, z]].
+  elements: [[0,1,2]],
 
   uniforms: {
-    color: gl_regl.prop.vC || [],
-    uPMatrix: gl_regl.prop.vC ? gl_regl.prop.v : [],
-    uMVMatrix: gl_regl.prop.vC ? gl_regl.prop.v : [],
+    model: mat4.identity([]),
+    view: ({tick}) => {
+      const t = 0.01 * tick
+      return mat4.lookAt([],
+        [30 * Math.cos(t), 2.5, 30 * Math.sin(t)],
+        [0, 2.5, 0],
+        [0, 1, 0])
+    },
+    projection: ({viewportWidth, viewportHeight}) =>
+    mat4.perspective([],
+      Math.PI / 4,
+      viewportWidth / viewportHeight,
+      0.01,
+      1000)
   },
-
-  count: gl_regl.prop.vI ? gl_regl.prop.vI.length : 0,
 });
