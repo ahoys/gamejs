@@ -1,7 +1,45 @@
+const log = debug('utilities/util.obj');
 const { remote } = require('electron');
 const fs = remote.require('fs');
 
 module.exports = {
+
+  importForRegl: (path) => {
+    const payload = { v: [], vI: [], };
+    if (fs.existsSync(path)) {
+      fs
+      .readFileSync(path)
+      .toString()
+      .split('\n')
+      .forEach((line) => {
+        if (line.substr(0, 2) === 'v ') {
+          // Generate base positions.
+          const temp = [];
+          line.replace('v ', '').split(' ').forEach((v) => {
+            temp.push(Number(v));
+          });
+          payload.v.push(temp);
+        } else if (line.substr(0, 3) === 'vt ') {
+
+        } else if (line.substr(0, 3) === 'vn ') {
+          
+        } else if (line.substr(0, 3) === 'vp ') {
+
+        } else if (line.substr(0, 2) === 'f ') {
+          // Generate elements.
+          const temp = [];
+          line.replace('f ', '').split(' ').forEach((fS) => {
+            const val = Number(fS.split('/')[0]) - 1;
+            temp.push(val);
+          });
+          payload.vI.push(temp);
+        }
+      });
+    }
+    log(`Imported .obj from: ${path} for regl.`);
+    console.log(payload.v);
+    return payload;
+  },
 
   /**
    * Imports an .obj file.

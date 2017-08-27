@@ -9,7 +9,7 @@ module.exports = () => {
       color: [0.2, 0.1, 0.1, 1]
     });
     if (staticProps && staticProps.length) {
-      drawProp([staticProps[0]]);
+      drawProp(staticProps);
     }
   });
 };

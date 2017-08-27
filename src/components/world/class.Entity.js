@@ -56,14 +56,14 @@ class Entity {
   get length() { return this._length; }
   get height() { return this._height; }
   get color() { return this._color; }
-  get v() { return this._model.v; }
+  get v() { return this._reglModel.v; }
   get vt() { return this._model.vt; }
   get vn() { return this._model.vn; }
   get vp() { return this._model.vp; }
   get f() { return this._model.f; }
   get fP() { return this._model.fP; }
   get vP() { return this._model.vP; }
-  get vI() { return this._model.vI; }
+  get vI() { return this._reglModel.vI; }
   get vC() { return this._model.vC; }
   get vCount() { return this._model.vCount; }
   get texture() { return this._texture; }
@@ -82,6 +82,7 @@ class Entity {
     this._height = staticJSON[type] ? staticJSON[type].height : 0;
     this._color = staticJSON[type] ? staticJSON[type].color : '0,0,0';
     this._model = Obj.importObj(`./src/assets/models/${type}.obj`);
+    this._reglModel = Obj.importForRegl(`./src/assets/models/${type}.obj`);
     this._texture = staticJSON[type] ? staticJSON[type].texture : '';
   }
 }

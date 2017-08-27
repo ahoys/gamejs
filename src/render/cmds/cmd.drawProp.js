@@ -23,13 +23,13 @@ module.exports = gl_regl({
   attributes: {
     // Position === vertices relative to the world.
     // Eg. three points: [[x, y, z], [x, y, z], [x, y, z]].
-    position: [[-1, 0, 0], [0, -1, 0], [1, 1, 0]],
+    position: gl_regl.prop('v'),
   },
 
   // Elements === faces.
   // Eg. [[0,1,2]] means 1 face, using vertices 0, 1 and 2.
   // Vertices must be formatted as [[x, y, z], [x, y, z], [x, y, z]].
-  elements: [[0,1,2]],
+  elements: gl_regl.prop('vI'),
 
   uniforms: {
     model: mat4.identity([]),

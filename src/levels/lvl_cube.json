@@ -1,0 +1,13 @@
+{
+  "title": "cube",
+  "data": [
+    {
+      "id": 1,
+      "type": "p_cube_tri",
+      "dataType": "dt_static",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  ]
+}
