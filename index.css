@@ -34,9 +34,6 @@ body {
   position: absolute;
   left: 0;
   top: 0;
-  padding: 8px;
-  min-width: 128px;
-  min-height: 16px;
   background: rgba(112, 51, 51, 0.50);
   color: #ffffff;
 }

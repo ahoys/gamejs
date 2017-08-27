@@ -14,5 +14,9 @@ module.exports = (id) => {
   if (!gl_regl) {
     throw 0;
   }
+  const node = document.createElement('div');
+  node.id = 'gl_debug';
+  ui_debug.appendChild(node);
+  gl_ui_debug = document.getElementById('gl_debug');
   log('Initialization successful!');
 };
