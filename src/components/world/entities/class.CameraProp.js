@@ -10,10 +10,10 @@ const Entity = require('../class.Entity');
 class CameraProp extends Entity {
 
   doFov(v) {
-    if (this._fov + Number(v) > 120) {
-      this._fov = 120;
-    } else if (this._fov + Number(v) < 45) {
-      this._fov = 45;
+    if (this._fov + Number(v) >= 135) {
+      this._fov = 135;
+    } else if (this._fov + Number(v) <= 65) {
+      this._fov = 65;
     } else {
       this._fov += Number(v);
     }
@@ -22,7 +22,7 @@ class CameraProp extends Entity {
   set enabled(v) { this._enabled = Boolean(v); }
   set fov(v) { this._fov = Number(v); }
   get enabled() { return this._enabled; }
-  get fov() { return this._fov * (180/Math.PI); }
+  get fov() { return this._fov * (Math.PI / 180); }
 
   constructor(id, type, x, y, z, rX, rY, rZ, fov, enabled) {
     super(id, type, x, y, z, rX, rY, rZ);
