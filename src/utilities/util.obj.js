@@ -37,7 +37,6 @@ module.exports = {
       });
     }
     log(`Imported .obj from: ${path} for regl.`);
-    console.log(payload.v);
     return payload;
   },
 
