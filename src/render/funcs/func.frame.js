@@ -21,6 +21,6 @@ module.exports = () => {
     });
     // Real-time data for debuggers.
     gl_cpuTime = (drawProp.stats.cpuTime / performance.now()).toFixed(4);
-    gl_gpuTime = (drawProp.stats.gpuTime / performance.now());
+    gl_gpuTime = (drawProp.stats.gpuTime / performance.now()).toFixed(4);
   });
 };
