@@ -1,3 +1,4 @@
+const mat4 = require('gl-mat4');
 const Entity = require('../class.Entity');
 
 /**
@@ -7,6 +8,10 @@ const Entity = require('../class.Entity');
  * Used in rendering.
  */
 class CameraProp extends Entity {
+
+  view() {
+    return mat4.lookAt([], [this._x, this._y, this._z], [0, 2.5, 0], [0, 1, 0]);
+  }
 
   doFov(v) {
     this._fov += Number(v);
