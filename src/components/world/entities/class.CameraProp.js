@@ -10,7 +10,11 @@ const Entity = require('../class.Entity');
 class CameraProp extends Entity {
 
   view() {
-    return mat4.lookAt([], [this._x, this._y, this._z], [0, 2.5, 0], [0, 1, 0]);
+    return mat4.lookAt([], [this._x, this._y, this._z], [0, 0, 0], [0, 1, 0]);
+  }
+
+  projection() {
+    return mat4.perspective([], this._fov * (180/Math.PI), gl_canvas.width / gl_canvas.height, 0.01, 1000);
   }
 
   doFov(v) {

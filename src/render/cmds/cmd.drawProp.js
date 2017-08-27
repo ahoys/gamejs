@@ -33,11 +33,6 @@ module.exports = gl_regl({
   uniforms: {
     model: mat4.identity([]),
     view: () => gl_camera.view(),
-    projection: ({viewportWidth, viewportHeight}) =>
-    mat4.perspective([],
-      Math.PI / 4,
-      viewportWidth / viewportHeight,
-      0.01,
-      1000)
+    projection: () => gl_camera.projection(),
   },
 });
