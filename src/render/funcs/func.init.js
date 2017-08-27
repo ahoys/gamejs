@@ -19,7 +19,7 @@ module.exports = (id) => {
   // Initialize debugging.
   const node = document.createElement('div');
   node.id = 'gl_debug';
-  ui_debug.appendChild(node);
-  gl_ui_debug = document.getElementById('gl_debug');
+  overlay_debug.appendChild(node);
+  overlay_debug_gl = document.getElementById('gl_debug');
   log('Initialization successful!');
 };

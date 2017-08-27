@@ -32,24 +32,27 @@
     <script src="src/utilities/util.sylvester.js"></script>
     <script src="src/utilities/util.glUtils.js"></script>
     <script>
+      // -- Global variables ------------------
+      // UI
+      const overlay = document.getElementById('overlay');
+      const overlay_debug = document.getElementById('debug');
+      let overlay_debug_gl, overlay_debug_game;
+
+      // GL
+      let gl_canvas, gl_ctx, gl_regl, gl_tick, gl_camera;
+
+      // Props
+      let staticProps = [], dynamicProps = [], cameraProps = [];
+
+      // Game
+      let game_camera;
+
+      // -- Game initialization ---------------
+      // Debug
       const debug = require('debug');
       debug.enable('*');
-      // Initialize global rendering variables.
-      let gl_canvas, gl_ctx, gl_regl, gl_tick, gl_camera, gl_ui_debug;
-      let staticProps = [], dynamicProps = [], cameraProps = [];
-      let ui_debug = document.getElementById('debug');
-      let game_camera;
-      let gl_normals = [
-        [0.5773502910096686, -0.5773501861108215, -0.5773503304483777],
-        [0.5773503567408698, -0.5773503173021055, 0.5773501335258773],
-        [-0.5773503173021469, -0.5773503173021669, 0.5773501729645515],
-        [-0.5773502691896258, -0.5773502691896256, -0.5773502691896258],
-        [0.5773504879321233, 0.5773504484934096, -0.5773498711431381],
-        [0.5773498448506508, 0.5773503173019854, 0.5773506454159606],
-        [-0.577350400380991, 0.577350295482131, 0.5773501117057185],
-        [-0.5773501861108213, 0.5773502910096687, -0.5773503304483778]
-      ];
-      // Initialize rendering API.
+
+      // Rendering API
       const gl_render = require('./src/render/render.api');
       gl_render.init('glCanvas');
     </script>
