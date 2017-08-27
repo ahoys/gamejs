@@ -30,20 +30,20 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'CAM_MOVE_+X': () => gl_camera.doMoveX(Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_MOVE_-X': () => gl_camera.doMoveX(-Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_MOVE_+Y': () => gl_camera.doMoveY(Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_MOVE_-Y': () => gl_camera.doMoveY(-Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_MOVE_+Z': () => gl_camera.doMoveZ(Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_MOVE_-Z': () => gl_camera.doMoveZ(-Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_ROTATE_+X': () => gl_camera.doRotateX(Calc.getRelativeSpeed(this._tickLength, 1)),
-      'CAM_ROTATE_-X': () => gl_camera.doRotateX(-Calc.getRelativeSpeed(this._tickLength, 1)),
-      'CAM_ROTATE_+Y': () => gl_camera.doRotateY(Calc.getRelativeSpeed(this._tickLength, 1)),
-      'CAM_ROTATE_-Y': () => gl_camera.doRotateY(-Calc.getRelativeSpeed(this._tickLength, 1)),
-      'CAM_ROTATE_+Z': () => gl_camera.doRotateZ(Calc.getRelativeSpeed(this._tickLength, 1)),
-      'CAM_ROTATE_-Z': () => gl_camera.doRotateZ(-Calc.getRelativeSpeed(this._tickLength, 1)),
-      'CAM_FOV_+': () => gl_camera.doFov(Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_FOV_-': () => gl_camera.doFov(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_+X': () => game_camera.doMoveX(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_-X': () => game_camera.doMoveX(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_+Y': () => game_camera.doMoveY(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_-Y': () => game_camera.doMoveY(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_+Z': () => game_camera.doMoveZ(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_-Z': () => game_camera.doMoveZ(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_ROTATE_+X': () => game_camera.doRotateX(Calc.getRelativeSpeed(this._tickLength, 1)),
+      'CAM_ROTATE_-X': () => game_camera.doRotateX(-Calc.getRelativeSpeed(this._tickLength, 1)),
+      'CAM_ROTATE_+Y': () => game_camera.doRotateY(Calc.getRelativeSpeed(this._tickLength, 1)),
+      'CAM_ROTATE_-Y': () => game_camera.doRotateY(-Calc.getRelativeSpeed(this._tickLength, 1)),
+      'CAM_ROTATE_+Z': () => game_camera.doRotateZ(Calc.getRelativeSpeed(this._tickLength, 1)),
+      'CAM_ROTATE_-Z': () => game_camera.doRotateZ(-Calc.getRelativeSpeed(this._tickLength, 1)),
+      'CAM_FOV_+': () => game_camera.doFov(Calc.getRelativeSpeed(this._tickLength, 0.01)),
+      'CAM_FOV_-': () => game_camera.doFov(-Calc.getRelativeSpeed(this._tickLength, 0.01)),
       'RENDER_WIREFRAME': () => { this._wireframe = !this._wireframe },
     }
     active.forEach((actionRequest) => {
@@ -112,7 +112,7 @@ class Game {
 
     // Load the level.
     this._level = new Level('lvl_cube');
-    gl_camera = this._level.cameraProps.filter(x => x.enabled)[0];
+    game_camera = this._level.cameraProps.filter(x => x.enabled)[0];
 
     // Load inputs.
     this._input = new Input(this._stage);

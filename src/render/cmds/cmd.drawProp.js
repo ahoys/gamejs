@@ -32,7 +32,5 @@ module.exports = gl_regl({
 
   uniforms: {
     model: mat4.identity([]),
-    view: () => gl_camera.view(),
-    projection: () => gl_camera.projection(),
-  },
+  }
 });

@@ -1,4 +1,5 @@
 const log = debug('render/funcs/func.frame');
+const mat4 = require('gl-mat4');
 
 module.exports = () => {
   log('Drawing...');
@@ -11,9 +12,13 @@ module.exports = () => {
       depth: 1,
       color: [0.2, 0.1, 0.1, 1]
     });
-    // Draw props.
-    if (staticProps) {
+    // Use camera context and draw.
+    gl_camera({
+      eye: [game_camera.x, game_camera.y, game_camera.z],
+      target: [0, 0, 0],
+      fov: game_camera.fov,
+    }, () => {
       drawProp(staticProps);
-    }
+    });
   });
 };

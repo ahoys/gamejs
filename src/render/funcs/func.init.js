@@ -14,6 +14,9 @@ module.exports = (id) => {
   if (!gl_regl) {
     throw 0;
   }
+  // Setup the scoped camera.
+  gl_camera = require('../cmds/cmd.setupCamera');
+  // Initialize debugging.
   const node = document.createElement('div');
   node.id = 'gl_debug';
   ui_debug.appendChild(node);

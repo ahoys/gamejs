@@ -9,22 +9,20 @@ const Entity = require('../class.Entity');
  */
 class CameraProp extends Entity {
 
-  view() {
-    return mat4.lookAt([], [this._x, this._y, this._z], [0, 0, 0], [0, 1, 0]);
-  }
-
-  projection() {
-    return mat4.perspective([], this._fov * (180/Math.PI), gl_canvas.width / gl_canvas.height, 0.01, 1000);
-  }
-
   doFov(v) {
-    this._fov += Number(v);
+    if (this._fov + Number(v) > 120) {
+      this._fov = 120;
+    } else if (this._fov + Number(v) < 45) {
+      this._fov = 45;
+    } else {
+      this._fov += Number(v);
+    }
   }
 
   set enabled(v) { this._enabled = Boolean(v); }
   set fov(v) { this._fov = Number(v); }
   get enabled() { return this._enabled; }
-  get fov() { return this._fov; }
+  get fov() { return this._fov * (180/Math.PI); }
 
   constructor(id, type, x, y, z, rX, rY, rZ, fov, enabled) {
     super(id, type, x, y, z, rX, rY, rZ);
