@@ -42,10 +42,10 @@ body {
   margin: 8px;
 }
 
-#debug .warning {
-  color: orange;
+#overlay_debug_gl {
+  font-size: 1em;
 }
 
-#debug .danger {
-  color: red;
+#overlay_debug_game {
+  color: #F4C67A;
 }

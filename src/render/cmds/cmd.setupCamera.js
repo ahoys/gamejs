@@ -2,6 +2,7 @@ const log = debug('render/cmds/cmd.setupCamera');
 const mat4 = require('gl-mat4');
 
 module.exports = gl_regl({
+  profile: true,
   context: {
     projection: (context, props) => {
       return mat4.perspective(

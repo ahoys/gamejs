@@ -4,7 +4,7 @@ const mat4 = require('gl-mat4');
 module.exports = () => {
   log('Drawing...');
   // Require drawing functions.
-  const drawProp = require('../cmds/cmd.drawProp');
+  drawProp = require('../cmds/cmd.drawProp');
   // Draw loop.
   gl_tick = gl_regl.frame(() => {
     // Clear the scene before the draw.
@@ -20,5 +20,6 @@ module.exports = () => {
     }, () => {
       drawProp(staticProps);
     });
+    gl_cpuTime = (drawProp.stats.cpuTime / performance.now()).toFixed(4);
   });
 };

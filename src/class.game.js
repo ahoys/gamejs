@@ -68,8 +68,14 @@ class Game {
     dynamicProps = this._level.dynamicProps;
     // Update debug.
     overlay_debug_game.innerHTML = `
+      _tickLength: ${this._tickLength} ms<br/>
       game_camera: x ${game_camera.x} y ${game_camera.y} z ${game_camera.z} 
-      rX ${game_camera.rX} rY ${game_camera.rY} rZ ${game_camera.rZ} fov ${game_camera.fov}
+      rX ${game_camera.rX} rY ${game_camera.rY} rZ ${game_camera.rZ} fov ${game_camera.fov}<br/>
+      staticProps: ${staticProps.length}<br/>
+      dynamicProps: ${dynamicProps.length}
+    `;
+    overlay_debug_gl.innerHTML = `
+      CPU Time: ${gl_cpuTime} ms
     `;
   }
 
