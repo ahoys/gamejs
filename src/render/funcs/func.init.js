@@ -16,6 +16,7 @@ module.exports = (id) => {
   }
   // Load OpenGL extensions.
   gl_ctx.getExtension('EXT_disjoint_timer_query');
+  gl_info = gl_ctx.getExtension('WEBGL_debug_renderer_info');
   // Setup the scoped camera.
   gl_camera = require('../cmds/cmd.setupCamera');
   log('Initialization successful!');

@@ -77,7 +77,9 @@ class Game {
     `;
     overlay_debug_gl.innerHTML = `
       CPU Time: ${gl_cpuTime} ms<br/>
-      GPU Time: ${gl_gpuTime} ms
+      GPU Time: ${gl_gpuTime} ms<br/>
+      Vendor: ${gl_ctx.getParameter(gl_info.UNMASKED_VENDOR_WEBGL)}<br/>
+      Renderer: ${gl_ctx.getParameter(gl_info.UNMASKED_RENDERER_WEBGL)}
     `;
   }
 
