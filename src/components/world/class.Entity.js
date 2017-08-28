@@ -1,5 +1,6 @@
 const staticJSON = require('./resources/res.static.json');
 const Obj = require('../../utilities/util.obj');
+const mat4 = require('gl-mat4');
 
 /**
  * StaticEntity
@@ -9,6 +10,17 @@ const Obj = require('../../utilities/util.obj');
  * Implements position, dimensions and other resources.
  */
 class Entity {
+
+  /**
+   * Moves the entity in a 3D-space (forward / backward).
+   * The entity will move to the direction it is facing (or directly away from it).
+   * @param {number} v 
+   */
+  doMoveXYZ(v) {
+    this._x = this._x + v * Math.sin(-this._rY);
+    this._y = this._y + v * Math.sin(this._rX) * Math.cos(this._rZ);
+    this._z = this._z + v * Math.cos(this._rY);
+  }
 
   doMoveX(v) {
     this._x += Number(v);

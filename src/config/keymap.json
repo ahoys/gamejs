@@ -1,6 +1,8 @@
 {
-  "w": ["CAM_MOVE_+Z"],
-  "s": ["CAM_MOVE_-Z"],
+  "w": ["CAM_MOVE_FORWARD"],
+  "s": ["CAM_MOVE_BACKWARD"],
+  "arrowup": ["CAM_MOVE_+Z"],
+  "arrowdown": ["CAM_MOVE_-Z"],
   "a": ["CAM_MOVE_+X"],
   "d": ["CAM_MOVE_-X"],
   "c": ["CAM_MOVE_-Y"],
