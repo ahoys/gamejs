@@ -13,7 +13,7 @@ module.exports = () => {
     });
     // Use camera context and draw.
     gl_camera({
-      eye: [game_camera.x, game_camera.y, game_camera.z],
+      camera: game_camera,
       target: [0, 0, 0],
       fov: game_camera.fov,
     }, () => {

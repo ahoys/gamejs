@@ -14,12 +14,13 @@ module.exports = gl_regl({
       )
     },
     view: (context, props) => {
-      return mat4.lookAt(
-        [],
-        props.eye,
-        props.target,
-        [0, 1, 0]
-      )
+      const { x, y, z, rX, rY, rZ, fov } = props.camera;
+      const m = mat4.create();
+      const m_t = mat4.translate([], m, [x, y, z, 1]);
+      const m_rX = mat4.rotateX([], m, rX);
+      const m_rY = mat4.rotateY([], m, rY);
+      const m_rZ = mat4.rotateZ([], m, rZ);
+      return mat4.multiply([], mat4.multiply([], mat4.multiply([], m_rZ, m_rY), m_rX), m_t);
     },
     eye: gl_regl.prop('eye'),
   },
