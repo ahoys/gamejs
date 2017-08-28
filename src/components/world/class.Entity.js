@@ -17,9 +17,10 @@ class Entity {
    * @param {number} v 
    */
   doMoveXYZ(v) {
-    this._x = this._x + v * Math.sin(-this._rY);
-    this._y = this._y + v * Math.sin(this._rX) * Math.cos(this._rZ);
-    this._z = this._z + v * Math.cos(this._rY);
+    v = Number(v);
+    this._x += v * Math.sin(-this._rY);
+    this._y += + v * Math.sin(this._rX) * Math.cos(this._rZ);
+    this._z += + v * Math.cos(this._rY);
   }
 
   doMoveX(v) {
