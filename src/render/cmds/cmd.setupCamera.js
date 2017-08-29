@@ -16,11 +16,10 @@ module.exports = gl_regl({
     view: (context, props) => {
       const { x, y, z, rX, rY, rZ, fov } = props.camera;
       const m = mat4.create();
-      const m_t = mat4.translate([], m, [x, y, z, 1]);
       const m_rX = mat4.rotateX([], m, rX);
-      const m_rY = mat4.rotateY([], m, rY);
-      const m_rZ = mat4.rotateZ([], m, rZ);
-      return mat4.multiply([], mat4.multiply([], mat4.multiply([], m_rZ, m_rY), m_rX), m_t);
+      const m_rY = mat4.rotateY([], m_rX, rY);
+      const m_rZ = mat4.rotateZ([], m_rY, rZ);
+      return mat4.translate([], m_rZ, [x, y, z, 1]);
     },
     eye: gl_regl.prop('eye'),
   },
