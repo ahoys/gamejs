@@ -30,8 +30,10 @@ class Game {
 
   handleControlActions(active) {
     const actions = {
-      'CAM_MOVE_FORWARD': () => game_camera.doMoveXYZ(Calc.getRelativeSpeed(this._tickLength, 10)),
-      'CAM_MOVE_BACKWARD': () => game_camera.doMoveXYZ(-Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_FORWARD': () => game_camera.doMoveForward(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_MOVE_BACKWARD': () => game_camera.doMoveBackward(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_STRAFE_LEFT': () => game_camera.doStrafeLeft(Calc.getRelativeSpeed(this._tickLength, 10)),
+      'CAM_STRAFE_RIGHT': () => game_camera.doStrafeRight(Calc.getRelativeSpeed(this._tickLength, 10)),
       'CAM_MOVE_+X': () => game_camera.doMoveX(Calc.getRelativeSpeed(this._tickLength, 10)),
       'CAM_MOVE_-X': () => game_camera.doMoveX(-Calc.getRelativeSpeed(this._tickLength, 10)),
       'CAM_MOVE_+Y': () => game_camera.doMoveY(Calc.getRelativeSpeed(this._tickLength, 10)),

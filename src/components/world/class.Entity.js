@@ -11,15 +11,28 @@ const mat4 = require('gl-mat4');
  */
 class Entity {
 
-  /**
-   * Moves the entity in a 3D-space (forward / backward).
-   * The entity will move to the direction it is facing (or directly away from it).
-   * @param {number} v 
-   */
-  doMoveXYZ(v) {
+  doMoveForward(v) {
     this._x += Number(v) * Math.sin(-this._rY);
     this._y += Number(v) * Math.sin(this._rX) * Math.cos(this._rZ);
     this._z += Number(v) * Math.cos(this._rY);
+  }
+
+  doMoveBackward(v) {
+    this._x += Number(-v) * Math.sin(-this._rY);
+    this._y += Number(-v) * Math.sin(this._rX) * Math.cos(this._rZ);
+    this._z += Number(-v) * Math.cos(this._rY);
+  }
+
+  doStrafeLeft(v) {
+    this._x += Number(v) * Math.cos(-this._rY);
+    this._y += Number(v) * Math.cos(this._rX) * Math.sin(this._rZ);
+    this._z += Number(v) * Math.sin(this._rY);
+  }
+
+  doStrafeRight(v) {
+    this._x += Number(-v) * Math.cos(-this._rY);
+    this._y += Number(-v) * Math.cos(this._rX) * Math.sin(this._rZ);
+    this._z += Number(-v) * Math.sin(this._rY);
   }
 
   doMoveX(v) {
