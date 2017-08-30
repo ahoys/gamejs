@@ -70,6 +70,7 @@ class Game {
     // Refresh level.
     staticProps = this._level.staticProps;
     dynamicProps = this._level.dynamicProps;
+    grid = this._level.grid;
     // Update debug.
     overlay_debug_game.innerHTML = `
       _tickLength: ${this._tickLength} ms<br/>

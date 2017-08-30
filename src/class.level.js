@@ -7,6 +7,7 @@ class Level {
   get staticProps() { return this._staticProps; }
   get dynamicProps() { return this._dynamicProps; }
   get cameraProps() { return this._cameraProps; }
+  get grid() { return this._grid; }
 
   /**
    * Returns a world component based on dataType.
@@ -63,6 +64,13 @@ class Level {
     this._staticProps = [];
     this._dynamicProps = [];
     this._cameraProps = [];
+    this._gridSize = res.gridSize;
+    this._grid = { v: [] };
+    for (let i = 0; i < this._gridSize; i++) {
+      for (let r = 0; r < this._gridSize; r++) {
+        this._grid.v.push([i, r, 0]);
+      }
+    }
     this.init3Dlevel(res.data);
   }
 }

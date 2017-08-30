@@ -1,5 +1,6 @@
 {
   "title": "cube",
+  "gridSize": 16,
   "data": [
     {
       "id": 0,
