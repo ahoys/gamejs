@@ -35,6 +35,14 @@ class Entity {
     this._z += Number(-v) * Math.sin(this._rY);
   }
 
+  doStrafeUp(v) {
+    this._y += Number(-v);
+  }
+
+  doStrafeDown(v) {
+    this._y += Number(v);
+  }
+
   doMoveX(v) {
     this._x += Number(v);
   }
