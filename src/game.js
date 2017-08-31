@@ -5,16 +5,18 @@ const log = debug('./src/game');
 const Level = require('./src/class.level');
 const Input = require('./src/input');
 
+// Game.
 const Game = {};
+let time, tickLength, lastTick;
 
 /**
 * Initializes the game.
 * @param {object} payload: The initial game config (see EOF).
 */
 Game.fncInit = (payload) => {
-  Game.time = 0;
-  Game.tickLength = payload.tickLength;
-  Game.lastTick = performance.now();
+  time = 0;
+  tickLength = payload.tickLength;
+  lastTick = performance.now();
   Game.fncMain(Game.lastTick);
 };
 
@@ -25,8 +27,7 @@ Game.fncInit = (payload) => {
 Game.fncMain = (raFrame) => {
   Game.stopFncMain = window.requestAnimationFrame(() => Game.fncMain(performance.now()));
   Game.fncQueue(
-  raFrame > Game.lastTick + Game.tickLength
-  ? Math.floor((raFrame - Game.lastTick) / Game.tickLength) : 0
+    raFrame > lastTick + tickLength ? Math.floor((raFrame - lastTick) / tickLength) : 0
   );
 };
 
@@ -36,8 +37,8 @@ Game.fncMain = (raFrame) => {
 */
 Game.fncQueue = (tickC) => {
   for (let i = 0; i < tickC; i++) {
-    Game.lastTick = Game.lastTick + Game.tickLength;
-    Game.fncUpdate(Game.lastTick);
+    lastTick = lastTick + tickLength;
+    Game.fncUpdate(lastTick);
   }
 };
 
@@ -47,7 +48,7 @@ Game.fncQueue = (tickC) => {
 * @param {number} lastTick: Tick to be updated.
 */
 Game.fncUpdate = (lastTick) => {
-  log(`Keys: ${Input.pressedKey}, Mouse: ${Input.pressedMouse}.`);
+
 };
 
 /**

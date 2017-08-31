@@ -3,7 +3,7 @@
  */
 const log = debug('./src/input');
 
-// Defaults.
+// Input.
 const Input = {
   pressedKey: [],
   pressedMouse: [],
