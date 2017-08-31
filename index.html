@@ -10,6 +10,7 @@
     <canvas id="glCanvas" width="1920" height="480">
       Application failed to load <code>&lt;canvas&gt;</code> element.
     </canvas>
+    <!-- UI BASE -->
     <div id="overlay">
       <div id="overlay-debug">
         <div id="overlay_debug_gl"></div>
@@ -23,25 +24,21 @@
       const overlay_debug = document.getElementById('debug');
       const overlay_debug_gl = document.getElementById('overlay_debug_gl');
       const overlay_debug_game = document.getElementById('overlay_debug_game');
-
       // GL
       let gl_canvas, gl_ctx, gl_regl, gl_tick, gl_camera, gl_cpuTime, gl_gpuTime, gl_info;
-
       // Props
       let staticProps = [], dynamicProps = [], cameraProps = [], grid = [];
-
       // Game
       let game_camera;
-
       // -- Game initialization ---------------
       // Debug
       const debug = require('debug');
       debug.enable('*');
-
       // Rendering API
       const gl_render = require('./src/render/render.api');
       gl_render.init('glCanvas');
     </script>
+    <!-- Call the game main file -->
     <script src="src/class.game.js"></script>
   </body>
 </html>
