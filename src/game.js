@@ -13,20 +13,20 @@ let time, tickLength, lastTick;
 * Initializes the game.
 * @param {object} payload: The initial game config (see EOF).
 */
-Game.fncInit = (payload) => {
+Game.init = (payload) => {
   time = 0;
   tickLength = payload.tickLength;
   lastTick = performance.now();
-  Game.fncMain(lastTick);
+  Game.main(lastTick);
 };
 
 /**
 * The main game loop.
 * @param {number} raFrame: The current animation frame.
 */
-Game.fncMain = (raFrame) => {
-  Game.stopFncMain = window.requestAnimationFrame(() => Game.fncMain(performance.now()));
-  Game.fncQueue(
+Game.main = (raFrame) => {
+  Game.stopFncMain = window.requestAnimationFrame(() => Game.main(performance.now()));
+  Game.queue(
     raFrame > lastTick + tickLength ? Math.floor((raFrame - lastTick) / tickLength) : 0
   );
 };
@@ -35,10 +35,10 @@ Game.fncMain = (raFrame) => {
 * Queues a game logic update.
 * @param {number} tickC: The amount of ticks to be processed.
 */
-Game.fncQueue = (tickC) => {
+Game.queue = (tickC) => {
   for (let i = 0; i < tickC; i++) {
     lastTick = lastTick + tickLength;
-    Game.fncUpdate(lastTick);
+    Game.update(lastTick);
   }
 };
 
@@ -47,14 +47,14 @@ Game.fncQueue = (tickC) => {
 * Controlled by the main game loop.
 * @param {number} lastTick: Tick to be updated.
 */
-Game.fncUpdate = (lastTick) => {
+Game.update = (lastTick) => {
 
 };
 
 /**
 * Input the initial configuration for the game.
 */
-Game.fncInit({
+Game.init({
   level: 'lvl_cube',
   tickLength: 50,
 });
