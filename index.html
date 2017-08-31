@@ -15,25 +15,6 @@
         <div id="overlay_debug_game"></div>
       </div>
     </div>
-    <script id="shader-fs" type="x-shader/x-fragment">
-      varying lowp vec4 vColor;
-      void main(void) {
-        gl_FragColor = vColor;
-      }
-    </script>
-    <script id="shader-vs" type="x-shader/x-vertex">
-      attribute vec3 aVertexPosition;
-      attribute vec4 aVertexColor;
-      uniform mat4 uMVMatrix;
-      uniform mat4 uPMatrix;
-      varying lowp vec4 vColor;
-      void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vColor = aVertexColor;
-      }
-    </script>
-    <script src="src/utilities/util.sylvester.js"></script>
-    <script src="src/utilities/util.glUtils.js"></script>
     <script>
       // -- Global variables ------------------
       // UI
