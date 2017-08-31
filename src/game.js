@@ -17,7 +17,7 @@ Game.fncInit = (payload) => {
   time = 0;
   tickLength = payload.tickLength;
   lastTick = performance.now();
-  Game.fncMain(Game.lastTick);
+  Game.fncMain(lastTick);
 };
 
 /**
