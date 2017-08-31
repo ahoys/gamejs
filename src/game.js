@@ -1,36 +1,34 @@
 /**
  * Here we initialize and run the game logic and therefore the game itself.
  */
+const log = debug('./src/game');
 const Level = require('./src/class.level');
-const Input = require('./src/class.input');
+const Input = require('./src/input');
 
- const Game = {};
+const Game = {};
 
- /**
-  * Initializes the game.
-  * @param {object} payload: The initial game config (see EOF).
-  */
- Game.fncInit = (payload) => {
-   Game.time = 0;
-   Game.level = new Level(payload.level);
-   Game.camera = new Camera(Game.level.camera);
-   Game.input = new Input();
-   Game.tickLength = payload.tickLength;
-   Game.lastTick = performance.now();
-   Game.fncMain(Game.lastTick);
- };
+/**
+* Initializes the game.
+* @param {object} payload: The initial game config (see EOF).
+*/
+Game.fncInit = (payload) => {
+  Game.time = 0;
+  Game.tickLength = payload.tickLength;
+  Game.lastTick = performance.now();
+  Game.fncMain(Game.lastTick);
+};
 
- /**
-  * The main game loop.
-  * @param {number} raFrame: The current animation frame.
-  */
- Game.fncMain = (raFrame) => {
-   Game.stopFncMain = window.requestAnimationFrame(() => Game.fncMain(performance.now()));
-   Game.fncQueue(
-    raFrame > Game.lastTick + Game.tickLength
-    ? Math.floor((raFrame - Game.lastTick) / Game.tickLength) : 0
-   );
- };
+/**
+* The main game loop.
+* @param {number} raFrame: The current animation frame.
+*/
+Game.fncMain = (raFrame) => {
+  Game.stopFncMain = window.requestAnimationFrame(() => Game.fncMain(performance.now()));
+  Game.fncQueue(
+  raFrame > Game.lastTick + Game.tickLength
+  ? Math.floor((raFrame - Game.lastTick) / Game.tickLength) : 0
+  );
+};
 
 /**
 * Queues a game logic update.
@@ -42,20 +40,20 @@ Game.fncQueue = (tickC) => {
     Game.fncUpdate(Game.lastTick);
   }
 };
- 
- /**
-  * Updates the game logic.
-  * Controlled by the main game loop.
-  * @param {number} lastTick: Tick to be updated.
-  */
- Game.fncUpdate = (lastTick) => {
-   
- };
 
- /**
-  * Input the initial configuration for the game.
-  */
- Game.fncInit({
-   level: 'lvl_cube',
-   tickLength: 50,
- });
+/**
+* Updates the game logic.
+* Controlled by the main game loop.
+* @param {number} lastTick: Tick to be updated.
+*/
+Game.fncUpdate = (lastTick) => {
+  log(`Keys: ${Input.pressedKey}, Mouse: ${Input.pressedMouse}.`);
+};
+
+/**
+* Input the initial configuration for the game.
+*/
+Game.fncInit({
+  level: 'lvl_cube',
+  tickLength: 50,
+});
