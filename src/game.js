@@ -48,7 +48,7 @@ Game.queue = (tickC) => {
 * @param {number} lastTick: Tick to be updated.
 */
 Game.update = (lastTick) => {
-
+  time = (lastTick + tickLength) / 1000;
 };
 
 /**
