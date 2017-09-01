@@ -13,7 +13,8 @@ const Level = {
   volume: 0, // Total size in grids.
   tiles: [], // Tiles of the level (ground and walls).
   props: [], // Props of the level (objects).
-  propsCount: 0, // Count of the props.
+  tileCount: 0, // Count of tiles.
+  propsCount: 0, // Count of props.
 };
 
 const processProps = (props) => {
@@ -22,6 +23,15 @@ const processProps = (props) => {
 
     });
     Level.propsCount = Level.props.length;
+  }
+};
+
+const processTiles = (tiles) => {
+  if (typeof tiles === 'object' && tiles.constructor === Array) {
+    tiles.forEach((tile) => {
+
+    });
+    Level.tileCount = Level.tiles.length;
   }
 };
 
