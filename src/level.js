@@ -13,26 +13,29 @@ const Level = {
   volume: 0, // Total size in grids.
   tiles: [], // Tiles of the level (ground and walls).
   props: [], // Props of the level (objects).
-  tileCount: 0, // Count of tiles.
+  tilesCount: 0, // Count of tiles.
   propsCount: 0, // Count of props.
 };
 
-const processProps = (props) => {
-  if (typeof props === 'object' && props.constructor === Array) {
-    props.forEach((prop) => {
-
-    });
-    Level.propsCount = Level.props.length;
-  }
-};
-
-const processTiles = (tiles) => {
+const getProcessedTiles = (tiles) => {
   if (typeof tiles === 'object' && tiles.constructor === Array) {
     tiles.forEach((tile) => {
-
+      // [0] {string} type: "t_grass".
+      // [1] {array} vertices.
+      // [2] {array} indices.
     });
-    Level.tileCount = Level.tiles.length;
   }
+  return [];
+};
+
+const getProcessedProps = (props) => {
+  if (typeof props === 'object' && props.constructor === Array) {
+    props.forEach((prop) => {
+      // [0] {string} type: "p_monkey".
+      // [1] {array} position: [x, y, z, rX, rY, rZ, scale].
+    });
+  }
+  return [];
 };
 
 /**
@@ -47,7 +50,16 @@ Level.load = (name) => {
     Level.sizeY = Math.floor(Number(res.sizeY)) || 0;
     Level.sizeZ = Math.floor(Number(res.sizeZ)) || 0;
     Level.volume = Level.sizeX * Level.sizeY * Level.sizeZ;
-    processProps(res.props);
+    if (fs.existsSync(`./src/levels/${name}_tiles.json`)) {
+      // Process optional tiles.
+      Level.tiles = getProcessedTiles(require(`./levels/${name}_tiles.json`));
+      Level.tilesCount = Level.tiles.length;
+    }
+    if (fs.existsSync(`./src/levels/${name}_props.json`)) {
+      // Process optional props.
+      Level.props = getProcessedProps(require(`./levels/${name}_props.json`));
+      Level.propsCount = Level.props.length;
+    }
   } else {
     log(`Level (${name}) does not exist.`);
   }

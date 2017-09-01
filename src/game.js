@@ -56,6 +56,6 @@ Game.update = (lastTick) => {
 * Input the initial configuration for the game.
 */
 Game.init({
-  level: 'lvl_cube',
+  level: 'world0',
   tickLength: 50,
 });
