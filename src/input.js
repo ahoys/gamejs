@@ -43,21 +43,25 @@ const addPressedKey = (key, isMouse) => {
 
 const handleKeyDown = (e) => {
   e.preventDefault();
+  log(`handleKeyDown ${e.key}`);
   addPressedKey(e.key, false);
 };
 
 const handleKeyUp = (e) => {
   e.preventDefault();
+  log(`handleKeyUp ${e.key}`);
   removePressedKey(e.key, false);
 };
 
 const handleMouseDown = (e) => {
   e.preventDefault();
+  log(`handleMouseDown ${e.button}`);
   addPressedKey(e.button, true);
 };
 
 const handleMouseUp = (e) => {
   e.preventDefault();
+  log(`handleMouseUp ${e.button}`);
   removePressedKey(e.button, true);
 };
 

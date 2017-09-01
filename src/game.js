@@ -2,8 +2,6 @@
  * Here we initialize and run the game logic and therefore the game itself.
  */
 const log = debug('./src/game');
-const Level = require('./src/class.level');
-const Input = require('./src/input');
 
 // Game.
 const Game = {};
@@ -17,6 +15,9 @@ Game.init = (payload) => {
   time = 0;
   tickLength = payload.tickLength;
   lastTick = performance.now();
+  Game.input = require('./src/input');
+  Game.level = require('./src/level');
+  Game.level.load(payload.level);
   Game.main(lastTick);
 };
 
