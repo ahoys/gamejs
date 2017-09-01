@@ -43,6 +43,7 @@ const getProcessedProps = (props) => {
  * @param {string} name
  */
 Level.load = (name) => {
+  log(`Loading ${name}.`);
   if (fs.existsSync(`./src/levels/${name}.json`)) {
     res = require(`./levels/${name}.json`);
     Level.title = String(res.title) || '';
@@ -60,8 +61,9 @@ Level.load = (name) => {
       Level.props = getProcessedProps(require(`./levels/${name}_props.json`));
       Level.propsCount = Level.props.length;
     }
+    log('Done!');
   } else {
-    log(`Level (${name}) does not exist.`);
+    throw(`Level ${name} does not exist.`);
   }
 };
 

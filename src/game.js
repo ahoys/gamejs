@@ -12,6 +12,7 @@ let time, tickLength, lastTick;
 * @param {object} payload: The initial game config (see EOF).
 */
 Game.init = (payload) => {
+  log('Initializing Game...');
   time = 0;
   tickLength = payload.tickLength;
   lastTick = performance.now();
@@ -19,6 +20,7 @@ Game.init = (payload) => {
   Game.level = require('./src/level');
   Game.level.load(payload.level);
   Game.main(lastTick);
+  log('Running the game...');
 };
 
 /**

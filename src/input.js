@@ -70,4 +70,6 @@ document.addEventListener('keyup', () => handleKeyUp(event), false);
 document.addEventListener('pointerdown', () => handleMouseDown(event), false);
 document.addEventListener('pointerup', () => handleMouseUp(event), false);
 
+log('Inputs registered.');
+
 module.exports = Input;
