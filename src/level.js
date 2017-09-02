@@ -19,20 +19,49 @@ const Level = {
 
 const getProcessedTiles = (tiles) => {
   if (typeof tiles === 'object' && tiles.constructor === Array) {
-    tiles.forEach((tile) => {
+    const results = [];
+    tiles.forEach((t) => {
       // [0] {string} type: "t_grass".
-      // [1] {array} vertices.
-      // [2] {array} indices.
+      // [1] {array} vertices (one square === two triangles).
+      // [2] {array} indices (vertices of two triangles -> 6).
+      // - 4 vertices of a square with positional x, y, z data -> 12 values (4*3).
+      // - One square is formed of two triangles.
+      // - One triangle has 3 vertices, therefore total 6 indices.
+      if (
+        typeof t[0] === 'string' &&
+        typeof t[1] === 'object' && t[1].constructor === Array &&
+        typeof t[2] === 'object' && t[2].constructor === Array &&
+        t[1].length === 12 && t[2].length === 6
+      ) {
+        // Only the validated tiles are registered.
+        results.push(new Tile(t[0], t[1], t[2]));
+      }
     });
+    return results;
   }
   return [];
 };
 
 const getProcessedProps = (props) => {
   if (typeof props === 'object' && props.constructor === Array) {
-    props.forEach((prop) => {
+    const results = [];
+    props.forEach((p) => {
       // [0] {string} type: "p_monkey".
       // [1] {array} position: [x, y, z, rX, rY, rZ, scale].
+      // - Type defines what object will be loaded.
+      // - Position is position relative to the world, not the object itself.
+      if (
+        typeof p[0] === 'string' &&
+        typeof t[1] === 'object' && t[1].constructor === Array &&
+        t[1].length === 7 &&
+        typeof t[1][0] === 'number' && typeof t[1][1] === 'number' &&
+        typeof t[1][2] === 'number' && typeof t[1][3] === 'number' &&
+        typeof t[1][4] === 'number' && typeof t[1][5] === 'number' &&
+        typeof t[1][6] === 'number'
+      ) {
+        // Only the validated props are registered.
+        results.push(new Prop(p[0], p[1][0], p[1][1], p[1][2], p[1][3], p[1][4], p[1][5], p[1][6]));
+      }
     });
   }
   return [];
