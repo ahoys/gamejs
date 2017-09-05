@@ -3,6 +3,7 @@
  */
 const log = debug('./src/level');
 const fs = require('fs');
+const Tile = require('./world/tile');
 
 // Level.
 const Level = {
@@ -34,7 +35,7 @@ const getProcessedTiles = (tiles) => {
         t[1].length === 12 && t[2].length === 6
       ) {
         // Only the validated tiles are registered.
-        results.push(new Tile(t[0], t[1], t[2]));
+        // results.push(Tile(t[0], t[1], t[2]));
       }
     });
     return results;
@@ -52,15 +53,15 @@ const getProcessedProps = (props) => {
       // - Position is position relative to the world, not the object itself.
       if (
         typeof p[0] === 'string' &&
-        typeof t[1] === 'object' && t[1].constructor === Array &&
-        t[1].length === 7 &&
-        typeof t[1][0] === 'number' && typeof t[1][1] === 'number' &&
-        typeof t[1][2] === 'number' && typeof t[1][3] === 'number' &&
-        typeof t[1][4] === 'number' && typeof t[1][5] === 'number' &&
-        typeof t[1][6] === 'number'
+        typeof p[1] === 'object' && p[1].constructor === Array &&
+        p[1].length === 7 &&
+        typeof p[1][0] === 'number' && typeof p[1][1] === 'number' &&
+        typeof p[1][2] === 'number' && typeof p[1][3] === 'number' &&
+        typeof p[1][4] === 'number' && typeof p[1][5] === 'number' &&
+        typeof p[1][6] === 'number'
       ) {
         // Only the validated props are registered.
-        results.push(new Prop(p[0], p[1][0], p[1][1], p[1][2], p[1][3], p[1][4], p[1][5], p[1][6]));
+        //results.push(new Prop(p[0], p[1][0], p[1][1], p[1][2], p[1][3], p[1][4], p[1][5], p[1][6]));
       }
     });
   }
