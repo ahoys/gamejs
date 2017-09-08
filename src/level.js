@@ -3,7 +3,7 @@
  */
 const log = debug('./src/level');
 const fs = require('fs');
-const Tile = require('./world/tile');
+const WorldTile = require('./world/world.tile');
 
 // Level.
 const Level = {
@@ -35,7 +35,11 @@ const getProcessedTiles = (tiles) => {
         t[1].length === 12 && t[2].length === 6
       ) {
         // Only the validated tiles are registered.
-        // results.push(Tile(t[0], t[1], t[2]));
+        const tile = Object.create(WorldTile);
+        tile.setType(t[0]);
+        tile.setVertices(t[1]);
+        tile.setIndices(t[2]);
+        results.push(tile);
       }
     });
     return results;
@@ -85,6 +89,7 @@ Level.load = (name) => {
       // Process optional tiles.
       Level.tiles = getProcessedTiles(require(`./levels/${name}_tiles.json`));
       Level.tilesCount = Level.tiles.length;
+      console.log(Level.tiles, Level.tilesCount);
     }
     if (fs.existsSync(`./src/levels/${name}_props.json`)) {
       // Process optional props.
