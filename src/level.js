@@ -120,12 +120,4 @@ Level.load = (name) => {
   }
 };
 
-/**
- * Returns true if a level is correctly loaded.
- */
-Level.ready = () => {
-  if (!Level.title || !Level.title.length) return false;
-  if (sizeX < 1 || sizeY < 1 || sizeZ < 1) return false;
-};
-
 module.exports = Level;
