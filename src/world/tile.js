@@ -1,5 +1,5 @@
 /**
- * WorldTile
+ * Tile
  * 
  * The primary world building item.
  * Ground, walls, etc. can be made of WorldTiles.
@@ -13,7 +13,7 @@ module.exports = Object.assign(
       this.type = String(v);
     }
   },
-  require('./parts/position'),
-  require('./parts/rotation'),
-  require('./parts/graphics'),
+  require('./modules/position'),
+  require('./modules/rotation'),
+  require('./modules/graphics'),
 );

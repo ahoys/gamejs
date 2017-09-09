@@ -3,7 +3,7 @@
  */
 const log = debug('./src/level');
 const fs = require('fs');
-const WorldTile = require('./world/world.tile');
+const WorldTile = require('./world/tile');
 
 // Level.
 const Level = {
