@@ -1,6 +1,7 @@
 module.exports = {
   vertices: [],
   indices: [],
+  scale: 1.0,
 
   /**
    * Sets vertices that are used in drawing.
@@ -15,5 +16,12 @@ module.exports = {
    */
   setIndices: function(v) {
     this.indices = v;
+  },
+
+  /**
+   * Sets scale of the object.
+   */
+  setScale: function(v) {
+    this.scale = Number(v);
   },
 }
