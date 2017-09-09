@@ -11,4 +11,15 @@ module.exports = {
   setZ: function(v) {
     this.z = Number(v);
   },
+  setPosition: function(pos) {
+    if (pos[0] !== undefined) {
+      this.x = Number(pos[0]);
+    }
+    if (pos[1] !== undefined) {
+      this.y = Number(pos[1]);
+    }
+    if (pos[2] !== undefined) {
+      this.z = Number(pos[2]);
+    }
+  },
 }

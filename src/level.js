@@ -4,6 +4,8 @@
 const log = debug('./src/level');
 const fs = require('fs');
 const WorldTile = require('./world/tile');
+const StaticProp = require('./world/static-prop');
+const DynamicProp = require('./world/dynamic-prop');
 
 // Level.
 const Level = {
@@ -65,9 +67,15 @@ const getProcessedProps = (props) => {
         typeof p[1][6] === 'number'
       ) {
         // Only the validated props are registered.
-        //results.push(new Prop(p[0], p[1][0], p[1][1], p[1][2], p[1][3], p[1][4], p[1][5], p[1][6]));
+        const sp = Object.create(StaticProp);
+        sp.setModel(p[0]);
+        sp.setPosition(p[1][0], p[1][1], p[1][2]);
+        sp.setRotation(p[1][3], p[1][4], p[1][5]);
+        sp.setScale(p[1][6]);
+        results.push(sp);
       }
     });
+    return results;
   }
   return [];
 };
@@ -95,6 +103,7 @@ Level.load = (name) => {
       // Process optional props.
       Level.props = getProcessedProps(require(`./levels/${name}_props.json`));
       Level.propsCount = Level.props.length;
+      console.log(Level.props, Level.propsCount);
     }
     log('Done!');
   } else {
