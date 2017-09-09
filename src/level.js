@@ -3,6 +3,7 @@
  */
 const log = debug('./src/level');
 const fs = require('fs');
+const Camera = require('./world/camera');
 const WorldTile = require('./world/tile');
 const StaticProp = require('./world/static-prop');
 const DynamicProp = require('./world/dynamic-prop');
@@ -10,15 +11,25 @@ const DynamicProp = require('./world/dynamic-prop');
 // Level.
 const Level = {
   title: '', // Title of the level.
-  sizeX: 0, // Size on x-axel (width).
-  sizeY: 0, // Size on y-axel (height).
-  sizeZ: 0, // Size on z-axel (depth).
-  volume: 0, // Total size in grids.
+  camera: undefined, // Viewport.
   tiles: [], // Tiles of the level (ground and walls).
   props: [], // Props of the level (objects).
   tilesCount: 0, // Count of tiles.
   propsCount: 0, // Count of props.
 };
+
+const getProcessedCamera = (cameraConfig) => {
+  if (cameraConfig) {
+    const cam = Object.create(Camera);
+    cam.setPosition(cameraConfig.position);
+    cam.setRotation(cameraConfig.rotation);
+    cam.setFov(cameraConfig.fov);
+    log(`A new camera created.`);
+    return cam;
+  }
+  log('The level is missing a camera.');
+  return undefined;
+}
 
 const getProcessedTiles = (tiles) => {
   if (typeof tiles === 'object' && tiles.constructor === Array) {
@@ -85,25 +96,23 @@ const getProcessedProps = (props) => {
  * @param {string} name
  */
 Level.load = (name) => {
-  log(`Loading ${name}.`);
+  log(`Loading a level ${name}.`);
   if (fs.existsSync(`./src/levels/${name}.json`)) {
+    // Process config.
     res = require(`./levels/${name}.json`);
-    Level.title = String(res.title) || '';
-    Level.sizeX = Math.floor(Number(res.sizeX)) || 0;
-    Level.sizeY = Math.floor(Number(res.sizeY)) || 0;
-    Level.sizeZ = Math.floor(Number(res.sizeZ)) || 0;
-    Level.volume = Level.sizeX * Level.sizeY * Level.sizeZ;
+    Level.title = res.title;
+    Level.camera = getProcessedCamera(res.camera);
     if (fs.existsSync(`./src/levels/${name}_tiles.json`)) {
       // Process optional tiles.
       Level.tiles = getProcessedTiles(require(`./levels/${name}_tiles.json`));
       Level.tilesCount = Level.tiles.length;
-      console.log(Level.tiles, Level.tilesCount);
+      log(`${Level.tilesCount} tiles loaded.`);
     }
     if (fs.existsSync(`./src/levels/${name}_props.json`)) {
       // Process optional props.
       Level.props = getProcessedProps(require(`./levels/${name}_props.json`));
       Level.propsCount = Level.props.length;
-      console.log(Level.props, Level.propsCount);
+      log(`${Level.propsCount} props loaded.`);
     }
     log('Done!');
   } else {

@@ -1,6 +1,8 @@
 {
   "title": "World 0",
-  "sizeX": 64,
-  "sizeY": 16,
-  "sizeZ": 64
+  "camera": {
+    "position": [0,-4,-12],
+    "rotation": [0,0,0],
+    "fov": 1.5708
+  }
 }

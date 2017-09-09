@@ -11,7 +11,7 @@ module.exports = {
   setRz: function(v) {
     this.rz = Number(v);
   },
-  setRotation: function(rot) {
+  setRotation: function(rot = []) {
     if (rot[0] !== undefined) {
       this.rx = Number(rot[0]);
     }
